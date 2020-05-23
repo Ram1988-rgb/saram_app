@@ -8,5 +8,6 @@ module.exports = function(router) {
  router.all('/admin/job/edit/:id', isloggedin, indexController.edit);
  router.all('/admin/job/delete/:id',isloggedin, indexController.delete); 
  router.all('/admin/job/change_status',isloggedin, indexController.change_status);  
+ router.all('/admin/job/all_category',isloggedin, indexController.all_category);  
 
 }

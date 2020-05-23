@@ -29,10 +29,29 @@
 <div class="row">
 <div class="col-md-12">
 <div class="form-group row">
-<label class="control-label col-xs-12 col-md-3 "><%=__('Category')%> *</label>
-<div class="form-group col-xs-12 col-md-9">
-<input type="text" id="category" name="category" data-validation="required" class="form-control" placeholder="<%=__('Category')%>">
-</div>
+<div class="form-group row clearfix" id="category_valid">
+	  <label class="col-xs-12 col-md-3  col-form-label" for="example-text-input">Category</label>
+	  <div class="col-xs-12 col-md-9">
+
+		<div class="form">
+		  <div class="search-box"><input type="text" class="input" placeholder="click & search"></div>
+		  <div class="list"></div>
+		  <ul class="categories" id="unique">
+			<li><span>Default Categories</span>
+			  <ul class="sub-categories">
+			  </ul>
+		</div>
+		<div class="seprated">
+		  <input type="hidden" name="data" id="save_data" data-validation="required" value="">
+		</div>
+		<div class="sepratedd">
+		  <input type="hidden" value="<%= detail.category_id %>">
+		</div>
+
+	  </div>
+	  <span class="help-block form-error" style="display:none" id="cat">This is a required field</span>
+	  <input type="hidden" name="default_atr[]" class="default_atr" value="data">
+	</div>
 </div>
 </div>
 </div>
@@ -53,7 +72,8 @@
 <div class="form-group row">
 <label class="control-label col-xs-12 col-md-3 "><%=__('Description')%> </label>
 <div class="form-group col-xs-12 col-md-9">
-<input type="textarea" id="description" name="description" rows="4" cols="50" class="form-control" placeholder="<%=__('Description')%>"></textarea>
+<textarea class="form-control ckeditor" placeholder="Description" name="description" ><%= detail.description?detail.description:'' %></textarea>
+
 </div>
 </div>
 </div>
@@ -75,3 +95,5 @@
 </div>
 <!-- /.container-fluid -->
 </div>
+<script type="text/javascript" src="/assets/admin/js/category_dropdown.js"></script>
+<link rel="stylesheet" type="text/css" href="/assets/admin/css/global.css" media="screen" />

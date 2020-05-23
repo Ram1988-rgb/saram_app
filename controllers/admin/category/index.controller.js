@@ -103,12 +103,13 @@ class Category{
   }
 
   async upDateCategoryChild(req,res){
-    const catData = await categoryService.allCategory();
-    
+   /* const catData = await categoryService.allCategory();    
     for(let i=0;i<catData.length;i++){
         const data = await categoryService.upDateCategoryChild(catData[i]._id);
       }
-    return res.json({success:true})
+    return res.json({success:true})*/
+    await categoryService.allCategory();
+    
   }
 
 }
@@ -120,4 +121,5 @@ async function upDateCategoryChild(){
     }
   return ({success:true})
 }
+
 module.exports = Category;

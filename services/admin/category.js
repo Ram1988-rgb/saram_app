@@ -76,7 +76,15 @@ async function upDateCategoryChild(id){
   }
   console.log({child:count},"???????????",{_id:id})
   return await categoryModel.updateOne({_id:id},{child:count});
+}
 
+async function allCategory(catId){
+	var $arr = [];
+	const data = await categoryModel.find({cat_id:catId});
+	 for(let i=0;i<data.length;i++){
+		 $arr.push(data[i])
+	}
+	return $arr;
 }
 
 module.exports ={

@@ -27,11 +27,11 @@ var self= module.exports  = {
 		var limit=req.input('length')?parseInt(req.input('length')):10;
                 
                      var countData = new Promise((resolve, reject) => {
-                          var count=model.user.countDocuments(search);
+                          var count=model.job.countDocuments(search);
                           resolve(count);
                       });
                       var fetchData = new Promise((resolve, reject) => {
-                          var data=model.user.find(search).skip(skip).limit(limit).sort({createdAt: dir});
+                          var data=model.job.find(search).skip(skip).limit(limit).sort({createdAt: dir});
                           resolve(data);
                       });
                   Promise.all([countData,fetchData])
@@ -60,8 +60,6 @@ var self= module.exports  = {
 					var arr1 = [];
 					arr1.push('<input type="checkbox" name="action_check[]" class="all_check" value="'+item._id+'">');				
 					arr1.push(item.name?item.name:'--');
-					arr1.push(item.email?item.email:'--');
-					arr1.push(item.mobile?item.mobile:'--')
 					if(!item.status){
 						change_status = "changeStatus(\'"+item._id+"\',1,\'job\');";						
 						var rid = item._id;
@@ -98,12 +96,15 @@ var self= module.exports  = {
 				res.render('admin/job/add.ejs',{layout:'admin/layout/layout',permission:permission} );
 			})
 		}else{
-			var category_id = "5d6680967c66f4736f329c11";
+			var data = req.body.data;
+			var category_id = data.split(',');
 			var data = {
 				category_id : category_id,
 				name	: req.input('name'),
 				description	: req.input('description'),
 				createdby	: req.session.ECOMEXPRESSADMINID,
+				start_time : new Date(),
+				end_time : new Date(),
 				status	: true,
 				deleted_at	:  0
 			}			
@@ -117,7 +118,7 @@ var self= module.exports  = {
 
 	edit : (req, res) => {
 		var id = req.input('id');
-		model.user.findOne({_id:id}).exec(function(err,detail){
+		model.job.findOne({_id:id}).exec(function(err,detail){
 			if(req.method == "GET"){
 				if(detail){			
 					config.helpers.permission('job', req, function(err,permission){
@@ -126,7 +127,9 @@ var self= module.exports  = {
 				}else{
 					res.redirect('/admin/job')
 				}
-			}else{                               
+			}else{  
+				var data = req.body.data;
+				var category_id = data.split(',');                             
 				var data = {
 					category_id : category_id,
 					name	: req.input('name'),
@@ -179,5 +182,11 @@ var self= module.exports  = {
         	if(err) console.error(err);
         	res.send('done')
         })
+	},
+	
+	all_category : (req, res) => {
+		 //~ return model.job.find({deleted_at: 0}).sort({level:"ASC"}),function(err,data){        	
+        	 	//~ res.send(data)
+        //~ })
 	}
 }

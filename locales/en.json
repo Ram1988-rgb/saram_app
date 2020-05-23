@@ -25,5 +25,14 @@
 	"Manage Category": "Manage Category",
 	"Code": "Code",
 	"Description": "Description",
-	"Cancel": "Cancel"
+	"Cancel": "Cancel",
+	"Manage User": "Manage User",
+	"Type": "Type",
+	"Add Job": "Add Job",
+	"Manage Job": "Manage Job",
+	"Add": "Add",
+	"Category": "Category",
+	"Job has been created successfully": "Job has been created successfully",
+	"Edit": "Edit",
+	"Data has been updated Successfully": "Data has been updated Successfully"
 }
