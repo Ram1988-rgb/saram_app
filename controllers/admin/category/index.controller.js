@@ -51,7 +51,8 @@ class Category{
       const categoryData = await categoryService.allCategory({});
       res.json({success:true, status:200, data: categoryData})
     }catch(err){
-      res.json({success:false, status:200, data: categoryData})
+		console.log(err);
+      res.json({success:false, status:200, data: []})
     }
   }
 

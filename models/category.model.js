@@ -7,7 +7,7 @@ let CategorySchema = new Schema({
     description:{type: String},
     image:{type: String},
     status:{type: Boolean},
-    cat_id:{type:mongoose.Schema.Types.ObjectId, ref:"category"},
+    cat_id:{type:mongoose.Schema.Types.ObjectId},
     child:{type:Number, default:0},
     level:{type:Number},
     deleted_at:{type: Number},
