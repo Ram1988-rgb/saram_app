@@ -1,0 +1,96 @@
+<div id="page-wrapper">
+<div class="container-fluid">
+<div class="row bg-title">
+<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+<h4 class="page-title"><%=__('Add Business Plan')%></h4>
+</div>
+<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+<ol class="breadcrumb">
+<li><a href="/admin/dashboard"><%=__('Dashboard')%></a></li>
+<li class="active">
+<a href="/admin/user"><%=__('Manage User')%></a>
+</li>
+<li class="active"><%=__('Edit')%></li>
+</ol>
+</div>
+<!-- /.col-lg-12 -->
+</div>
+<div class="row">
+<div class="col-md-12">
+<div class="panel panel-info">
+
+<div class="panel-wrapper collapse in" aria-expanded="true">
+<div class="panel-body">
+<form action="" method="post" id="registration-form">
+<div class="form-body">
+<%include ../message/message.ejs%>
+<hr>
+<div class="row">
+<div class="col-md-12">
+<div class="form-group row">
+<label class="control-label col-xs-12 col-md-3 "><%=__('Name')%> *</label>
+<div class="form-group col-xs-12 col-md-9">
+<input type="text" id="name" name="name" data-validation="required" class="form-control" placeholder="<%=__('Name')%>" value="<%=detail.name?detail.name:''%>">
+</div>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-md-12">
+<div class="form-group row">
+<label class="control-label col-xs-12 col-md-3 "><%=__('Email')%> *</label>
+<div class="form-group col-xs-12 col-md-9">
+<input type="text" id="email" name="email" data-validation="email,server" data-validation-url="/user/checkemail?id=<%=detail.id?detail.id:''%>" class="form-control" placeholder="<%=__('Email')%>" value="<%=detail.email?detail.email:''%>">
+</div>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-md-12">
+<div class="form-group row">
+<label class="control-label col-xs-12 col-md-3 "><%=__('Mobile')%> *</label>
+<div class="form-group col-xs-12 col-md-9">
+<input type="text" id="mobile" name="mobile" data-validation="required, number" class="form-control" placeholder="<%=__('Mobile')%>" value="<%=detail.mobile?detail.mobile:''%>">
+</div>
+</div>
+</div>
+</div>  
+<div class="row">
+<div class="col-md-12">
+<div class="form-group row">
+<label class="control-label col-xs-12 col-md-3 "><%=__('Password')%> *</label>
+<div class="form-group col-xs-12 col-md-9">
+<input class="form-control" type="password" name="pass_confirmation" id="pass_confirmation"  placeholder="Password">
+</div>
+</div>
+</div>
+</div> 
+<div class="row">
+<div class="col-md-12">
+<div class="form-group row">
+<label class="control-label col-xs-12 col-md-3 "><%=__('Confirm Password')%> *</label>
+<div class="form-group col-xs-12 col-md-9">
+<input class="form-control" type="password" name="pass" id="pass" data-validation="confirmation" placeholder="Confirm Password">
+</div>
+</div>
+</div>
+</div>                                         
+<!--/row-->
+
+<hr>
+
+
+<div class="form-actions">
+<button type="submit" class="btn btn-success btn-form-submit"> <i class="fa   fa-check"></i> Save</button>
+<a href="/admin/user" class="btn btn-default"><%=__('Cancel')%> </a>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<!-- /.container-fluid -->
+</div>
