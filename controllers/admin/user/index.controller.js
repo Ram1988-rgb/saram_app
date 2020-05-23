@@ -4,6 +4,7 @@ var async = require("async");
 var bcrypt = require("bcrypt-nodejs");
 var self= module.exports  = {
 	index:(req,res)=>{
+		
                 config.helpers.permission('user', req, (err,permission)=>{
 			res.render('admin/user/view.ejs',{layout:'admin/layout/layout',permission:permission} );
 		});
