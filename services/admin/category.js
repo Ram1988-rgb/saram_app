@@ -80,11 +80,8 @@ async function upDateCategoryChild(id){
 
 async function allCategory(catId){
 	var $arr = [];
-	const data = await categoryModel.find({cat_id:catId});
-	 for(let i=0;i<data.length;i++){
-		 $arr.push(data[i])
-	}
-	return $arr;
+	const data = await categoryModel.find({deleted_at:0});	 
+	return data;
 }
 
 module.exports ={

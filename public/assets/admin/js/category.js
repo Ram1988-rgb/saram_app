@@ -27,7 +27,7 @@ $(document).ready(function () {
     $('#cat_form').attr('action', '/admin/category/add');
     $('#code').attr('data-validation-url', '/admin/category/check-code');
     $("#name").val('');
-    $("#code").val();
+    $("#code").val('');
     $("#description").val('');
   });
 
