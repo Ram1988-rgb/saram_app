@@ -12,7 +12,7 @@ class Category{
   async add(req,res){
     try{
       const catData = await categoryService.lastLevel();
-      const maxLevel = catData.level?parseInt(catData.level):0
+      const maxLevel = (catData && catData.level)?parseInt(catData.level):0
       req.body.level = maxLevel+1;
       const categoryData = await categoryService.addCategory(req.body);
       if(categoryData){
@@ -118,6 +118,6 @@ async function upDateCategoryChild(){
   for(let i=0;i<catData.length;i++){
       const data = await categoryService.upDateCategoryChild(catData[i]._id);
     }
-  return res.json({success:true})
+  return ({success:true})
 }
 module.exports = Category;
