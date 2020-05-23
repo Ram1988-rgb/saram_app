@@ -8,6 +8,7 @@ module.exports = function(app) {
 	var roleRoutes = require('./admin/role.routes');
 	var dashboardRoutes = require('./admin/dashboard.routes');
 	var userRoutes = require('./admin/user.routes');
+	var jobRoutes = require('./admin/job.routes');
 	var managepageRoutes = require('./admin/managepage.routes');
 	var categoryRoutes = require('./admin/category.routes');
         //import express
@@ -20,6 +21,7 @@ module.exports = function(app) {
 	administrator(router);
 	roleRoutes(router);
 	userRoutes(router);
+	jobRoutes(router);
 	managepageRoutes(router);
 	categoryRoutes(router)
 }

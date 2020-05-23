@@ -158,5 +158,13 @@
 	"Add Search": "Add Search",
 	"Add Plan": "Add Plan",
 	"Find Record": "Find Record",
-	"All Businessess Downloads": "All Businessess Downloads"
+	"All Businessess Downloads": "All Businessess Downloads",
+	"Type": "Type",
+	"This email is already register, please choose another": "This email is already register, please choose another",
+	"This mobile is already register, please choose another": "This mobile is already register, please choose another",
+	"Manage Jobs": "Manage Jobs",
+	"Manage Job": "Manage Job",
+	"Add Job": "Add Job",
+	"Add User": "Add User",
+	"Job has been created successfully": "Job has been created successfully"
 }

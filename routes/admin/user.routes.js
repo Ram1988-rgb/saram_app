@@ -9,4 +9,8 @@ module.exports = function(router) {
  router.all('/admin/user/delete/:id',isloggedin, indexController.delete); 
  router.all('/admin/user/change_status',isloggedin, indexController.change_status);  
  router.all('/admin/user/change_all_status',isloggedin, indexController.change_all_status);
+ router.all('/admin/user/check_email', indexController.check_email); 
+ router.all('/admin/user/check_email_edit/:id', indexController.check_email_edit); 
+ router.all('/admin/user/check_mobile', indexController.check_mobile); 
+ router.all('/admin/user/check_mobile_edit/:id', indexController.check_mobile_edit); 
 }

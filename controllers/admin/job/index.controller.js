@@ -5,8 +5,8 @@ var bcrypt = require("bcrypt-nodejs");
 var ObjectId = require('mongodb').ObjectId;
 var self= module.exports  = {
 	index:(req,res)=>{
-		config.helpers.permission('user', req, (err,permission)=>{
-			res.render('admin/user/view.ejs',{layout:'admin/layout/layout',permission:permission} );
+		config.helpers.permission('job', req, (err,permission)=>{
+			res.render('admin/job/view.ejs',{layout:'admin/layout/layout',permission:permission} );
 		});
 	},
         all:(req,res)=>{
@@ -42,7 +42,7 @@ var self= module.exports  = {
 				recordsFiltered:results[0],
 				//data:await self.alldata(results)
 			};
-			config.helpers.permission('user', req, (err,perdata)=>{
+			config.helpers.permission('job', req, (err,perdata)=>{
 				self.datatable(skip,perdata,results[1],(detail)=>{
 					obj.data = detail;
 					res.send(obj);
@@ -62,26 +62,21 @@ var self= module.exports  = {
 					arr1.push(item.name?item.name:'--');
 					arr1.push(item.email?item.email:'--');
 					arr1.push(item.mobile?item.mobile:'--')
-					var type = "Provider";
-					if(item.seeker == 1){
-						type = "Provider/Seeker";
-					}
-					arr1.push(type);
 					if(!item.status){
-						change_status = "changeStatus(\'"+item._id+"\',1,\'user\');";						
+						change_status = "changeStatus(\'"+item._id+"\',1,\'job\');";						
 						var rid = item._id;
 						arr1.push('<p id="status_'+item._id+'"><span class="label label-info"><i title="Inactive" style="background-repeat:no-repeat; cursor:pointer;" class="color_active" onclick="'+change_status+'">Inactive</i></span></p>');
 					}else{
-						change_status = "changeStatus(\'"+item._id+"\',0,\'user\');";
+						change_status = "changeStatus(\'"+item._id+"\',0,\'job\');";
 						arr1.push('<p id="status_'+item._id+'"><span class="label label-danger"><i title="Active" style="background-repeat:no-repeat; cursor:pointer;" class="color_active" onclick="'+change_status+'">Active</i></span></p>');
 					}
 					var $but_edit = '-';
 					if(perdata.edit=='1'){
-						$but_edit = '<a href="/admin/user/edit/'+item._id+'" title="edit"><button class="btn btn-circle text-inverse" type="button"><i class="fa fa-pencil"></i> </button></a>';
+						$but_edit = '<a href="/admin/job/edit/'+item._id+'" title="edit"><button class="btn btn-circle text-inverse" type="button"><i class="fa fa-pencil"></i> </button></a>';
 					}
 					var $but_delete = ' - ';
 					if(perdata.delete =='1'){
-						$but_delete = '<a href="javascript:void(0)" title="close" onclick="delete_data_all(this,\'user\',\'all\')" id="'+item._id+'">&nbsp;&nbsp;<button class="btn btn-circle text-danger" type="button"><i class="fa fa-close" ></i></button></a>';
+						$but_delete = '<a href="javascript:void(0)" title="close" onclick="delete_data_all(this,\'job\',\'all\')" id="'+item._id+'">&nbsp;&nbsp;<button class="btn btn-circle text-danger" type="button"><i class="fa fa-close" ></i></button></a>';
 					}
 					arr1.push($but_edit+$but_delete);
 								
@@ -99,25 +94,23 @@ var self= module.exports  = {
 
 	add : (req,res) => {
 		if(req.method == "GET"){			
-			config.helpers.permission('user', req, function(err,permission){
-				res.render('admin/user/add.ejs',{layout:'admin/layout/layout',permission:permission} );
+			config.helpers.permission('job', req, function(err,permission){
+				res.render('admin/job/add.ejs',{layout:'admin/layout/layout',permission:permission} );
 			})
 		}else{
+			var category_id = "5d6680967c66f4736f329c11";
 			var data = {
+				category_id : category_id,
 				name	: req.input('name'),
-				email	: req.input('email'),
-				mobile	: parseInt(req.input('mobile')),
-				seeker	: 0,
-				provider	: 1,
-				password	: bcrypt.hashSync(req.input('pass')),
+				description	: req.input('description'),
 				createdby	: req.session.ECOMEXPRESSADMINID,
 				status	: true,
 				deleted_at	:  0
 			}			
-			model.user.create(data,function(err,insdata){
+			model.job.create(data,function(err,insdata){
 				if(err){console.log(err)}
-				req.flash('message', req.__('Your account has been created successfully'));
-				res.redirect('/admin/user')
+				req.flash('message', req.__('Job has been created successfully'));
+				res.redirect('/admin/job')
 			})			
 		}
 	},
@@ -127,25 +120,22 @@ var self= module.exports  = {
 		model.user.findOne({_id:id}).exec(function(err,detail){
 			if(req.method == "GET"){
 				if(detail){			
-					config.helpers.permission('user', req, function(err,permission){
-						res.render('admin/user/edit.ejs',{layout:'admin/layout/layout',permission:permission,detail:detail} );
+					config.helpers.permission('job', req, function(err,permission){
+						res.render('admin/job/edit.ejs',{layout:'admin/layout/layout',permission:permission,detail:detail} );
 					})
 				}else{
-					res.redirect('/admin/user')
+					res.redirect('/admin/job')
 				}
 			}else{                               
 				var data = {
-					name:req.input('name'),
-					email:req.input('email'),
-					mobile: parseInt(req.input('mobile'))
+					category_id : category_id,
+					name	: req.input('name'),
+					description	: req.input('description')
 				}
-				if(req.input('pass'))
-				{
-				  data.password=bcrypt.hashSync(req.input('pass'))  
-				}
-				model.user.updateOne({_id:id},data).exec(function(err,data_upd){
+				
+				model.job.updateOne({_id:id},data).exec(function(err,data_upd){
 					req.flash('message', req.__('Data has been updated Successfully'));
-					return res.redirect('/admin/user');		
+					return res.redirect('/admin/job');		
 				})
 			}
 		})
@@ -153,15 +143,15 @@ var self= module.exports  = {
 
 	change_status : (req, res) => {
 		var rid = req.input('id')?req.input('id'):'';	
-		return model.user.updateOne({_id: rid}, {
+		return model.job.updateOne({_id: rid}, {
         	status: parseInt(req.body.st)?true:false
 		},function(err,data){
 			if(err) console.error(err);
 			if(req.body.st=='1'){
-				res.send('<span  class="label label-danger"><i title="Active" style="background-repeat:no-repeat; cursor:pointer;" class="color_active" onclick="changeStatus(\''+rid+'\',0,\'user\');">Active</i></span>');
+				res.send('<span  class="label label-danger"><i title="Active" style="background-repeat:no-repeat; cursor:pointer;" class="color_active" onclick="changeStatus(\''+rid+'\',0,\'job\');">Active</i></span>');
 			}
 			else{
-				res.send('<span  class="label label-info"><i title="Inactive" style="background-repeat:no-repeat; cursor:pointer;" class="color_active" onclick="changeStatus(\''+rid+'\',1,\'user\');">Inactive</i></span>');
+				res.send('<span  class="label label-info"><i title="Inactive" style="background-repeat:no-repeat; cursor:pointer;" class="color_active" onclick="changeStatus(\''+rid+'\',1,\'job\');">Inactive</i></span>');
 			}
 		})
 	},
@@ -170,69 +160,24 @@ var self= module.exports  = {
 		var action_change = req.input('action_change')?req.input('action_change'):0;
 		var action_check = req.input('action_check')?req.input('action_check'):[];
 		if(action_change == "2"){
-			model.user.updateMany({_id: {$in :action_check}}, {deleted_at: 1},function(err,data){
+			model.job.updateMany({_id: {$in :action_check}}, {deleted_at: 1},function(err,data){
 				res.json({status:"ok"});
 	        });
 		}
 		if(action_change == "1" || action_change == "0"){
 			var st = (action_change==1)?true:false;
-			model.user.updateMany({_id: {$in :action_check}}, {status: st},function(err,data){
+			model.job.updateMany({_id: {$in :action_check}}, {status: st},function(err,data){
 				res.json({status:"ok"});
 	        });
 		}
 	},
 
 	delete : (req, res) => {
-		 return model.user.updateOne({_id: req.input("id")}, {
+		 return model.job.updateOne({_id: req.input("id")}, {
             deleted_at: 1
         },function(err,data){        	
         	if(err) console.error(err);
         	res.send('done')
         })
-	},
-	
-	check_email : function(req, res) {
-		model.user.findOne({email:req.input('email')}).exec(function(err,user){
-		if(err){console.log(err)}
-			if(user){	
-				res.json({"valid": false,"message":req.__("This email is already register, please choose another")})
-			}else{
-				res.json({"valid":true})
-			}
-		})
-	},
-	
-	check_mobile : function(req, res) {
-		model.user.findOne({mobile: parseInt(req.input('mobile'))}).exec(function(err,user){
-		if(err){console.log(err)}
-			if(user){	
-				res.json({"valid": false,"message":req.__("This mobile is already register, please choose another")})
-			}else{
-				res.json({"valid":true})
-			}
-		})
-	},
-	
-	check_email_edit : function(req, res) {
-		model.user.findOne({ _id :{ $ne: new ObjectId(req.input('id'))}, email : req.input('email')}).exec(function(err,user){
-		console.log(user);
-		if(err){console.log(err)}
-			if(user){	
-				res.json({"valid": false,"message":req.__("This email is already register, please choose another")})
-			}else{
-				res.json({"valid":true})
-			}
-		})
-	},
-	
-	check_mobile_edit : function(req, res) {
-		model.user.findOne({ _id :{ $ne: new ObjectId(req.input('id'))}, mobile: parseInt(req.input('mobile'))}).exec(function(err,user){
-		if(err){console.log(err)}
-			if(user){	
-				res.json({"valid": false,"message":req.__("This mobile is already register, please choose another")})
-			}else{
-				res.json({"valid":true})
-			}
-		})
 	}
 }

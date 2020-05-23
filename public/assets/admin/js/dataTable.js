@@ -138,6 +138,21 @@
           type: "POST",          
         }
     });
+    
+     $('#jobs_tbl').DataTable({
+      "processing": true,
+      "serverSide": true,
+      "ordering": true,
+      "sDom": 'Rfrtlip',
+                  "columnDefs": [ {
+                      "targets": 'no-sort',
+                      "orderable": false,
+                } ],
+        "ajax": {
+          url: ADMINSITEURL+'job/all/',
+          type: "POST",          
+        }
+    });
 
 
     $('#vendorRequestTable').DataTable({
