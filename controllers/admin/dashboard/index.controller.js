@@ -5,10 +5,10 @@ var async = require("async");
 var Admin = model.admin;
 var mongoose = require('mongoose');
 module.exports = {
-	index: async function(req,res){		
+	index: async function(req,res){
 		const menu = await model.admin.find();
-		res.json(menu);
-		//res.render('admin/dashboard/index.ejs',{layout:'admin/layout/layout'} );
+		//res.json(menu);
+		res.render('admin/dashboard/index.ejs',{layout:'admin/layout/layout'} );
 	},
 	allmenu:function(req,res){
 		async.waterfall([
@@ -41,7 +41,7 @@ module.exports = {
 								callback(null,data_menu[0].roleid);
 							}else{
 								callback(null,[]);
-							}							
+							}
 						})
 				}
 			],function(err,roleid){
@@ -50,10 +50,10 @@ module.exports = {
 				if(err){
 					console.log(err)
 				}
-				res.render('admin/dashboard/menu.ejs',{layout:false, allmenu:allmenu,roleid:roleid} );			
+				res.render('admin/dashboard/menu.ejs',{layout:false, allmenu:allmenu,roleid:roleid} );
 			});
 		})
-		
+
 	}
-	
+
 }
