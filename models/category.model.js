@@ -3,11 +3,13 @@ const Schema = mongoose.Schema;
 
 let CategorySchema = new Schema({
     name: {type: String},
+    code:{type:String},
     description:{type: String},
-    translation_data:{type: Array},
     image:{type: String},
     status:{type: Boolean},
     cat_id:{type:mongoose.Schema.Types.ObjectId, ref:"category"},
+    child:{type:Number, default:0},
+    level:{type:Number},
     deleted_at:{type: Number},
     createdAt: {
         type: Date,

@@ -12,7 +12,8 @@ var layout = require('express-layout');
 var path = require("path");
 var app = express();
 var config = require('./config/index');
-
+global.appRoot = path.normalize(`${path.resolve(__dirname)}`);
+console.log(appRoot);
 //database
 var mongoose = require('mongoose');
 var mongoDB = 'mongodb://127.0.0.1/onlinedb';
