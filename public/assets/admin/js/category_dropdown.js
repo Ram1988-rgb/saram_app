@@ -29,7 +29,7 @@ function _createCategory(arr,unique){
 		var bool=false;
 		$.each(strArr,function(inx,setVal){
 			//console.log(setVal)
-			if(setVal==val.id){
+			if(setVal==val._id){
 				bool=true;
 			}
 			//else{
@@ -39,15 +39,15 @@ function _createCategory(arr,unique){
 
 		if(bool==true){
 
-			$('body').find('#'+uniqueID).append("<li><span class=color id=counter"+val.id+">"+val.name+"</span></li>")
-			$(".search-box").prepend("<span class=append-category><span id=counter"+val.id+" class=append-element>"+ val.name+"<span class=remove-element></span></span></span>");
+			$('body').find('#'+uniqueID).append("<li><span class=color id=counter"+val._id+">"+val.name+"</span></li>")
+			$(".search-box").prepend("<span class=append-category><span id=counter"+val._id+" class=append-element>"+ val.name+"<span class=remove-element></span></span></span>");
 		}else
-		$('body').find('#'+uniqueID).append("<li><span id=counter"+val.id+">"+val.name+"</span></li>")
-		//$('body').find('#'+uniqueID).append("<li><span id=counter"+val.id+">"+val.name+"</span></li>");
+		$('body').find('#'+uniqueID).append("<li><span id=counter"+val._id+">"+val.name+"</span></li>")
+		//$('body').find('#'+uniqueID).append("<li><span id=counter"+val._id+">"+val.name+"</span></li>");
 		if(val.category && val.category.length>0){
-			$('body').find('#'+uniqueID).children('li:last-child').append('<ul id='+val.id+'></ul>');
+			$('body').find('#'+uniqueID).children('li:last-child').append('<ul id='+val._id+'></ul>');
 			$('body').find('#'+uniqueID).children('li:last-child').prepend('<span class=collapse >');
-			uniqueID=val.id;
+			uniqueID=val._id;
 			if(arr.length==$('#'+uniqueID).children().length){
 			uniqueID=$('body').find('#'+uniqueID).parent().parent('ul').attr('id');
 		}
