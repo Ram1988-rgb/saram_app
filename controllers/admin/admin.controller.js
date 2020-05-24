@@ -93,6 +93,16 @@ module.exports = {
 			}
 		})
 	},
-	//get_id:function()
+	
+	create_counry : async function(req, res){
+		var data = {
+			name : "Delhi",
+			country_id : "5eca261521139021d654cd27",
+			status : true,
+			deleted_at : 0
+		}
+		await model.city.create(data);
+		res.send("add successfully");
+	}
 	
 }
