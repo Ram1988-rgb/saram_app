@@ -185,8 +185,42 @@ var self= module.exports  = {
 	},
 	
 	all_category : (req, res) => {
-		 //~ return model.job.find({deleted_at: 0}).sort({level:"ASC"}),function(err,data){        	
-        	 	//~ res.send(data)
-        //~ })
+		model.category.find({status :true, deleted_at:0 }).sort({'level':'ASC'}).exec(function(err, data){
+			console.log(data);
+			console.log("===========category============");
+			jsonData = data;
+			//category list
+			var arr = [];
+			for (var i = 0; i < jsonData.length; i++) {
+					data[i].category = [];
+				}
+			   for (var i = 0; i < jsonData.length; i++) {
+				  for (var j = 0; j < jsonData.length; j++) {
+					 if (i != j) {
+						if (jsonData[i].cat_id == jsonData[j].id) {
+						   arr.push(i);
+						   if (jsonData[j].category) {
+							  jsonData[j].category.push(jsonData[i]);
+						   } else {
+							  jsonData[j].category = [];
+							  jsonData[j].category.push(jsonData[i]);
+						   }
+						}
+
+					 }
+				  }
+			   }
+			   if (arr.length) {
+				  var res_data = [];
+				  for (var i = 0; i < jsonData.length; i++) {
+					 if (arr.indexOf(i) == -1) {
+						res_data.push(jsonData[i]);
+					 }
+				  }
+				  jsonData = res_data;
+
+			   }
+			   res.send(jsonData);
+			});
 	}
 }

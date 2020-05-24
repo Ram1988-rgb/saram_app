@@ -44,7 +44,7 @@ function _createCategory(arr,unique){
 		}else
 		$('body').find('#'+uniqueID).append("<li><span id=counter"+val.id+">"+val.name+"</span></li>")
 		//$('body').find('#'+uniqueID).append("<li><span id=counter"+val.id+">"+val.name+"</span></li>");
-		if(val.category.length>0){
+		if(val.category && val.category.length>0){
 			$('body').find('#'+uniqueID).children('li:last-child').append('<ul id='+val.id+'></ul>');
 			$('body').find('#'+uniqueID).children('li:last-child').prepend('<span class=collapse >');
 			uniqueID=val.id;
