@@ -34,5 +34,10 @@
 	"Category": "Category",
 	"Job has been created successfully": "Job has been created successfully",
 	"Edit": "Edit",
-	"Data has been updated Successfully": "Data has been updated Successfully"
+	"Data has been updated Successfully": "Data has been updated Successfully",
+	"Add User": "Add User",
+	"Mobile No": "Mobile No",
+	"Mobile": "Mobile",
+	"Password": "Password",
+	"Confirm Password": "Confirm Password"
 }
