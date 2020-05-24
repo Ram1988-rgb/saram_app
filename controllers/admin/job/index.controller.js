@@ -186,9 +186,8 @@ var self= module.exports  = {
 	
 	all_category : (req, res) => {
 		model.category.find({status :true, deleted_at:0 }).sort({'level':'ASC'}).exec(function(err, data){
-			console.log(data);
-			console.log("===========category============");
-			jsonData = data;
+			
+			jsonData = JSON.parse(JSON.stringify(data));
 			//category list
 			var arr = [];
 			for (var i = 0; i < jsonData.length; i++) {
@@ -197,11 +196,13 @@ var self= module.exports  = {
 			   for (var i = 0; i < jsonData.length; i++) {
 				  for (var j = 0; j < jsonData.length; j++) {
 					 if (i != j) {
-						if (jsonData[i].cat_id == jsonData[j].id) {
-						   arr.push(i);
-						   if (jsonData[j].category) {
+						var catJsonId = jsonData[i].cat_id?(jsonData[i].cat_id).toString():jsonData[i].cat_id;
+						if (catJsonId  == jsonData[j]._id) {
+							arr.push(i);
+						   
+						   if (jsonData[j].category) {							
 							  jsonData[j].category.push(jsonData[i]);
-						   } else {
+						   } else {							
 							  jsonData[j].category = [];
 							  jsonData[j].category.push(jsonData[i]);
 						   }
@@ -209,7 +210,7 @@ var self= module.exports  = {
 
 					 }
 				  }
-			   }
+			   }			  
 			   if (arr.length) {
 				  var res_data = [];
 				  for (var i = 0; i < jsonData.length; i++) {
