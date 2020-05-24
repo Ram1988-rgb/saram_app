@@ -5,7 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "create-job-types": "node DBSEED/jobtype", 
+    "address-proof": "node DBSEED/addressproof", 
+    "photoid-proof": "node DBSEED/photoidproof", 
+    "language-known": "node DBSEED/languageknown",   
+    "db-seed": "npm run create-job-types && npm run address-proof && npm run photoid-proof && npm run language-known"
   },
   "author": "Ram",
   "license": "ISC",
