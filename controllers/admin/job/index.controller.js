@@ -186,8 +186,7 @@ var self= module.exports  = {
 	
 	all_category : (req, res) => {
 		model.category.find({status :true, deleted_at:0 }).sort({'level':'ASC'}).exec(function(err, data){
-			console.log(data);
-			console.log("===========category============");
+			
 			jsonData = data;
 			//category list
 			var arr = [];
@@ -220,6 +219,7 @@ var self= module.exports  = {
 				  jsonData = res_data;
 
 			   }
+			   console.log(jsonData);
 			   res.send(jsonData);
 			});
 	}
