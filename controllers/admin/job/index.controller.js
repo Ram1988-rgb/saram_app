@@ -3,6 +3,7 @@ var config = require('../../../config/index');
 var async = require("async");
 var bcrypt = require("bcrypt-nodejs");
 var ObjectId = require('mongodb').ObjectId;
+const jobService = require(`${appRoot}/services/job.js`)
 var self= module.exports  = {
 	index:(req,res)=>{
 		config.helpers.permission('job', req, (err,permission)=>{
@@ -90,58 +91,53 @@ var self= module.exports  = {
 			}
 	},
 
-	add : (req,res) => {
-		if(req.method == "GET"){			
-			config.helpers.permission('job', req, function(err,permission){
-				res.render('admin/job/add.ejs',{layout:'admin/layout/layout',permission:permission} );
+	add : async (req,res) => {
+		if(req.method == "GET"){
+			config.helpers.permission('job', req, async function(err,permission){
+				const city = await model.city.find({ status : true, deleted_at : 0}); 
+				const job_type = await model.jobtypes.find();				
+				res.render('admin/job/add.ejs',{layout:'admin/layout/layout',permission : permission, city : city, job_type : job_type} );
 			})
-		}else{
-			var data = req.body.data;
-			var category_id = data.split(',');
-			var data = {
-				category_id : category_id,
-				name	: req.input('name'),
-				description	: req.input('description'),
-				createdby	: req.session.ECOMEXPRESSADMINID,
-				start_time : new Date(),
-				end_time : new Date(),
-				status	: true,
-				deleted_at	:  0
-			}			
-			model.job.create(data,function(err,insdata){
-				if(err){console.log(err)}
-				req.flash('message', req.__('Job has been created successfully'));
-				res.redirect('/admin/job')
-			})			
+		}else{			
+			req.body.user_id = req.session.ECOMEXPRESSADMINID;
+			console.log(req.body);
+			try{
+			  const jobData = await jobService.addJob(req.body);
+			  if(jobData){
+				res.redirect('/admin/job');
+			  }
+			}catch(err){
+			  console.log(err)
+			  res.json("somthing went wrong")
+			}				
 		}
 	},
 
-	edit : (req, res) => {
+	edit : async (req, res) => {
 		var id = req.input('id');
-		model.job.findOne({_id:id}).exec(function(err,detail){
-			if(req.method == "GET"){
-				if(detail){			
-					config.helpers.permission('job', req, function(err,permission){
-						res.render('admin/job/edit.ejs',{layout:'admin/layout/layout',permission:permission,detail:detail} );
-					})
-				}else{
-					res.redirect('/admin/job')
-				}
-			}else{  
-				var data = req.body.data;
-				var category_id = data.split(',');                             
-				var data = {
-					category_id : category_id,
-					name	: req.input('name'),
-					description	: req.input('description')
-				}
-				
-				model.job.updateOne({_id:id},data).exec(function(err,data_upd){
-					req.flash('message', req.__('Data has been updated Successfully'));
-					return res.redirect('/admin/job');		
+		var detail = await model.job.findOne({ _id : id});
+		if(req.method == "GET"){
+			if(detail){			
+				config.helpers.permission('job', req, async function(err,permission){
+					const city = await model.city.find({ status : true, deleted_at : 0}); 
+					const job_type = await model.jobtypes.find({});
+					const locality = await model.locality.find({ status : true, deleted_at : 0});
+					res.render('admin/job/edit.ejs',{layout:'admin/layout/layout',permission:permission,detail:detail, city : city, job_type : job_type, locality : locality} );
 				})
+			}else{
+				res.redirect('/admin/job')
 			}
-		})
+		}else{
+			try{
+			  const jobData = await jobService.editJob(req.body.id, req.body);
+			  if(jobData){
+				res.redirect('/admin/job');
+			  }
+			}catch(err){
+			  console.log(err)
+			  res.json({success:false, status:200, data:null, msg:constants.SOMETHING_WENT_WRONG})
+			}  				
+		}
 	},            
 
 	change_status : (req, res) => {
@@ -174,6 +170,13 @@ var self= module.exports  = {
 	        });
 		}
 	},
+	
+	get_locality : async (req, res) => {
+		console.log(req.body);
+		var data = await model.locality.find({ city_id : new ObjectId(req.body.city_id), deleted_at : 0, status : true });
+		console.log(data);
+		res.send(data);
+	},
 
 	delete : (req, res) => {
 		 return model.job.updateOne({_id: req.input("id")}, {
@@ -186,7 +189,6 @@ var self= module.exports  = {
 	
 	all_category : (req, res) => {
 		model.category.find({status :true, deleted_at:0 }).sort({'level':'ASC'}).exec(function(err, data){
-			
 			jsonData = JSON.parse(JSON.stringify(data));
 			//category list
 			var arr = [];
@@ -221,6 +223,7 @@ var self= module.exports  = {
 				  jsonData = res_data;
 
 			   }
+			   console.log(jsonData);
 			   res.send(jsonData);
 			});
 	}

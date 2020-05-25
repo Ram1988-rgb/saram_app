@@ -42,7 +42,7 @@
 			  </ul>
 		</div>
 		<div class="seprated">
-		  <input type="hidden" name="data" id="save_data" data-validation="required" value="">
+		  <input type="hidden" name="data" id="save_data" data-validation="required" value="<%= detail.category_id %>">
 		</div>
 		<div class="sepratedd">
 		  <input type="hidden" value="<%= detail.category_id %>">
@@ -67,6 +67,106 @@
 </div>
 </div>
 
+<div class="row">
+<div class="col-md-12">
+	<div class="form-group row">
+		<label class="control-label col-xs-3 col-md-3">Job Types</label>
+		<div class="col-md-9">		 
+			<%for(var key=0;key<job_type.length;key++){%>
+			  <div class="col-md-4 form-group">
+					<input id="jobtype" name="jobtype" value="<%=job_type[key].code %>" type="checkbox" class="applicable-for"><label for="checkbox34"><%=job_type[key].name%></label>
+				</div>
+			<%}%>
+		</div>
+	</div>
+</div>
+</div>  
+
+<div class="row">
+<div class="col-md-12">
+<div class="form-group row">
+<label class="control-label col-xs-12 col-md-3 "><%=__('Monthly Salary')%> <%=__('Min')%> *</label>
+<div class="form-group col-xs-12 col-md-9">
+<input type="text" id="salary_min" name="salary_min" data-validation="required" class="form-control" placeholder="<%=__('Min')%>">
+</div>
+</div>
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-12">
+<div class="form-group row">
+<label class="control-label col-xs-12 col-md-3 "><%=__('Monthly Salary')%> <%=__('Max')%> *</label>
+<div class="form-group col-xs-12 col-md-9">
+<input type="text" id="salary_max" name="salary_max" data-validation="required" class="form-control" placeholder="<%=__('Max')%>">
+</div>
+</div>
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-12">
+<div class="form-group row">
+<label class="control-label col-xs-12 col-md-3 "><%=__('Experience')%> <%=__('Min')%> *</label>
+<div class="form-group col-xs-12 col-md-9">
+<select name="exp_min" id="exp_min" class="form-control" data-validation="required">
+	<option value="">Select Exp</option>
+	<%for(var key=1;key<20;key++){%>
+	   <option value="<%=key%>"><%=key%></option>
+	<%}%>
+</select>
+</div>
+</div>
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-12">
+<div class="form-group row">
+<label class="control-label col-xs-12 col-md-3 "><%=__('Experience')%> <%=__('Max')%> *</label>
+<div class="form-group col-xs-12 col-md-9">
+<select name="exp_max" id="exp_max" class="form-control" data-validation="required">
+	<option value="">Select Exp</option>
+	<%for(var key=1;key<21;key++){%>
+	   <option value="<%=key%>"><%=key%></option>
+	<%}%>
+</select>
+</div>
+</div>
+</div>
+</div>
+		
+<div class="row">
+<div class="col-md-12">
+	<div class="form-group row">
+		<label class="control-label col-xs-12 col-md-3">Select City</label>
+		 <div class="form-group col-xs-12 col-md-9">
+		<select name="city_id" id="city_id" class="form-control" data-validation="required">
+			<option value="">Select City</option>
+			<%for(var key=0;key<city.length;key++){%>
+			   <option value="<%=city[key].id%>"><%=city[key].name%></option>
+			<%}%>
+		</select>
+		  </div>
+	</div>
+</div>
+</div>    
+
+<div class="row">
+<div class="col-md-12">
+	<div class="form-group row">
+		<label class="control-label col-xs-12 col-md-3">Select Locality</label>
+		 <div class="form-group col-xs-12 col-md-9">
+		<select name="locality_id" id="locality_id" class="form-control" data-validation="required">
+			<option value="">Select Locality</option>
+			<%for(var key=0;key<locality.length;key++){%>
+			   <option value="<%=locality[key].id%>"><%=locality[key].name%></option>
+			<%}%>
+			</select>
+		  </div>
+	</div>
+</div>
+</div> 
 <div class="row">
 <div class="col-md-12">
 <div class="form-group row">

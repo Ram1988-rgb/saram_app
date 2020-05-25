@@ -4,8 +4,15 @@ const Schema = mongoose.Schema;
 var JobSchema = new Schema({
 	category_id : [{type:mongoose.Schema.Types.ObjectId, ref:"category"}],
 	name : { type: String },
+	jobtype : { type: Array },
 	description : { type : String },
-    createdby : { type : String },
+	salary_min : { type : String },
+	salary_max : { type : String },
+	exp_min : { type : Number },
+	exp_max : { type : Number },
+    createdby : { type : Object },
+    city_id : { type : {type:mongoose.Schema.Types.ObjectId, ref:"city"} },
+    locality_id : { type : {type:mongoose.Schema.Types.ObjectId, ref:"locality"} },
 	status 	: { type : Boolean },
     deleted_at	: { type : Number},  
     start_time	: { type : Date }, 
@@ -21,3 +28,4 @@ var JobSchema = new Schema({
 })
 
 module.exports = mongoose.model('job', JobSchema);
+

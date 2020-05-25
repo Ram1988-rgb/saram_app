@@ -40,6 +40,7 @@
 	"Mobile": "Mobile",
 	"Password": "Password",
 	"Confirm Password": "Confirm Password",
+<<<<<<< HEAD
 	"Add Business Plan": "Add Business Plan",
 	"Profile": "Profile",
 	"Update Profile": "Update Profile",
@@ -61,4 +62,11 @@
 	"Address Proof": "Address Proof",
 	"Photo Id Proof": "Photo Id Proof",
 	"ITI Deploma": "ITI Deploma"
+=======
+	"Job Title": "Job Title",
+	"Monthly Salary": "Monthly Salary",
+	"Min": "Min",
+	"Max": "Max",
+	"Experience": "Experience"
+>>>>>>> f5a6f887542af8fee6ccb8fa5f69cd2e3cc67dde
 }
