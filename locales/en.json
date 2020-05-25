@@ -39,5 +39,10 @@
 	"Mobile No": "Mobile No",
 	"Mobile": "Mobile",
 	"Password": "Password",
-	"Confirm Password": "Confirm Password"
+	"Confirm Password": "Confirm Password",
+	"Job Title": "Job Title",
+	"Monthly Salary": "Monthly Salary",
+	"Min": "Min",
+	"Max": "Max",
+	"Experience": "Experience"
 }

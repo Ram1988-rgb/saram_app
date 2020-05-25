@@ -7,5 +7,4 @@ module.exports = function(router) {
     router.all('/admin/create', adminController.create);   
     router.get('/admin/logout', adminController.logout); 
     router.all('/admin/check_email', adminController.check_email); 
-    router.all('/admin/create_counry', adminController.create_counry); 
 }
