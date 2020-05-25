@@ -29,7 +29,7 @@ module.exports = {
 
 	SAMPLEEXPORTUSERCSVURL:SITEURL+'assets/files/sample/user/',
 	//BUSINESS_FIELD:[]
-
+	JWT_SECRET 	: 'addjsonwebtokensecretherelikeQuiscustodietipsoscustodes',
 	TIMEZONE:process.env.TIMEZONE,
 	FORMATETIME:'DD-MM-YYYY hh:mm A',
 	PAYPALAPI:{
