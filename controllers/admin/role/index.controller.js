@@ -58,7 +58,10 @@ module.exports = {
 	},
 
 	all_role:function(req,res){
-		var search = {deleted_at:0,type:{$ne:"ADMIN"}}
+		var search = {deleted_at:0}
+		if(process.env.NODE_ENV !="development"){
+			search.type = {$ne:"ADMIN"}
+		}
 		var cat_id = req.body.cat_id;
 		var search_val = req.body.search.value;
 		if(search_val){			
@@ -158,7 +161,7 @@ module.exports = {
 
 	edit:function(req,res){
 		var id = req.input('id');
-		if(req.method =="POST"){
+		 if(req.method =="POST"){
 			var menuCheck = req.input("menuCheck");
 					var arrayData = [];
 
