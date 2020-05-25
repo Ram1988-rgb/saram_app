@@ -13,4 +13,5 @@ module.exports = function(router) {
  router.all('/admin/user/check_email_edit/:id', indexController.check_email_edit); 
  router.all('/admin/user/check_mobile', indexController.check_mobile); 
  router.all('/admin/user/check_mobile_edit/:id', indexController.check_mobile_edit);
+ router.get('/admin/user/profile/:id', indexController.userProfile);
 }

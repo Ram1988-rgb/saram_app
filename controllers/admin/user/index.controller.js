@@ -1,8 +1,10 @@
 var model  = require('../../../models/index.model');
 var config = require('../../../config/index');
+const commanHelper = require(`${appRoot}/helpers/comman.helper`);
 var async = require("async");
 var bcrypt = require("bcrypt-nodejs");
 var ObjectId = require('mongodb').ObjectId;
+const userService = require(`${appRoot}/services/admin/user`)
 var self= module.exports  = {
 	index:(req,res)=>{
 		config.helpers.permission('user', req, (err,permission)=>{
@@ -67,6 +69,9 @@ var self= module.exports  = {
 						type = "Provider/Seeker";
 					}
 					arr1.push(type);
+					
+					arr1.push('<a href="/admin/user/profile/'+item._id+'" title="User Profile"><button class="btn btn-circle text-inverse" type="button"><i class="glyphicon glyphicon-user"></i> </button></a>');
+					
 					if(!item.status){
 						change_status = "changeStatus(\'"+item._id+"\',1,\'user\');";						
 						var rid = item._id;
@@ -234,5 +239,21 @@ var self= module.exports  = {
 				res.json({"valid":true})
 			}
 		})
+	},
+
+	userProfile:async function (req,res){		
+	  const userData = await userService.getProfile(req.params.id);
+	  const city = await commanHelper.getCity();
+	  const lKnow = await commanHelper.langKnown();
+	  const adProof = await commanHelper.addressProof();
+	  const pIdProof = await commanHelper.photoIdProof(); 
+	  res.render('admin/user/profile.ejs',{
+		  layout:'admin/layout/layout',
+			userData:userData, 
+			city:city, lKnow:lKnow,
+			adProof:adProof, 
+			pIdProof:pIdProof
+		});	
 	}
+
 }

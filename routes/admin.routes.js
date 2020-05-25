@@ -11,6 +11,7 @@ module.exports = function(app) {
 	var jobRoutes = require('./admin/job.routes');
 	var managepageRoutes = require('./admin/managepage.routes');
 	var categoryRoutes = require('./admin/category.routes');
+	var settingRoutes = require('./admin/setting.routes');
         //import express
 	var router = express.Router();
 	app.use('',router);
@@ -23,5 +24,6 @@ module.exports = function(app) {
 	userRoutes(router);
 	jobRoutes(router);
 	managepageRoutes(router);
-	categoryRoutes(router)
+	categoryRoutes(router);
+	settingRoutes(router);
 }

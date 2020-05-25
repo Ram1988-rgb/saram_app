@@ -1,0 +1,246 @@
+<div id="page-wrapper">
+  <div class="container-fluid">
+  <div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+    <h4 class="page-title"><%=__('User Profile')%>(<%=userData.name%>)</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+      <ol class="breadcrumb">
+        <li><a href="/admin/dashboard"><%=__('Dashboard')%></a></li>
+        <li class="active">
+          <a href="/admin/user"><%=__('Manage User')%></a>
+        </li>
+        <li class="active"><%=__('Update Profile')%></li>
+      </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-info">    
+          <div class="panel-wrapper collapse in" aria-expanded="true">
+            <div class="panel-body">
+              <form action="" method="post" id="registration-form">
+                <div class="form-body">
+                <%include ../message/message.ejs%>
+                <hr>
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group row">
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('City')%> *</label>
+                          <div class="form-group col-xs-12 col-md-9">
+                            <select id="city" name="city" data-validation="required" class="form-control" onchange="getLocality(this.value)">
+                              <option>Select City</option>
+                              <%
+                              for(var i=0; i<city.length; i++){
+                              %>
+                                <option value="<%=city[i].id%>"><%=city[i].name%></option>
+                              <%}%>
+                            </select>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group row">
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('Locality')%> *</label>
+                          <div class="form-group col-xs-12 col-md-9">
+                            <select id="locality" name="locality" data-validation="required" class="form-control" >
+                              <option>Select Locality</option>                              
+                            </select>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group row">
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('Resume')%> *</label>
+                          <div class="form-group col-xs-12 col-md-9">
+                            <input type="file" name="resume" id="resume" class="form-control">
+                          </div>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group row">
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('Current Salary')%>(Lakh) *</label>
+                          <div class="form-group col-xs-12 col-md-9">
+                          <input type="text" id="salary" name="salary" data-validation="required" class="form-control" placeholder="<%=__('Salary')%>">
+                          </div>
+                      </div>
+                  </div>
+                </div>  
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group row">
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('Job Category')%> *</label>
+                          <div class="form-group col-xs-12 col-md-9">
+                          <input type="text" id="salary" name="salary" data-validation="required" class="form-control" placeholder="<%=__('Salary')%>">
+                          </div>
+                      </div>
+                  </div>
+                </div> 
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group row">
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('Skills')%>*</label>
+                          <div class="form-group col-xs-12 col-md-9">
+                          <input type="text" id="salary" name="salary" data-validation="required" class="form-control" placeholder="<%=__('Salary')%>">
+                          </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group row">
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('Current Designatior')%>*</label>
+                          <div class="form-group col-xs-12 col-md-9">
+                          <input type="text" id="salary" name="salary" data-validation="required" class="form-control" placeholder="<%=__('Salary')%>">
+                          </div>
+                      </div>
+                  </div>
+                </div> 
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group row">
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('Current/Previous Company')%></label>
+                          <div class="form-group col-xs-12 col-md-9">
+                          <input type="text" id="salary" name="salary" data-validation="required" class="form-control" placeholder="<%=__('Salary')%>">
+                          </div>
+                      </div>
+                  </div>
+                </div> 
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group row">
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('Year of experience')%></label>
+                          <div class="form-group col-xs-12 col-md-9">
+                          <input type="text" id="salary" name="salary" data-validation="required" class="form-control" placeholder="<%=__('Salary')%>">
+                          </div>
+                      </div>
+                  </div>
+                </div> 
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group row">
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('Do you have passport')%></label>
+                          <div class="form-group col-xs-12 col-md-9">
+                            <input type="checkbox" name="passport" id="passport">
+                          </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group row">
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('Language Known')%> *</label>
+                          <div class="form-group col-xs-12 col-md-9">
+                            <div class="row">
+                                <%for(var i=0;i<lKnow.length;i++){%>
+                                  <div class="col-md-3">
+                                  <input type="checkbox" name="language" id="language-<%=i%>" value="<%=lKnow[i].id%>" >  <%=lKnow[i].name%>
+                                  </div>
+                                <%}%>
+                              </div>                              
+                          </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group row">
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('Age')%>(Years) *</label>
+                          <div class="form-group col-xs-12 col-md-9">
+                            <select name="age" id="age" class="form-control">
+                              <option value="">Select Age</option>
+                              <%for(var i =15;i<76;i++){%>
+                                <option value="<%=i%>"><%=i%></option>
+                                <%}%>
+                            </select>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group row">
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('Gender')%> *</label>
+                          <div class="form-group col-xs-12 col-md-9">
+                            <select name="gender" id="gender" class="form-control">
+                              <option value="">Select Gender</option>
+                              <option value="Male">Select Male</option>
+                              <option value="Female">Select Female</option>                              
+                            </select>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group row">
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('Address Proof')%></label>
+                          <div class="form-group col-xs-12 col-md-9">
+                            <div class="row">
+                              <%for(var i=0;i<adProof.length;i++){%>
+                                <div class="col-md-3">
+                                <input type="checkbox" name="adProof" id="adProof-<%=i%>" value="<%=adProof[i].id%>" >  <%=adProof[i].name%>
+                                </div>
+                              <%}%>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group row">
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('Photo Id Proof')%></label>
+                          <div class="form-group col-xs-12 col-md-9">
+                            <div class="row">
+                              <%for(var i=0;i<pIdProof.length;i++){%>
+                                <div class="col-md-3">
+                                <input type="checkbox" name="pIdProof" id="pIdProof-<%=i%>" value="<%=pIdProof[i].id%>" >  <%=pIdProof[i].name%>
+                                </div>
+                              <%}%>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group row">
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('ITI Deploma')%></label>
+                          <div class="form-group col-xs-12 col-md-9">
+                            <input type="checkbox" name="itideploma" id="itideploma" value="yes">
+                          </div>
+                      </div>
+                  </div>
+                </div>
+
+                <!--/row-->
+                
+                <hr>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-success btn-form-submit"> <i class="fa   fa-check"></i> Save</button>
+                  <a href="/admin/user" class="btn btn-default"><%=__('Cancel')%> </a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    </div>
+    <!-- /.container-fluid -->
+    </div>
+    <script src="/assets/admin/js/user.js"></script>
+    
