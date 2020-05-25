@@ -1,6 +1,7 @@
 var model  = require('../../../models/index.model');
 var config = require('../../../config/index');
 const categoryService = require(`${appRoot}/services/admin/category.js`)
+const commanHelper = require(`${appRoot}/helpers/comman.helper`)
 const {constants} = require(`${appRoot}/config/string`)
 
 
@@ -39,7 +40,9 @@ class Category{
   async categoryDetail(req,res){
     try{
       const catData = await categoryService.categoryDetail(req.params.id);
-      res.json({success:true, status:200, data:catData, msg:''})
+      const designaitors = await commanHelper.allDesignaitor(req.params.id);
+      const skills = await commanHelper.allSkills(req.params.id);
+      res.json({success:true, status:200, data:catData, designaitors:designaitors, skills:skills, msg:''})
     }catch(err){
       console.log(err)
       res.json({success:false, status:200, data:null, msg:constants.DATA_NOT_FOUNd})
@@ -48,7 +51,7 @@ class Category{
 
   async allCategory(req,res){
     try{      
-      const categoryData = await categoryService.allCategory({});
+      const categoryData = await categoryService.allCategory({});      
       res.json({success:true, status:200, data: categoryData})
     }catch(err){
 		console.log(err);
@@ -111,6 +114,48 @@ class Category{
       }
     return ({success:true})
     
+  }
+  async saveSkills(req,res){
+    var skillsAdd = req.body.skills_add?req.body.skills_add:'';
+    if(typeof skillsAdd == "string"){
+      skillsAdd = [skillsAdd];
+    }
+    const skills = req.body.skills;
+    const sk =[];
+    for(var key in skills){
+      sk.push(key);
+    }
+
+    await categoryService.deleteSkills(sk);
+    await categoryService.updateSkills(skills);
+    if(skillsAdd.length>0){
+     await categoryService.addSkills(skillsAdd, req.body.catId);
+    }
+    res.json({success:true})
+  }
+
+  async saveDesignaitor(req,res){
+    try{
+      var designaitorAdd = req.body.designaitor_add?req.body.designaitor_add:'';
+      if(typeof designaitorAdd == "string"){
+        designaitorAdd = [designaitorAdd];
+      }
+      const designaitor = req.body.designaitor;
+      const sk =[];
+      for(var key in designaitor){
+        sk.push(key);
+      }
+
+      await categoryService.deleteDesignaitor(sk);
+      await categoryService.updateDesignaitor(designaitor);
+      if(designaitorAdd.length>0){
+      await categoryService.addDesignaitor(designaitorAdd, req.body.catId);
+      }
+      res.json({success:true})
+    }catch(err){
+      console.log(err)
+      res.json({success:false})
+    }
   }
 
 }

@@ -4,6 +4,8 @@ var countryModel  = require('../models/country.model');
 var lKnowModel  = require('../models/languageknow.model');
 var adProofModel  = require('../models/addressproof.model');
 var pIdProofModel  = require('../models/photoidproof.model');
+var designaitorModel  = require('../models/designaitor.model');
+var skillsModel  = require('../models/skills.model');
 const mongoose = require('mongoose');
 
 async function getCountry(){
@@ -36,11 +38,29 @@ async function photoIdProof(){
     return await pIdProofModel.find();
 }
 
+async function allDesignaitor(catId=null){
+    const search = {deleted_at:0}
+    if(catId){
+        search.cat_id =catId
+    }
+    return await designaitorModel.find(search);
+}
+
+async function allSkills(catId=null){
+    const search = {deleted_at:0}
+    if(catId){
+        search.cat_id =mongoose.Types.ObjectId(catId)
+    }console.log(search)
+    return await skillsModel.find(search);
+}
+
 module.exports = {
     getCountry,
     getCity,
     getlocality,
     langKnown,
     addressProof,
-    photoIdProof
+    photoIdProof,
+    allDesignaitor,
+    allSkills
 }

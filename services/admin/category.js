@@ -1,6 +1,7 @@
 'use strict';
 
 const categoryModel = require(`${appRoot}/models/category.model`);
+const designaitorModel = require(`${appRoot}/models/designaitor.model`);
 
 async function addCategory(param){
   const newCategory = new categoryModel({
@@ -84,6 +85,56 @@ async function allCategory(catId){
 	return data;
 }
 
+async function deleteSkills(sk){ 
+  return await skillsModel.deleteMany({_id:{$nin:sk}});
+}
+
+async function updateSkills(detail){
+  for(var key in detail){    
+     await skillsModel.updateOne({_id:key},{name:detail[key]});
+  }  
+  return true;
+}
+
+async function addSkills(detail, catId){
+  for(var i=0;i<detail.length;i++){
+    if(detail[i]){
+     await skillsModel.create({
+      name:detail[i],
+      cat_id:catId,
+      status:true,
+      deleted_at:0
+    });
+  }
+  } 
+  return true; 
+}
+
+async function deleteDesignaitor(sk){ 
+  return await designaitorModel.deleteMany({_id:{$nin:sk}});
+}
+
+async function updateDesignaitor(detail){
+  for(var key in detail){    
+     await designaitorModel.updateOne({_id:key},{name:detail[key]});
+  }  
+  return true;
+}
+
+async function addDesignaitor(detail, catId){
+  for(var i=0;i<detail.length;i++){
+    if(detail[i]){
+     await designaitorModel.create({
+      name:detail[i],
+      cat_id:catId,
+      status:true,
+      deleted_at:0
+    });
+  }
+  } 
+  return true; 
+}
+
 module.exports ={
   addCategory,
   allCategory,
@@ -92,5 +143,12 @@ module.exports ={
   editCategory,
   lastLevel,
   checkCode,
-  upDateCategoryChild
+  upDateCategoryChild,
+  deleteSkills,
+  updateSkills,
+  addSkills,
+  deleteDesignaitor,
+  addDesignaitor,
+  updateDesignaitor
+  
 }

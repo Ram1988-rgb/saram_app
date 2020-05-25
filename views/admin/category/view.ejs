@@ -46,6 +46,9 @@
                     <a href="/admin/category">
                       <button class="btn btn-success btn-rounded" type="button">Reset</button>
                     </a>
+                    <button type="button" class="btn btn-success btn-rounded" data-toggle="modal" data-target="#skillsModal" id="skill-button" style="display: none">Skills </button>
+                    <button type="button" class="btn btn-success btn-rounded" data-toggle="modal" data-target="#designaitorModal" id="design-button"  style="display: none">Designaitor </button>
+                    
                   </div>
                   <div class="col-md-12">
                     <div class="form-group row">
@@ -88,6 +91,73 @@
   </div>
   <!-- /.container-fluid -->
   </div>
+
+<!--------Designaitor model-->
+<div class="modal fade" id="designaitorModal" role="dialog">
+  <div class="modal-dialog">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Designaitor</h4>
+      </div>
+      <form action="" method="POST" id="designaitor-form">  
+        <input type="hidden" name="catId" class="cat-id-data">       
+        <div class="modal-body">
+          <div class="field_wrapper_designaitor">
+            <div>
+                <input type="text" name="designaitor_add[]" value=""/>
+              
+            </div>
+          </div>
+          <a href="javascript:void(0);" class="add_button" title="Add field" onclick="addDesignaitor('field_wrapper_designaitor')"><img src="/assets/admin/images/add-icon.png"/></a>
+        </div>      
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success btn-form-submit"> <i class="fa   fa-check"></i> Save</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" id="designaitor-close">Close</button>
+        </div>
+    </form>
+    </div>
+    
+  </div>
+</div>
+
+<!------------skills-------------->
+<div class="modal fade" id="skillsModal" role="dialog">
+  
+  <div class="modal-dialog">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Skills</h4>
+      </div>
+      <form action="" method="POST" id="skill-form"> 
+        <input type="hidden" name="catId" class="cat-id-data">     
+        <div class="modal-body">
+          <div class="field_wrapper">
+            <div>
+                <input type="text" name="skills_add" value=""/>
+              
+            </div>
+          </div>
+          <a href="javascript:void(0);" class="add_button" title="Add field" onclick="addSkills('field_wrapper')"><img src="/assets/admin/images/add-icon.png"/></a>
+        </div>      
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success btn-form-submit" > <i class="fa   fa-check"></i> Save</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" id="skills-close">Close</button>
+        </div>
+    </form>
+    </div>
+    
+  </div>
+</div>
+
+
+
+
 <script src="/assets/admin/js/jquery-migrate-1.2.1.min.js"></script>
 <!-- Main Theme Stylesheet :: CSS -->
 <script src="/assets/admin/js/jquery.nestable.js"></script>

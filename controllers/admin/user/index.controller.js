@@ -247,12 +247,16 @@ var self= module.exports  = {
 	  const lKnow = await commanHelper.langKnown();
 	  const adProof = await commanHelper.addressProof();
 	  const pIdProof = await commanHelper.photoIdProof(); 
+	  const designaitor = await commanHelper.allDesignaitor(); 
+	  const skills = await commanHelper.allSkills(); 
 	  res.render('admin/user/profile.ejs',{
 		  layout:'admin/layout/layout',
 			userData:userData, 
 			city:city, lKnow:lKnow,
 			adProof:adProof, 
-			pIdProof:pIdProof
+			pIdProof:pIdProof,
+			designaitor:designaitor,
+			skills:skills
 		});	
 	}
 

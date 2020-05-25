@@ -245,3 +245,9 @@
     .dd3-handle:hover {
         background: #aaa;
     }
+    .field_wrapper div {
+        margin-bottom: 10px;
+    }
+    .field_wrapper_designaitor div {
+        margin-bottom: 10px;    
+    }

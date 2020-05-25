@@ -1,6 +1,7 @@
 //database
-var mongoose = require('mongoose');
-var mongoDB = 'mongodb://127.0.0.1/sram_app';
+const mongoose = require('mongoose');
+const database = process.env.DATABASE;
+const mongoDB = `mongodb://127.0.0.1/${database}`;
 //var mongoDB = 'mongodb+srv://admin:admin@cluster0-0mfh0.mongodb.net/sram_app?retryWrites=true&w=majority';
 mongoose.connect(mongoDB, () => { }, { useNewUrlParser: true, useUnifiedTopology: true })
     .catch(err => {

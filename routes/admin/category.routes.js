@@ -13,5 +13,7 @@ module.exports = function(router) {
 	router.post('/admin/category/delete/:id', isloggedin, category.deleteCategory);
 	router.post('/admin/category/check-code', isloggedin, category.checkCode);
 	router.get('/admin/category/getData', isloggedin, category.upDateCategoryChild);
+	router.post('/admin/category/save-skills', isloggedin, category.saveSkills);
+	router.post('/admin/category/save-designaitor', isloggedin, category.saveDesignaitor);
 
 }
