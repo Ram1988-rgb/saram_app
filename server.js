@@ -66,7 +66,9 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 const adminRoutes = require('./routes/admin.routes.js');
+const apiRoutes = require('./routes/api.routes.js');
 adminRoutes(app);
+apiRoutes(app);
 
 var port = process.env.PORT || 2005;
 app.listen(port,function()

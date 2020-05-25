@@ -70,11 +70,12 @@
 <div class="row">
 <div class="col-md-12">
 	<div class="form-group row">
-		<label class="control-label col-xs-3 col-md-3">Job Types</label>
+		<label class="control-label col-xs-3 col-md-3">Job Types </label>
 		<div class="col-md-9">		 
 			<%for(var key=0;key<job_type.length;key++){%>
-			  <div class="col-md-4 form-group">
-					<input id="jobtype" name="jobtype" value="<%=job_type[key].code %>" type="checkbox" class="applicable-for"><label for="checkbox34"><%=job_type[key].name%></label>
+			  <div class="col-md-4 form-group">			  
+			  <% var arr_data = detail.jobtype; %>
+					<input id="jobtype" name="jobtype" value="<%=job_type[key].code %>" <% if(arr_data.includes(job_type[key].code) ==true){ %>checked ="checked" <% }%> type="checkbox" class="applicable-for"><label for="checkbox34"><%=job_type[key].name%></label>
 				</div>
 			<%}%>
 		</div>
@@ -87,7 +88,7 @@
 <div class="form-group row">
 <label class="control-label col-xs-12 col-md-3 "><%=__('Monthly Salary')%> <%=__('Min')%> *</label>
 <div class="form-group col-xs-12 col-md-9">
-<input type="text" id="salary_min" name="salary_min" data-validation="required" class="form-control" placeholder="<%=__('Min')%>">
+<input type="text" id="salary_min" name="salary_min" data-validation="required" class="form-control" placeholder="<%=__('Min')%>" value="<%= detail.salary_min%>">
 </div>
 </div>
 </div>
@@ -98,7 +99,7 @@
 <div class="form-group row">
 <label class="control-label col-xs-12 col-md-3 "><%=__('Monthly Salary')%> <%=__('Max')%> *</label>
 <div class="form-group col-xs-12 col-md-9">
-<input type="text" id="salary_max" name="salary_max" data-validation="required" class="form-control" placeholder="<%=__('Max')%>">
+<input type="text" id="salary_max" name="salary_max" data-validation="required" class="form-control" placeholder="<%=__('Max')%>" value="<%= detail.salary_max%>">
 </div>
 </div>
 </div>
@@ -112,7 +113,7 @@
 <select name="exp_min" id="exp_min" class="form-control" data-validation="required">
 	<option value="">Select Exp</option>
 	<%for(var key=1;key<20;key++){%>
-	   <option value="<%=key%>"><%=key%></option>
+	   <option <% if(key == detail.exp_min){ %> selected="selected" <% } %> value="<%=key%>"><%=key%></option>
 	<%}%>
 </select>
 </div>
@@ -128,7 +129,7 @@
 <select name="exp_max" id="exp_max" class="form-control" data-validation="required">
 	<option value="">Select Exp</option>
 	<%for(var key=1;key<21;key++){%>
-	   <option value="<%=key%>"><%=key%></option>
+	   <option <% if(key == detail.exp_max){ %> selected="selected" <% } %> value="<%=key%>"><%=key%></option>
 	<%}%>
 </select>
 </div>
@@ -144,7 +145,7 @@
 		<select name="city_id" id="city_id" class="form-control" data-validation="required">
 			<option value="">Select City</option>
 			<%for(var key=0;key<city.length;key++){%>
-			   <option value="<%=city[key].id%>"><%=city[key].name%></option>
+			   <option <% if(city[key].id == detail.city_id){ %> selected="selected" <% } %> value="<%=city[key].id%>"><%=city[key].name%></option>
 			<%}%>
 		</select>
 		  </div>
@@ -160,7 +161,7 @@
 		<select name="locality_id" id="locality_id" class="form-control" data-validation="required">
 			<option value="">Select Locality</option>
 			<%for(var key=0;key<locality.length;key++){%>
-			   <option value="<%=locality[key].id%>"><%=locality[key].name%></option>
+			   <option <% if(locality[key].id == detail.locality_id){ %> selected="selected" <% } %> value="<%=locality[key].id%>"><%=locality[key].name%></option>
 			<%}%>
 			</select>
 		  </div>
@@ -195,5 +196,29 @@
 </div>
 <!-- /.container-fluid -->
 </div>
+<script>
+$("#city_id").on("change", function(){
+	var city_id = $(this).val();
+	$.ajax({
+      url: "/admin/job/get_locality",
+      data: {
+        city_id : city_id
+      },
+      success: function(data) {
+        var toAppend = '';
+        if (data != '0') {
+          toAppend += '<option value = "">Select Locality</option>';
+          for (var i = 0; i < data.length; i++) {
+          
+            toAppend += '<option value= ' + data[i]['_id'] + '>' + data[i]['name'] + '</option>';
+          }
+        } else {
+          toAppend += '<option value = "">Select Locality</option>';
+        }
+        $('#locality_id').html(toAppend);
+      }
+    });
+});
+</script>
 <script type="text/javascript" src="/assets/admin/js/category_dropdown.js"></script>
 <link rel="stylesheet" type="text/css" href="/assets/admin/css/global.css" media="screen" />
