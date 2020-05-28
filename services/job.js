@@ -1,6 +1,7 @@
 'use strict';
 
 const jobModel = require(`${appRoot}/models/job.model`);
+const ObjectId = require('mongodb').ObjectId;
 
 async function addJob(param){
 	var data = param.data;
@@ -14,6 +15,7 @@ async function addJob(param){
 		exp_min : param.exp_min,
 		exp_max : param.exp_max,
 		city_id : param.city_id,
+		user_id : new ObjectId(param.user_id),
 		locality_id : param.locality_id,
 		description : param.description,
 		start_time : new Date(),
@@ -37,6 +39,7 @@ async function editJob(id, param){
 		exp_min : param.exp_min,
 		exp_max : param.exp_max,
 		city_id : param.city_id,
+		user_id : new ObjectId(param.user_id),
 		locality_id : param.locality_id,
 		description : param.description
 	};

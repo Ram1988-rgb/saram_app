@@ -6,6 +6,8 @@ var adProofModel  = require('../models/addressproof.model');
 var pIdProofModel  = require('../models/photoidproof.model');
 var designaitorModel  = require('../models/designaitor.model');
 var skillsModel  = require('../models/skills.model');
+var usersModel  = require('../models/user.model');
+var jobtypesModel  = require('../models/jobtypes.model');
 const mongoose = require('mongoose');
 
 async function getCountry(){
@@ -18,6 +20,15 @@ async function getCity(countryId){
         search.country_id =countryId
     }
     return await cityModel.find(search);
+}
+
+async function getUers(){
+    const search = {deleted_at:0}
+    return await usersModel.find(search);
+}
+
+async function jobType(){	
+    return await jobtypesModel.find();
 }
 
 async function getlocality(cityId){
@@ -62,5 +73,8 @@ module.exports = {
     addressProof,
     photoIdProof,
     allDesignaitor,
-    allSkills
+    allSkills,
+    getUers,
+    jobType
+    
 }
