@@ -14,9 +14,9 @@ async function addJob(param){
 		salary_max : param.salary_max,
 		exp_min : param.exp_min,
 		exp_max : param.exp_max,
-		city_id : param.city_id,
+		city_id : new ObjectId(param.city_id),
 		user_id : new ObjectId(param.user_id),
-		locality_id : param.locality_id,
+		locality_id : new ObjectId(param.locality_id),
 		description : param.description,
 		start_time : new Date(),
 		end_time : new Date(),
@@ -38,9 +38,9 @@ async function editJob(id, param){
 		salary_max : param.salary_max,
 		exp_min : param.exp_min,
 		exp_max : param.exp_max,
-		city_id : param.city_id,
+		city_id : new ObjectId(param.city_id),
 		user_id : new ObjectId(param.user_id),
-		locality_id : param.locality_id,
+		locality_id : new ObjectId(param.locality_id),
 		description : param.description
 	};
 	return jobModel.updateOne({ _id : id }, updateJob);
