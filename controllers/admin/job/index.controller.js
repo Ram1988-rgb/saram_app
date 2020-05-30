@@ -137,11 +137,13 @@ var self= module.exports  = {
 		var detail = await model.job.findOne({ _id : id});
 		if(req.method == "GET"){
 			if(detail){	
+				
 				var users = await commanHelper.getUers();
 				var city = await commanHelper.getCity();
 				var job_type = await commanHelper.jobType();		
 				config.helpers.permission('job', req, async function(err,permission){
-					const locality = await model.locality.find({ status : true, deleted_at : 0});
+					console.log(detail.city_id)
+					const locality = await model.locality.find({ city_id : detail.city_id, status : true, deleted_at : 0});
 					res.render('admin/job/edit.ejs',{layout:'admin/layout/layout',permission:permission,detail:detail, city : city, job_type : job_type, locality : locality, users:users} );
 				})
 			}else{

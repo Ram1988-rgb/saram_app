@@ -12,7 +12,7 @@ var JobSchema = new Schema({
 	exp_max : { type : Number },
     createdby : { type : Object },
     city_id : { type : {type:mongoose.Schema.Types.ObjectId, ref:"city"} },
-    user_id : { type : Object },
+    user_id : { type : { type : mongoose.Schema.Types.ObjectId, ref : "user"} },
     locality_id : { type : {type:mongoose.Schema.Types.ObjectId, ref:"locality"} },
 	status 	: { type : Boolean },
     deleted_at	: { type : Number},  

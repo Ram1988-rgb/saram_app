@@ -11,4 +11,5 @@ module.exports = {
 		result.status = status;
 		res.status(status).send(result);
 	}
+		
 }
