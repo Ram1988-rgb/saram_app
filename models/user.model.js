@@ -7,6 +7,10 @@ var UserSchema = new Schema({
 	mobile : { type : Number },
 	password	: { type : String },
     createdby : { type : String },
+    photo_type_id : { type : Object },
+    photo_id_number : { type : String },
+    photo_proof : { type : String },
+    image : { type : String },
 	status 	: { type : Boolean },
     deleted_at	: { type : Number},   
      seeker: {

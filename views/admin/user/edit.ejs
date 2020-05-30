@@ -38,9 +38,9 @@
 <div class="row">
 <div class="col-md-12">
 <div class="form-group row">
-<label class="control-label col-xs-12 col-md-3 "><%=__('Email')%> *</label>
+<label class="control-label col-xs-12 col-md-3 "><%=__('Email')%></label>
 <div class="form-group col-xs-12 col-md-9">
-<input type="text" id="email" name="email" data-validation="email,server" data-validation-url="/admin/user/check_email_edit/<%=detail.id%>" class="form-control" placeholder="<%=__('Email')%>" value="<%=detail.email?detail.email:''%>">
+<input type="text" id="email" name="email"  class="form-control" placeholder="<%=__('Email')%>" value="<%=detail.email?detail.email:''%>">
 </div>
 </div>
 </div>
@@ -55,10 +55,47 @@
 </div>
 </div>
 </div>  
+
+<div class="row">
+<div class="col-md-12">
+	<div class="form-group row">
+		<label class="control-label col-xs-12 col-md-3">Photo proof type *</label>
+		 <div class="form-group col-xs-12 col-md-9">
+		<select name="photo_id_type" id="photo_id_type" class="form-control" data-validation="required">
+			<option value="">Select photo proof type</option>
+			<%for(var key=0;key<proof_type.length;key++){%>
+			   <option value="<%=proof_type[key].id%>" <% if(detail.photo_type_id == proof_type[key].id){ %> selected="selected" <% } %>><%=proof_type[key].name%></option>
+			<%}%>
+		</select>
+		  </div>
+	</div>
+</div>
+</div>  
 <div class="row">
 <div class="col-md-12">
 <div class="form-group row">
-<label class="control-label col-xs-12 col-md-3 "><%=__('Password')%> *</label>
+<label class="control-label col-xs-12 col-md-3 "><%=__('Photo Id No')%> *</label>
+<div class="form-group col-xs-12 col-md-9">
+<input type="text" id="photo_id_number" name="photo_id_number" data-validation="required"  class="form-control" placeholder="<%=__('Photo id proof')%>" value="<%= detail.photo_id_number%>">
+</div>
+</div>
+</div>
+</div> 
+
+ <div class="row">
+	<div class="col-md-12">
+	  <div class="form-group row">
+		  <label class="control-label col-xs-12 col-md-3 "><%=__('Photo id proof')%> *</label>
+		  <div class="form-group col-xs-12 col-md-9">
+			<input type="file" name="photo_proof" id="photo_proof" class="form-control">
+		  </div>
+	  </div>
+	</div>
+</div> 
+<div class="row">
+<div class="col-md-12">
+<div class="form-group row">
+<label class="control-label col-xs-12 col-md-3 "><%=__('Password')%></label>
 <div class="form-group col-xs-12 col-md-9">
 <input class="form-control" type="password" name="pass_confirmation" id="pass_confirmation"  placeholder="Password">
 </div>
@@ -68,7 +105,7 @@
 <div class="row">
 <div class="col-md-12">
 <div class="form-group row">
-<label class="control-label col-xs-12 col-md-3 "><%=__('Confirm Password')%> *</label>
+<label class="control-label col-xs-12 col-md-3 "><%=__('Confirm Password')%></label>
 <div class="form-group col-xs-12 col-md-9">
 <input class="form-control" type="password" name="pass" id="pass" data-validation="confirmation" placeholder="Confirm Password">
 </div>

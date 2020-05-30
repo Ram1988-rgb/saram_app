@@ -3,11 +3,13 @@ var config = require('../../../config/index');
 var async = require("async");
 var bcrypt = require("bcrypt-nodejs");
 var ObjectId = require('mongodb').ObjectId;
+const commanHelper = require(`${appRoot}/helpers/comman.helper`);
 const jobService = require(`${appRoot}/services/job.js`)
 var self= module.exports  = {
-	index:(req,res)=>{
+	index: async (req,res)=>{
+		var users = await commanHelper.getUers();
 		config.helpers.permission('job', req, (err,permission)=>{
-			res.render('admin/job/view.ejs',{layout:'admin/layout/layout',permission:permission} );
+			res.render('admin/job/view.ejs',{layout:'admin/layout/layout',permission:permission, users : users} );
 		});
 	},
         all:(req,res)=>{
@@ -93,14 +95,14 @@ var self= module.exports  = {
 
 	add : async (req,res) => {
 		if(req.method == "GET"){
+			var users = await commanHelper.getUers();
+			var city = await commanHelper.getCity();
+			var job_type = await commanHelper.jobType();
 			config.helpers.permission('job', req, async function(err,permission){
-				const city = await model.city.find({ status : true, deleted_at : 0}); 
-				const job_type = await model.jobtypes.find();				
-				res.render('admin/job/add.ejs',{layout:'admin/layout/layout',permission : permission, city : city, job_type : job_type} );
+				res.render('admin/job/add.ejs',{layout:'admin/layout/layout',permission : permission, city : city, job_type : job_type, users : users} );
 			})
 		}else{			
 			req.body.user_id = req.session.ECOMEXPRESSADMINID;
-			console.log(req.body);
 			try{
 			  const jobData = await jobService.addJob(req.body);
 			  if(jobData){
@@ -117,12 +119,13 @@ var self= module.exports  = {
 		var id = req.input('id');
 		var detail = await model.job.findOne({ _id : id});
 		if(req.method == "GET"){
-			if(detail){			
+			if(detail){	
+				var users = await commanHelper.getUers();
+				var city = await commanHelper.getCity();
+				var job_type = await commanHelper.jobType();		
 				config.helpers.permission('job', req, async function(err,permission){
-					const city = await model.city.find({ status : true, deleted_at : 0}); 
-					const job_type = await model.jobtypes.find({});
 					const locality = await model.locality.find({ status : true, deleted_at : 0});
-					res.render('admin/job/edit.ejs',{layout:'admin/layout/layout',permission:permission,detail:detail, city : city, job_type : job_type, locality : locality} );
+					res.render('admin/job/edit.ejs',{layout:'admin/layout/layout',permission:permission,detail:detail, city : city, job_type : job_type, locality : locality, users:users} );
 				})
 			}else{
 				res.redirect('/admin/job')

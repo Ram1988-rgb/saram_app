@@ -25,6 +25,21 @@
 <div class="form-body">
 <%include ../message/message.ejs%>
 <hr>
+<div class="row">
+<div class="col-md-12">
+	<div class="form-group row">
+		<label class="control-label col-xs-12 col-md-3">Select User *</label>
+		 <div class="form-group col-xs-12 col-md-9">
+		<select name="user_id" id="user_id" class="form-control" data-validation="required">
+			<option value="">Select User</option>
+			<%for(var key=0;key<users.length;key++){%>
+			   <option value="<%=users[key].id%>" <% if(users[key].id == detail.user_id){ %>selected ="selected" <% }%>><%=users[key].name%></option>
+			<%}%>
+		</select>
+		  </div>
+	</div>
+</div>
+</div> 
 
 <div class="row">
 <div class="col-md-12">

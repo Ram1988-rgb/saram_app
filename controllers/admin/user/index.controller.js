@@ -1,9 +1,9 @@
-var model  = require('../../../models/index.model');
-var config = require('../../../config/index');
+const model  = require('../../../models/index.model');
+const config = require('../../../config/index');
 const commanHelper = require(`${appRoot}/helpers/comman.helper`);
-var async = require("async");
-var bcrypt = require("bcrypt-nodejs");
-var ObjectId = require('mongodb').ObjectId;
+const async = require("async");
+const bcrypt = require("bcrypt-nodejs");
+const ObjectId = require('mongodb').ObjectId;
 const userService = require(`${appRoot}/services/admin/user`)
 var self= module.exports  = {
 	index:(req,res)=>{
@@ -102,59 +102,55 @@ var self= module.exports  = {
 			}
 	},
 
-	add : (req,res) => {
+	add : async (req,res) => {
 		if(req.method == "GET"){
+			var proof_type = await commanHelper.photoIdProof();		
 			config.helpers.permission('user', req, function(err,permission){
-				res.render('admin/user/add.ejs',{layout:'admin/layout/layout',permission:permission} );
+				res.render('admin/user/add.ejs',{layout:'admin/layout/layout',permission:permission, proof_type : proof_type } );
 			})
-		}else{
-			var data = {
-				name	: req.input('name'),
-				email	: req.input('email'),
-				mobile	: parseInt(req.input('mobile')),
-				seeker	: 0,
-				provider	: 1,
-				password	: bcrypt.hashSync(req.input('pass')),
-				createdby	: req.session.ECOMEXPRESSADMINID,
-				status	: true,
-				deleted_at	:  0
-			}
-			model.user.create(data,function(err,insdata){
-				if(err){console.log(err)}
-				req.flash('message', req.__('Your account has been created successfully'));
-				res.redirect('/admin/user')
-			})
+		}else{			
+			try{
+				req.body.createdby = 'admin';
+				req.body.image = '';
+				req.body.photo = '';
+				const userData = await userService.add(req);
+				if(userData){
+					req.flash('message', req.__('Your account has been created successfully'));
+					res.redirect('/admin/user')
+				}
+			}catch(err){
+				req.flash('message', req.__('somthing went wrong'));
+				res.redirect('/admin/user/add')
+			}		
 		}
 	},
 
-	edit : (req, res) => {
+	edit : async (req, res) => {
 		var id = req.input('id');
-		model.user.findOne({_id:id}).exec(function(err,detail){
-			if(req.method == "GET"){
-				if(detail){
-					config.helpers.permission('user', req, function(err,permission){
-						res.render('admin/user/edit.ejs',{layout:'admin/layout/layout',permission:permission,detail:detail} );
-					})
-				}else{
-					res.redirect('/admin/user')
-				}
-			}else{
-				var data = {
-					name:req.input('name'),
-					email:req.input('email'),
-					mobile: parseInt(req.input('mobile'))
-				}
-				if(req.input('pass'))
-				{
-				  data.password=bcrypt.hashSync(req.input('pass'))
-				}
-				model.user.updateOne({_id:id},data).exec(function(err,data_upd){
-					req.flash('message', req.__('Data has been updated Successfully'));
-					return res.redirect('/admin/user');
+		var proof_type = await commanHelper.photoIdProof();
+		const userData = await userService.getProfile(id);	
+		if(req.method == "GET"){
+			if(userData){			
+				config.helpers.permission('user', req, function(err,permission){
+					res.render('admin/user/edit.ejs',{layout:'admin/layout/layout',permission:permission,detail:userData, proof_type : proof_type} );
 				})
+			}else{
+				res.redirect('/admin/user')
 			}
-		})
-	},
+		}else{
+			try{
+				req.body.photo = '';
+				const userData = await userService.edit(id, req);
+				if(userData){
+					req.flash('message', req.__('Data has been updated Successfully'));
+					res.redirect('/admin/user');
+				}
+			}catch(err){
+				req.flash('message', req.__('somthing went wrong'));
+				res.redirect('/admin/user/edit/'+id);
+			}			
+		}
+	},            
 
 	change_status : (req, res) => {
 		var rid = req.input('id')?req.input('id'):'';
