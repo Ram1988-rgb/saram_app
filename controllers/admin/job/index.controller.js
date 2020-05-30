@@ -2,11 +2,16 @@ var model  = require('../../../models/index.model');
 var config = require('../../../config/index');
 var async = require("async");
 var bcrypt = require("bcrypt-nodejs");
-var ObjectId = require('mongodb').ObjectId;
+var mongoose = require('mongoose');
 const commanHelper = require(`${appRoot}/helpers/comman.helper`);
 const jobService = require(`${appRoot}/services/job.js`)
 var self= module.exports  = {
 	index: async (req,res)=>{
+		const data_search = await config.helpers.search_url.job_list(req);
+		
+		if(data_search!=""){
+			return res.redirect(config.constant.ADMINSITEURL+"job"+data_search);
+		  }
 		var users = await commanHelper.getUers();
 		config.helpers.permission('job', req, (err,permission)=>{
 			res.render('admin/job/view.ejs',{layout:'admin/layout/layout',permission:permission, users : users} );
@@ -14,10 +19,17 @@ var self= module.exports  = {
 	},
         all:(req,res)=>{
 		var search = {deleted_at:0}
-		var search_val = req.input('search')?req.input('search')['value']:''
-		if(search_val){			
-                   search.name = { $regex: '.*' + search_val + '.*',$options:'i' }
+		if(req.body.name){
+			search.name = { $regex: '.*' + req.body.name + '.*',$options:'i' }
 		}
+		if(req.body.user_id){
+
+			search.user_id = mongoose.Types.ObjectId(req.body.user_id);
+		}
+		if(req.body.status){
+			search.status = parseInt(req.body.status)?true:false;
+		}
+		console.log(search)
 		var seq = req.input('order')?req.input('order'):[{}]
 		//sorting
 		var sort_json = {0:"createdAt",1:"name"};
@@ -46,6 +58,7 @@ var self= module.exports  = {
 				//data:await self.alldata(results)
 			};
 			config.helpers.permission('job', req, (err,perdata)=>{
+				console.log(results[1])
 				self.datatable(skip,perdata,results[1],(detail)=>{
 					obj.data = detail;
 					res.send(obj);
@@ -59,10 +72,14 @@ var self= module.exports  = {
 			var arr =[];
 			var i = parseInt(skip)+1;
 			if(alldata.length>0){
-				async.eachSeries(alldata,(item,callback)=>{
+				async.eachSeries(alldata,async (item,callback)=>{
+					const userDetail = await model.user.findOne({_id:(item.user_id.toString())});
+					
 					var arr1 = [];
 					arr1.push('<input type="checkbox" name="action_check[]" class="all_check" value="'+item._id+'">');				
 					arr1.push(item.name?item.name:'--');
+					arr1.push((userDetail && userDetail.name)?userDetail.name:'Admin');
+					arr1.push((userDetail && userDetail.email)?userDetail.email:'--');
 					if(!item.status){
 						change_status = "changeStatus(\'"+item._id+"\',1,\'job\');";						
 						var rid = item._id;

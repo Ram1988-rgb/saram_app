@@ -150,10 +150,14 @@
                 } ],
         "ajax": {
           url: ADMINSITEURL+'job/all/',
+          data:{
+            "name":$("#name").val(),
+            'user_id':$("#user_id").val(),
+            "status":$("#status").val(),
+          },
           type: "POST",          
         }
     });
-
 
     $('#vendorRequestTable').DataTable({
         "processing": true,

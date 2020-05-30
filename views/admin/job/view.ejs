@@ -25,13 +25,63 @@
 <!-- /.col-lg-12 -->
 </div>
 </div>
+<section class="searchfilter">
+    <div class="searchhead clearfix">
+      <h4> Search...</h4>
+      <i class="srch-icn ti-search" id="global_search"> </i>
+      <!--<i class="ti-close srch-icn" id="ti-close" style="display:none;"> </i>-->
+      </div>
+                  <div>
+                   <div class="searchbox" <%if(!ADMININPUT.search){%>style="display: none;"<%}%>>
+                      <form action="" method="post" class="has-validation-callback">
+                        <div class="row" style="margin-bottom:20px;">
+                          <div class="col-md-4 col-xs-12">
+                            <label> Job Name</label>
+                          <input class="form-control form-control-solid" type="text" name="pname" id="name" value="<%=ADMININPUT.name%>">
+                          
+                          </div>
+                          <div class="col-md-4 col-xs-12">
+                            <label> User</label>
+                            <select name="user_id" id="user_id" class="form-control">
+                                <option value="">Select User</option>
+                                <%for(var key=0;key<users.length;key++){%>				
+                                <option value="<%=users[key]._id%>" <%if(users[key]._id ==ADMININPUT.userId ){%>selected="selected"<%}%>><%=users[key].name%>(<%=users[key].email%>)</option>
+                                <%}%>
+                            </select>
+                          </div>
+                          <div class="col-md-4 col-xs-12">
+                            <label>Status</label>
+                            <select class="form-control form-control-solid" name="pstatus" id="status">
+                                <option value="">Please select</option>
+                                <option value="1" <%if(ADMININPUT.status ==1 ){%>selected="selected"<%}%>>Active</option>
+                                <option value="0" <%if(ADMININPUT.status == 0){%>selected="selected"<%}%>>Inactive</option>
+                            </select>
+                          </div>
+                        </div>
+        
+                        <div class="row srch-btn-wrp">
+                          <div class="col-md-12">
+                            <div class="field_cover">
+                              <input class="btn-search srch-btn" name="btn_submit" value="Search" type="submit">
+                              <a href="/admin/job">
+                                <input class="btn_clearsearch srch-btn" value="Clear Search" type="button">
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                   </div>
+  </div>
+</section>
 <form action="" method="post" id="tbl_form">
 <div class="row">
 <div class="col-sm-12">
-<div class="white-box">                      
+<div class="white-box"> 
+                         
 
 <div class="table-responsive">
 <%include ../message/message.ejs%>
+
 <input type="hidden" name="cont" id="cont" value="job">
 <input type="hidden" name="fun" id="fun" value="all">
 <table id="jobs_tbl" class="table table-striped">
@@ -55,12 +105,14 @@
 </div>
 </th>
 </tr>
-<tr>
-<th class="no-sort row_check">#</th>
-<th class="title"> <%=__('Name')%> </th>
-<th class="no-sort status"> <%=__('Status')%> </th>                                  
- <th class="no-sort action"> Action </th>
-</tr>
+    <tr>
+        <th class="no-sort row_check">#</th>
+        <th class="title"> <%=__('Job Name')%> </th>
+        <th class="title"> <%=__('User Name')%> </th>
+        <th class="title"> <%=__('Email')%> </th>
+        <th class="no-sort status"> <%=__('Status')%> </th>                                  
+        <th class="no-sort action"> Action </th>
+    </tr>
 </thead>
 
 </table>

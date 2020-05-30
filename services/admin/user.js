@@ -20,7 +20,7 @@ async function add(req){
 		createdby	: req.body.createdby,
 		photo_type_id : new ObjectId(req.body.photo_id_type),
 		photo_id_number : req.body.photo_id_number,
-		photo_proof : req.body.photo,
+		photo_proof : req.body.photoId,
 		image : req.body.image,			
 		status	: true,
 		deleted_at	:  0
@@ -39,8 +39,8 @@ async function edit(id, req){
 	if(req.body.pass){
 	  updateUser.password=bcrypt.hashSync(req.body.pass)  
 	}
-	if(req.body.photo){
-	  updateUser.photo_proof = req.body.photo 
+	if(req.body.photoId){
+	  updateUser.photo_proof = req.body.photoId 
 	}
 	if(req.body.image){
 	  updateUser.image = req.body.image 
