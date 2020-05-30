@@ -14,7 +14,7 @@ var self= module.exports  = {
         all:(req,res)=>{
 		var search = {deleted_at:0}
 		var search_val = req.input('search')?req.input('search')['value']:''
-		if(search_val){			
+		if(search_val){
                    search.name = { $regex: '.*' + search_val + '.*',$options:'i' }
 		}
 		var seq = req.input('order')?req.input('order'):[{}]
@@ -24,10 +24,10 @@ var self= module.exports  = {
 		var dir = seq[0]['dir'];
 		if(req.input('order')[0]['column']==0){
 	      dir = 'DESC';
-	    }	
+	    }
 	    var skip = req.input('start')?parseInt(req.input('start')):0;
 		var limit=req.input('length')?parseInt(req.input('length')):10;
-                
+
                      var countData = new Promise((resolve, reject) => {
                           var count=model.user.countDocuments(search);
                           resolve(count);
@@ -52,15 +52,15 @@ var self= module.exports  = {
 			})
                  })
                  .catch(error => console.log(`Error in executing ${error}`))
-		
+
 	},
-        datatable:(skip,perdata,alldata,cb)=>{		
+        datatable:(skip,perdata,alldata,cb)=>{
 			var arr =[];
 			var i = parseInt(skip)+1;
 			if(alldata.length>0){
 				async.eachSeries(alldata,(item,callback)=>{
 					var arr1 = [];
-					arr1.push('<input type="checkbox" name="action_check[]" class="all_check" value="'+item._id+'">');				
+					arr1.push('<input type="checkbox" name="action_check[]" class="all_check" value="'+item._id+'">');
 					arr1.push(item.name?item.name:'--');
 					arr1.push(item.email?item.email:'--');
 					arr1.push(item.mobile?item.mobile:'--')
@@ -69,11 +69,11 @@ var self= module.exports  = {
 						type = "Provider/Seeker";
 					}
 					arr1.push(type);
-					
+
 					arr1.push('<a href="/admin/user/profile/'+item._id+'" title="User Profile"><button class="btn btn-circle text-inverse" type="button"><i class="glyphicon glyphicon-user"></i> </button></a>');
-					
+
 					if(!item.status){
-						change_status = "changeStatus(\'"+item._id+"\',1,\'user\');";						
+						change_status = "changeStatus(\'"+item._id+"\',1,\'user\');";
 						var rid = item._id;
 						arr1.push('<p id="status_'+item._id+'"><span class="label label-info"><i title="Inactive" style="background-repeat:no-repeat; cursor:pointer;" class="color_active" onclick="'+change_status+'">Inactive</i></span></p>');
 					}else{
@@ -89,11 +89,11 @@ var self= module.exports  = {
 						$but_delete = '<a href="javascript:void(0)" title="close" onclick="delete_data_all(this,\'user\',\'all\')" id="'+item._id+'">&nbsp;&nbsp;<button class="btn btn-circle text-danger" type="button"><i class="fa fa-close" ></i></button></a>';
 					}
 					arr1.push($but_edit+$but_delete);
-								
-					
+
+
 					arr.push(arr1);
 					callback()
-				},(err)=>{			
+				},(err)=>{
 					cb(arr);
 				})
 
@@ -153,7 +153,7 @@ var self= module.exports  = {
 	},            
 
 	change_status : (req, res) => {
-		var rid = req.input('id')?req.input('id'):'';	
+		var rid = req.input('id')?req.input('id'):'';
 		return model.user.updateOne({_id: rid}, {
         	status: parseInt(req.body.st)?true:false
 		},function(err,data){
@@ -186,50 +186,27 @@ var self= module.exports  = {
 	delete : (req, res) => {
 		 return model.user.updateOne({_id: req.input("id")}, {
             deleted_at: 1
-        },function(err,data){        	
+        },function(err,data){
         	if(err) console.error(err);
         	res.send('done')
         })
 	},
-	
+
 	check_email : function(req, res) {
 		model.user.findOne({email:req.input('email')}).exec(function(err,user){
 		if(err){console.log(err)}
-			if(user){	
+			if(user){
 				res.json({"valid": false,"message":req.__("This email is already register, please choose another")})
 			}else{
 				res.json({"valid":true})
 			}
 		})
 	},
-	
+
 	check_mobile : function(req, res) {
 		model.user.findOne({mobile: parseInt(req.input('mobile'))}).exec(function(err,user){
 		if(err){console.log(err)}
-			if(user){	
-				res.json({"valid": false,"message":req.__("This mobile is already register, please choose another")})
-			}else{
-				res.json({"valid":true})
-			}
-		})
-	},
-	
-	check_email_edit : function(req, res) {
-		model.user.findOne({ _id :{ $ne: new ObjectId(req.input('id'))}, email : req.input('email')}).exec(function(err,user){
-		console.log(user);
-		if(err){console.log(err)}
-			if(user){	
-				res.json({"valid": false,"message":req.__("This email is already register, please choose another")})
-			}else{
-				res.json({"valid":true})
-			}
-		})
-	},
-	
-	check_mobile_edit : function(req, res) {
-		model.user.findOne({ _id :{ $ne: new ObjectId(req.input('id'))}, mobile: parseInt(req.input('mobile'))}).exec(function(err,user){
-		if(err){console.log(err)}
-			if(user){	
+			if(user){
 				res.json({"valid": false,"message":req.__("This mobile is already register, please choose another")})
 			}else{
 				res.json({"valid":true})
@@ -237,23 +214,51 @@ var self= module.exports  = {
 		})
 	},
 
-	userProfile:async function (req,res){		
+	check_email_edit : function(req, res) {
+		model.user.findOne({ _id :{ $ne: new ObjectId(req.input('id'))}, email : req.input('email')}).exec(function(err,user){
+		console.log(user);
+		if(err){console.log(err)}
+			if(user){
+				res.json({"valid": false,"message":req.__("This email is already register, please choose another")})
+			}else{
+				res.json({"valid":true})
+			}
+		})
+	},
+
+	check_mobile_edit : function(req, res) {
+		model.user.findOne({ _id :{ $ne: new ObjectId(req.input('id'))}, mobile: parseInt(req.input('mobile'))}).exec(function(err,user){
+		if(err){console.log(err)}
+			if(user){
+				res.json({"valid": false,"message":req.__("This mobile is already register, please choose another")})
+			}else{
+				res.json({"valid":true})
+			}
+		})
+	},
+
+	userProfile:async function (req,res){
 	  const userData = await userService.getProfile(req.params.id);
 	  const city = await commanHelper.getCity();
 	  const lKnow = await commanHelper.langKnown();
 	  const adProof = await commanHelper.addressProof();
-	  const pIdProof = await commanHelper.photoIdProof(); 
-	  const designaitor = await commanHelper.allDesignaitor(); 
-	  const skills = await commanHelper.allSkills(); 
+	  const pIdProof = await commanHelper.photoIdProof();
+	  const designaitor = await commanHelper.allDesignaitor();
+	  const skills = await commanHelper.allSkills();
 	  res.render('admin/user/profile.ejs',{
 		  layout:'admin/layout/layout',
-			userData:userData, 
+			userData:userData,
 			city:city, lKnow:lKnow,
-			adProof:adProof, 
+			adProof:adProof,
 			pIdProof:pIdProof,
 			designaitor:designaitor,
 			skills:skills
-		});	
+		});
+	},
+
+	updateProfile: async function(req,res){
+		const userId = req.param('id');
+		res.json(req.body);
 	}
 
 }

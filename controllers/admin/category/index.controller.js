@@ -36,7 +36,7 @@ class Category{
       res.json({success:false, status:200, data:null, msg:constants.SOMETHING_WENT_WRONG})
     }
   }
-  
+
   async categoryDetail(req,res){
     try{
       const catData = await categoryService.categoryDetail(req.params.id);
@@ -50,8 +50,8 @@ class Category{
   }
 
   async allCategory(req,res){
-    try{      
-      const categoryData = await categoryService.allCategory({});      
+    try{
+      const categoryData = await categoryService.allCategory({});
       res.json({success:true, status:200, data: categoryData})
     }catch(err){
 		console.log(err);
@@ -108,12 +108,12 @@ class Category{
 
   async upDateCategoryChild(req,res){
     const catData = await categoryService.allCategory();
-  
+
     for(let i=0;i<catData.length;i++){
         const data = await categoryService.upDateCategoryChild(catData[i]._id);
       }
     return ({success:true})
-    
+
   }
   async saveSkills(req,res){
     var skillsAdd = req.body.skills_add?req.body.skills_add:'';
@@ -158,10 +158,22 @@ class Category{
     }
   }
 
+  async getSkillsDesign(req,res){
+    try{
+      const catId = (req.body.catId)?(req.body.catId).split(','):[];
+      const skills = await categoryService.getSkills(catId);
+      const design = await categoryService.getDesign(catId);
+      return res.json({success:false,data:{design:design, skills:skills} })
+    }catch(err){
+      console.log(err)
+      res.json({success:false,data:null, msg:constants.DATA_NOT_FOUNd })
+    }
+
+  }
+
 }
 async function upDateCategoryChild(){
   const catData = await categoryService.allCategory();
-  
   for(let i=0;i<catData.length;i++){
       const data = await categoryService.upDateCategoryChild(catData[i]._id);
     }

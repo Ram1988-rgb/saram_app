@@ -17,10 +17,10 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <div class="panel panel-info">    
+        <div class="panel panel-info">
           <div class="panel-wrapper collapse in" aria-expanded="true">
             <div class="panel-body">
-              <form action="" method="post" id="registration-form">
+              <form action="/admin/user/update-profile/<%=userData._id%>" method="post" id="registration-form">
                 <div class="form-body">
                 <%include ../message/message.ejs%>
                 <hr>
@@ -30,7 +30,7 @@
                           <label class="control-label col-xs-12 col-md-3 "><%=__('City')%> *</label>
                           <div class="form-group col-xs-12 col-md-9">
                             <select id="city" name="city" data-validation="required" class="form-control" onchange="getLocality(this.value)">
-                              <option>Select City</option>
+                              <option value="">Select City</option>
                               <%
                               for(var i=0; i<city.length; i++){
                               %>
@@ -48,7 +48,7 @@
                           <label class="control-label col-xs-12 col-md-3 "><%=__('Locality')%> *</label>
                           <div class="form-group col-xs-12 col-md-9">
                             <select id="locality" name="locality" data-validation="required" class="form-control" >
-                              <option>Select Locality</option>                              
+                              <option value="">Select Locality</option>
                             </select>
                           </div>
                       </div>
@@ -74,13 +74,13 @@
                           </div>
                       </div>
                   </div>
-                </div>  
+                </div>
                 <div class="form-group row clearfix" id="category_valid">
                   <label class="col-xs-12 col-md-3  col-form-label" for="example-text-input">Category</label>
                   <div class="col-xs-12 col-md-9">
-              
+
                   <div class="form">
-                    <div class="search-box"><input type="text" class="input" placeholder="click & search" ></div>
+                    <div class="search-box"><input type="text" class="input" placeholder="click & search" onblur="getSkillsDesign(this.value)"></div>
                     <div class="list"></div>
                     <ul class="categories" id="unique">
                     <li><span>Default Categories</span>
@@ -90,21 +90,21 @@
                     </ul>
                   </div>
                   <div class="seprated">
-                    <input type="hidden" name="data" id="save_data" data-validation="required" value="">
+                    <input type="hidden" name="data" id="save_data" data-validation="required" value="" >
                   </div>
                   <div class="sepratedd">
                     <input type="hidden" value="">
                   </div>
-              
+
                   </div>
                 </div>
-                 
+
                 <div class="row">
                   <div class="col-md-12">
                       <div class="form-group row">
                           <label class="control-label col-xs-12 col-md-3 "><%=__('Skills')%>*</label>
                           <div class="form-group col-xs-12 col-md-9">
-                            <div class="row">
+                            <div class="row skills-data">
                               <%for(var i=0;i<skills.length;i++){%>
                                 <div class="col-md-3">
                                 <input type="checkbox" name="skills" id="skills-<%=i%>" value="<%=skills[i].id%>" >  <%=skills[i].name%>
@@ -120,7 +120,7 @@
                       <div class="form-group row">
                           <label class="control-label col-xs-12 col-md-3 "><%=__('Current Designatior')%>*</label>
                           <div class="form-group col-xs-12 col-md-9">
-                            <div class="row">
+                            <div class="row designaitor-data">
                               <%for(var i=0;i<designaitor.length;i++){%>
                                 <div class="col-md-3">
                                 <input type="checkbox" name="designaitor" id="designaitor-<%=i%>" value="<%=designaitor[i].id%>" >  <%=designaitor[i].name%>
@@ -130,7 +130,7 @@
                           </div>
                       </div>
                   </div>
-                </div> 
+                </div>
                 <div class="row">
                   <div class="col-md-12">
                       <div class="form-group row">
@@ -140,13 +140,13 @@
                           </div>
                       </div>
                   </div>
-                </div> 
+                </div>
                 <div class="row">
                   <div class="col-md-12">
                       <div class="form-group row">
                           <label class="control-label col-xs-12 col-md-3 "><%=__('Year of experience')%>(year)</label>
                           <div class="form-group col-xs-12 col-md-9">
-                            <select name="year_of_exp" id="year_of_exp" class="form-control">
+                            <select name="year_of_exp" id="year_of_exp" class="form-control" data-validation="required">
                               <option value="">Select Age</option>
                               <%for(var i =0;i<30;i++){%>
                                 <option value="<%=i%>"><%=i%></option>
@@ -155,7 +155,7 @@
                           </div>
                       </div>
                   </div>
-                </div> 
+                </div>
                 <div class="row">
                   <div class="col-md-12">
                       <div class="form-group row">
@@ -174,10 +174,10 @@
                             <div class="row">
                                 <%for(var i=0;i<lKnow.length;i++){%>
                                   <div class="col-md-3">
-                                  <input type="checkbox" name="language" id="language-<%=i%>" value="<%=lKnow[i].id%>" >  <%=lKnow[i].name%>
+                                  <input type="checkbox" name="language" id="language-<%=i%>" value="<%=lKnow[i].id%>" data-validation="required">  <%=lKnow[i].name%>
                                   </div>
                                 <%}%>
-                              </div>                              
+                              </div>
                           </div>
                       </div>
                   </div>
@@ -187,7 +187,7 @@
                       <div class="form-group row">
                           <label class="control-label col-xs-12 col-md-3 "><%=__('Age')%>(Years) *</label>
                           <div class="form-group col-xs-12 col-md-9">
-                            <select name="age" id="age" class="form-control">
+                            <select name="age" id="age" class="form-control" data-validation="required">
                               <option value="">Select Age</option>
                               <%for(var i =15;i<76;i++){%>
                                 <option value="<%=i%>"><%=i%></option>
@@ -202,10 +202,10 @@
                       <div class="form-group row">
                           <label class="control-label col-xs-12 col-md-3 "><%=__('Gender')%> *</label>
                           <div class="form-group col-xs-12 col-md-9">
-                            <select name="gender" id="gender" class="form-control">
+                            <select name="gender" id="gender" class="form-control" data-validation="required">
                               <option value="">Select Gender</option>
                               <option value="Male">Select Male</option>
-                              <option value="Female">Select Female</option>                              
+                              <option value="Female">Select Female</option>
                             </select>
                           </div>
                       </div>
@@ -220,7 +220,7 @@
                             <div class="row">
                               <%for(var i=0;i<adProof.length;i++){%>
                                 <div class="col-md-3">
-                                <input type="checkbox" name="adProof" id="adProof-<%=i%>" value="<%=adProof[i].id%>" >  <%=adProof[i].name%>
+                                <input type="checkbox" name="adProof" id="adProof-<%=i%>" value="<%=adProof[i].id%>" data-validation="required">  <%=adProof[i].name%>
                                 </div>
                               <%}%>
                             </div>
@@ -237,7 +237,7 @@
                             <div class="row">
                               <%for(var i=0;i<pIdProof.length;i++){%>
                                 <div class="col-md-3">
-                                <input type="checkbox" name="pIdProof" id="pIdProof-<%=i%>" value="<%=pIdProof[i].id%>" >  <%=pIdProof[i].name%>
+                                <input type="checkbox" name="pIdProof" id="pIdProof-<%=i%>" value="<%=pIdProof[i].id%>" data-validation="required">  <%=pIdProof[i].name%>
                                 </div>
                               <%}%>
                             </div>
@@ -255,9 +255,7 @@
                       </div>
                   </div>
                 </div>
-
                 <!--/row-->
-                
                 <hr>
                 <div class="form-actions">
                   <button type="submit" class="btn btn-success btn-form-submit"> <i class="fa   fa-check"></i> Save</button>
@@ -269,11 +267,10 @@
         </div>
       </div>
     </div>
-    
+
     </div>
     <!-- /.container-fluid -->
     </div>
     <script src="/assets/admin/js/user.js"></script>
     <script type="text/javascript" src="/assets/admin/js/category_dropdown.js"></script>
     <link rel="stylesheet" type="text/css" href="/assets/admin/css/global.css" media="screen" /
-    

@@ -15,5 +15,6 @@ module.exports = function(router) {
 	router.get('/admin/category/getData', isloggedin, category.upDateCategoryChild);
 	router.post('/admin/category/save-skills', isloggedin, category.saveSkills);
 	router.post('/admin/category/save-designaitor', isloggedin, category.saveDesignaitor);
+	router.post('/admin/category/get-skills-design', isloggedin, category.getSkillsDesign);
 
 }

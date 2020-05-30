@@ -1,51 +1,43 @@
 const userService = require(`${appRoot}/services/admin/user`);
-const model  = require('../../../models/index.model');
-const config = require('../../../config/index');
-const constant = require('../../../config/constant');
+const userModel  = require(`${appRoot}/models/user.model`);
+const {constants} = require(`${appRoot}/config/string`);
+const utils = require(`${appRoot}/middleware/utils`)
 const bcrypt = require("bcrypt-nodejs");
 const async = require("async");
 const HttpStatus = require('http-status');
 const jwt = require('jsonwebtoken');
 const ObjectId = require('mongodb').ObjectId;
+//console.log(config)
 module.exports = {
-	generate_token : (req, res) =>{
-		const result = {};
-		const payload = { user : "sram app", exp : Math.floor(Date.now() / 1000) + (60 * 60 * 24)};               
-		const secret = constant.JWT_SECRET;
-		const token = jwt.sign(payload, secret);
-		const status = 200;
-		result.token = token;
-		result.status = status;
-		res.status(status).send(result);
-	},
-	
 	login : async (req, res) => {
-		var result = {};
-		const record = await model.user.findOne({ mobile : parseInt(req.query.mobile)});
-		console.log(record);
-		if(record){
-			if(bcrypt.compareSync(req.query.password, record.password)){
-				result.status = HttpStatus.OK
-				result.data = record;
-				result.msg = "";
-				res.send(result)
+		try{
+			var result = {};
+			const record = await userModel.findOne({ mobile : parseInt(req.body.mobile)});
+			console.log(record);
+			if(record){
+				if(bcrypt.compareSync(req.body.password, record.password)){
+					const token = await utils.generate_token(record);
+					return res.send({status:HttpStatus.OK, data:record, msg:"", token:token});
+				}else{
+					result.status = HttpStatus.FORBIDDEN;
+					result.data = {};
+					result.msg = req.__("Password does not match");
+					res.send(result);
+				}
 			}else{
 				result.status = HttpStatus.FORBIDDEN;
 				result.data = {};
-				result.msg = req.__("Password does not match");
+				result.msg = req.__("Mobile number not exists")
 				res.send(result);
-			}
-		}else{
-			result.status = HttpStatus.FORBIDDEN;
-			result.data = {};
-			result.msg = req.__("Mobile number not exists")
-			res.send(result);
-		}
+      }
+    }catch(err){
+      return res.json({status:false, code:1, message:constants.SOMETHING_WENT_WRONG});
+    }
 	},
 	
 	registration : async (req, res) => {
 		var result = {};
-		const record = await model.user.findOne({ mobile : parseInt(req.body.mobile)});
+		const record = await userModel.findOne({ mobile : parseInt(req.body.mobile)});
 		if(record){
 			result.status = HttpStatus.FORBIDDEN;
 			result.data = {};
@@ -74,7 +66,7 @@ module.exports = {
 	
 	updateprofile : async (req, res) => {
 		var result = {};
-		const record = await model.user.findOne({ _id : { $ne : new ObjectId(req.body.id)}, mobile : parseInt(req.body.mobile)});
+		const record = await userModel.findOne({ _id : { $ne : new ObjectId(req.body.id)}, mobile : parseInt(req.body.mobile)});
 		if(record){
 			result.status = HttpStatus.FORBIDDEN;
 			result.data = {};

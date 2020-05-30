@@ -9,7 +9,7 @@ $(document).ready(function () {
       type: 'get',
       url: '/admin/category/get-category/'+cat_id,
       data: {},
-      success: function (response) {        
+      success: function (response) {
         const detail = response.data;
         $('#cat_form').attr('action', '/admin/category/edit/'+cat_id);
         $('#code').attr('data-validation-url', '/admin/category/check-code?cat_id='+cat_id);
@@ -23,11 +23,11 @@ $(document).ready(function () {
         $("#design-button").show();
         const designaitors = response.designaitors?response.designaitors:[];
         const skills = response.skills?response.skills:[];
-        
-         manageDesignaitor(designaitors);        
+
+         manageDesignaitor(designaitors);
          manageSkills(skills);
-         
-        
+
+
       }
     })
   })
@@ -38,7 +38,7 @@ $(document).ready(function () {
       type: 'post',
       url: '/admin/category/save-skills',
       data: $(this).serialize(),
-      success: function (response) { 
+      success: function (response) {
         alert("Skills has been added/updates successfully");
         $("#skills-close").trigger('click')
       }
@@ -51,7 +51,7 @@ $(document).ready(function () {
       type: 'post',
       url: '/admin/category/save-designaitor',
       data: $(this).serialize(),
-      success: function (response) { 
+      success: function (response) {
         alert("Designaitors has been added/updates successfully");
         $("#designaitor-close").trigger('click')
       }
@@ -59,7 +59,7 @@ $(document).ready(function () {
   })
 
   //subroot
-  $('#sub-root').click(function () {   
+  $('#sub-root').click(function () {
     $('#cat_form').attr('action', '/admin/category/add');
     $('#code').attr('data-validation-url', '/admin/category/check-code');
     $("#name").val('');
@@ -91,8 +91,8 @@ $(document).ready(function () {
           success: function (response) {
             if (response) {
               get_all_category();
-              $('#cat_form').attr('action', '/admin/category/add');              
-              $("#cat_id").val(0);              
+              $('#cat_form').attr('action', '/admin/category/add');
+              $("#cat_id").val(0);
               swal("Deleted!", "Your Data has been deleted.", "success");
               location.reload(3000);
             }
@@ -103,13 +103,15 @@ $(document).ready(function () {
       }
     });
   });
-  
+
 
 })
 
+
+
 function manageDesignaitor(designaitors){
   var fieldHTML = `<div>
-    <input type="text" name="designaitor_add" value="" placeholder="Designaitor"/>  
+    <input type="text" name="designaitor_add" value="" placeholder="Designaitor"/>
 </div>`
   if(designaitors.length>0){
      fieldHTML = '';
@@ -119,7 +121,7 @@ function manageDesignaitor(designaitors){
       <a href="javascript:void(0);" class="remove_button" onclick="deleteDiv(this)">
         <img src="/assets/admin/images/remove-icon.png"/>
       </a>
-    </div>`; 
+    </div>`;
     }
   }
   $('.field_wrapper_designaitor').html(fieldHTML)
@@ -127,7 +129,7 @@ function manageDesignaitor(designaitors){
 
 function manageSkills(skills){
   var fieldHTML = `<div>
-  <input type="text" name="skills_add" value="" placeholder="Skills"/>  
+  <input type="text" name="skills_add" value="" placeholder="Skills"/>
   </div>`
   if(skills.length>0){
     var fieldHTML = '';
@@ -137,7 +139,7 @@ function manageSkills(skills){
         <a href="javascript:void(0);" class="remove_button" onclick="deleteDiv(this)">
           <img src="/assets/admin/images/remove-icon.png"/>
         </a>
-      </div>`; 
+      </div>`;
     }
   }
   $('.field_wrapper').html(fieldHTML)
@@ -149,7 +151,7 @@ function addSkills(cldiv){
     <a href="javascript:void(0);" class="remove_button" onclick="deleteDiv(this)">
       <img src="/assets/admin/images/remove-icon.png"/>
     </a>
-  </div>`; 
+  </div>`;
   $("."+cldiv).append(fieldHTML);
 }
 
@@ -167,7 +169,7 @@ function addDesignaitor(cldiv){
     <a href="javascript:void(0);" class="remove_button" onclick="deleteDiv(this)">
       <img src="/assets/admin/images/remove-icon.png"/>
     </a>
-  </div>`; 
+  </div>`;
   $("."+cldiv).append(fieldHTML);
 }
 
@@ -220,4 +222,3 @@ var buildMenu = function (res, $parentid, data) {
 
   }
 };
-
