@@ -4,7 +4,9 @@ const commanHelper = require(`${appRoot}/helpers/comman.helper`);
 const async = require("async");
 const bcrypt = require("bcrypt-nodejs");
 const ObjectId = require('mongodb').ObjectId;
-const userService = require(`${appRoot}/services/admin/user`)
+const userService = require(`${appRoot}/services/admin/user`);
+const constants = require(`${appRoot}/config/constant`);
+
 var self= module.exports  = {
 	index:(req,res)=>{
 		config.helpers.permission('user', req, (err,permission)=>{
@@ -110,9 +112,15 @@ var self= module.exports  = {
 			})
 		}else{			
 			try{
-				req.body.createdby = 'admin';
-				req.body.image = '';
-				req.body.photo = '';
+				const imageProof = await commanHelper.uploadFile(req.files,'photo_proof',constants.UPLOAD_USER_PHOTOID)
+				const imageProfile = await commanHelper.uploadFile(req.files,'photo_profile',constants.UPLOAD_USER_PROFILE)
+				if(imageProof){
+					req.body.photoId = imageProof;
+				}
+				if(imageProfile){
+					req.body.image = imageProfile;
+				}
+				req.body.createdby = 'admin';				
 				const userData = await userService.add(req);
 				if(userData){
 					req.flash('message', req.__('Your account has been created successfully'));
@@ -139,13 +147,21 @@ var self= module.exports  = {
 			}
 		}else{
 			try{
-				req.body.photo = '';
+				const imageProof = await commanHelper.uploadFile(req.files,'photo_proof',constants.UPLOAD_USER_PHOTOID)
+				const imageProfile = await commanHelper.uploadFile(req.files,'photo_profile',constants.UPLOAD_USER_PROFILE)
+				if(imageProof){
+					req.body.photoId = imageProof;
+				}
+				if(imageProfile){
+					req.body.image = imageProfile;
+				}
 				const userData = await userService.edit(id, req);
 				if(userData){
 					req.flash('message', req.__('Data has been updated Successfully'));
 					res.redirect('/admin/user');
 				}
 			}catch(err){
+				console.log(err);
 				req.flash('message', req.__('somthing went wrong'));
 				res.redirect('/admin/user/edit/'+id);
 			}			

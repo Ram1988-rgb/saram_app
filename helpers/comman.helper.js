@@ -8,6 +8,7 @@ var designaitorModel  = require('../models/designation.model');
 var skillsModel  = require('../models/skills.model');
 var usersModel  = require('../models/user.model');
 var jobtypesModel  = require('../models/jobtypes.model');
+
 const mongoose = require('mongoose');
 
 async function getCountry(){
@@ -65,6 +66,17 @@ async function allSkills(catId=null){
     return await skillsModel.find(search);
 }
 
+async function uploadFile(files,fieldName,imgpath){
+    if(files && Object.keys(files).length != 0) 
+		{
+      const imgname = Date.now()+'_'+files[fieldName].name;
+      await files[fieldName].mv(imgpath+imgname);
+      return imgname;
+    }else{
+      return "";
+    }   
+}
+
 module.exports = {
     getCountry,
     getCity,
@@ -75,6 +87,6 @@ module.exports = {
     allDesignaitor,
     allSkills,
     getUers,
-    jobType
-    
+    jobType,
+    uploadFile
 }

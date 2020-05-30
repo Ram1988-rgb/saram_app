@@ -166,7 +166,7 @@ var self= module.exports  = {
 							if (req.files && Object.keys(req.files).length != 0) 
 							{
 								var imgname = Date.now()+'_'+req.files.file.name
-							req.files.file.mv(imgpath+imgname, function(err,data) {
+								req.files.file.mv(imgpath+imgname, function(err,data) {
 								if(err){console.log(err)}
 								callback(null,imgname)
 							})

@@ -35,6 +35,9 @@ module.exports = {
 							},
 							{
 								$group:{_id:null,roleid:{$push:"$role.permission.id"}}
+							},
+							{
+								$sort:{order:1}
 							}
 						]).exec(function(err,data_menu){
 							if(data_menu && data_menu.length>0){
@@ -46,7 +49,7 @@ module.exports = {
 				}
 			],function(err,roleid){
 				roleid.push('595a398ea9d815d56a9d357e')
-			model.menu.find({menu_id:{$in:roleid},status:true},function (err, allmenu) {
+			model.menu.find({menu_id:{$in:roleid},status:true}).sort({order:'ASC'}).exec(function (err, allmenu) {
 				if(err){
 					console.log(err)
 				}

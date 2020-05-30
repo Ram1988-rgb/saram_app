@@ -21,7 +21,7 @@
 
 <div class="panel-wrapper collapse in" aria-expanded="true">
 <div class="panel-body">
-<form action="" method="post" id="registration-form">
+<form action="" enctype="multipart/form-data" method="POST" id="registration-form">
 <div class="form-body">
 <%include ../message/message.ejs%>
 <hr>
@@ -91,6 +91,16 @@
 	  </div>
 	</div>
 </div> 
+<div class="row">
+	<div class="col-md-12">
+	  <div class="form-group row">
+		  <label class="control-label col-xs-12 col-md-3 "><%=__('Profile Photo')%> *</label>
+		  <div class="form-group col-xs-12 col-md-9">
+			<input type="file" name="photo_profile" id="photo_profile" data-validation="required" class="form-control">
+		  </div>
+	  </div>
+	</div>
+</div>
 <div class="row">
 <div class="col-md-12">
 <div class="form-group row">

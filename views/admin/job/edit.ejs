@@ -32,8 +32,8 @@
 		 <div class="form-group col-xs-12 col-md-9">
 		<select name="user_id" id="user_id" class="form-control" data-validation="required">
 			<option value="">Select User</option>
-			<%for(var key=0;key<users.length;key++){%>
-			   <option value="<%=users[key].id%>" <% if(users[key].id == detail.user_id){ %>selected ="selected" <% }%>><%=users[key].name%></option>
+			<%for(var key=0;key<users.length;key++){%>				
+			   <option value="<%=users[key]._id%>" <% if((users[key]._id).toString() == detail.user_id){ %>selected ="selected" <% }%>><%=users[key].name%></option>
 			<%}%>
 		</select>
 		  </div>
@@ -41,15 +41,13 @@
 </div>
 </div> 
 
-<div class="row">
-<div class="col-md-12">
-<div class="form-group row">
+
 <div class="form-group row clearfix" id="category_valid">
 	  <label class="col-xs-12 col-md-3  col-form-label" for="example-text-input">Category</label>
 	  <div class="col-xs-12 col-md-9">
 
 		<div class="form">
-		  <div class="search-box"><input type="text" class="input" placeholder="click & search"></div>
+		  <div class="search-box"><input type="text" class="input" placeholder="click & search" ></div>
 		  <div class="list"></div>
 		  <ul class="categories" id="unique">
 			<li><span>Default Categories</span>
@@ -68,8 +66,7 @@
 	  <input type="hidden" name="default_atr[]" class="default_atr" value="data">
 	</div>
 </div>
-</div>
-</div>
+
 
 <div class="row">
 <div class="col-md-12">
@@ -160,7 +157,7 @@
 		<select name="city_id" id="city_id" class="form-control" data-validation="required">
 			<option value="">Select City</option>
 			<%for(var key=0;key<city.length;key++){%>
-			   <option <% if(city[key].id == detail.city_id){ %> selected="selected" <% } %> value="<%=city[key].id%>"><%=city[key].name%></option>
+			   <option <% if((city[key].id.toString()) == detail.city_id){ %> selected="selected" <% } %> value="<%=city[key].id%>"><%=city[key].name%></option>
 			<%}%>
 		</select>
 		  </div>
@@ -176,7 +173,7 @@
 		<select name="locality_id" id="locality_id" class="form-control" data-validation="required">
 			<option value="">Select Locality</option>
 			<%for(var key=0;key<locality.length;key++){%>
-			   <option <% if(locality[key].id == detail.locality_id){ %> selected="selected" <% } %> value="<%=locality[key].id%>"><%=locality[key].name%></option>
+			   <option <% if((locality[key].id).toString() == detail.locality_id){ %> selected="selected" <% } %> value="<%=locality[key].id%>"><%=locality[key].name%></option>
 			<%}%>
 			</select>
 		  </div>
