@@ -79,9 +79,9 @@ $("body").off("click",".search-box").on("click",".search-box",function(event){
 		}
 			if(($(event.target).attr('class')=='search-box')||($(event.target).attr('class').split(" ")[0]=='append-element')||($(event.target).attr('class')=='input')){
 				//console.log("dsgdsgg")
-				
+
 			$(".categories").css("display") == "block"?$(".categories").slideUp():$(".categories").slideDown();
-			
+
 		//$(".categories").slideToggle("slow");
 		$(".list").slideUp("slow");
 		if($(".list").css("display")=="block"){
@@ -100,7 +100,7 @@ $("body").off("click",".search-box").on("click",".search-box",function(event){
 $(".list").slideUp("slow");
 
 })
-		
+
 	let status = true;
 $("body").off("click",".expand,.collapse").on("click",".expand,.collapse",function(e){
 //console.log(1)
@@ -244,13 +244,13 @@ function sepratedId(){
 	        console.log(typeof($(".seprated input").val()))
 	        console.log(($(".seprated input").val()).split(','))
 	})
-	var seprate_id = $(".seprated input").val();	
+	var seprate_id = $(".seprated input").val();
 	if(seprate_id.indexOf('5b9f5aba597989fc523ceb40')>-1){
 		$(".school_book").show();
 	}else{
 		$(".school_book").hide();
 	}
-	getProduct();
+	//getProduct();
 }
 
 })

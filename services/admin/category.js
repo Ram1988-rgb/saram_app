@@ -2,7 +2,7 @@
 
 const categoryModel = require(`${appRoot}/models/category.model`);
 const designaitorModel = require(`${appRoot}/models/designaitor.model`);
-
+const skillsModel = require(`${appRoot}/models/skills.model`);
 async function addCategory(param){
   const newCategory = new categoryModel({
     name:param.name,
@@ -37,7 +37,7 @@ async function editCategory(id, param) {
   const detail= {
     name:param.name,
     code:param.code,
-    description:param.description,   
+    description:param.description,
   }
   return await categoryModel.updateOne({_id:id},detail);
 }
@@ -62,18 +62,18 @@ async function upDateCategoryChild(id){
         connectToField:"cat_id",
         as:"data"
       }
-    }, 
+    },
     {$unwind:"$data"},
     { $replaceRoot: { newRoot: "$data" } },
     {$match:{deleted_at:0}},
     {
       $count:"passing_scores"
-    }   
+    }
   ]);
   var count = 0;
   if(data && data.length>0){
      count = data[0].passing_scores?data[0].passing_scores:0
-    
+
   }
   console.log({child:count},"???????????",{_id:id})
   return await categoryModel.updateOne({_id:id},{child:count});
@@ -81,18 +81,18 @@ async function upDateCategoryChild(id){
 
 async function allCategory(catId){
 	var $arr = [];
-	const data = await categoryModel.find({deleted_at:0});	 
+	const data = await categoryModel.find({deleted_at:0});
 	return data;
 }
 
-async function deleteSkills(sk){ 
+async function deleteSkills(sk){
   return await skillsModel.deleteMany({_id:{$nin:sk}});
 }
 
 async function updateSkills(detail){
-  for(var key in detail){    
+  for(var key in detail){
      await skillsModel.updateOne({_id:key},{name:detail[key]});
-  }  
+  }
   return true;
 }
 
@@ -106,18 +106,18 @@ async function addSkills(detail, catId){
       deleted_at:0
     });
   }
-  } 
-  return true; 
+  }
+  return true;
 }
 
-async function deleteDesignaitor(sk){ 
+async function deleteDesignaitor(sk){
   return await designaitorModel.deleteMany({_id:{$nin:sk}});
 }
 
 async function updateDesignaitor(detail){
-  for(var key in detail){    
+  for(var key in detail){
      await designaitorModel.updateOne({_id:key},{name:detail[key]});
-  }  
+  }
   return true;
 }
 
@@ -131,8 +131,16 @@ async function addDesignaitor(detail, catId){
       deleted_at:0
     });
   }
-  } 
-  return true; 
+  }
+  return true;
+}
+
+async function getSkills(catId){
+  return await skillsModel.find({cat_id:{$in:catId}});
+}
+
+async function getDesign(catId){
+  return await designaitorModel.find({cat_id:{$in:catId}});
 }
 
 module.exports ={
@@ -149,6 +157,8 @@ module.exports ={
   addSkills,
   deleteDesignaitor,
   addDesignaitor,
-  updateDesignaitor
-  
+  updateDesignaitor,
+  getSkills,
+  getDesign
+
 }
