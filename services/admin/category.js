@@ -1,7 +1,7 @@
 'use strict';
 
 const categoryModel = require(`${appRoot}/models/category.model`);
-const designaitorModel = require(`${appRoot}/models/designaitor.model`);
+const designaitorModel = require(`${appRoot}/models/designation.model`);
 const skillsModel = require(`${appRoot}/models/skills.model`);
 async function addCategory(param){
   const newCategory = new categoryModel({

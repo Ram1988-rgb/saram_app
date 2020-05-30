@@ -119,8 +119,7 @@ var self= module.exports  = {
 		var id = req.input('id');
 		var detail = await model.job.findOne({ _id : id});
 		if(req.method == "GET"){
-			if(detail){	
-				
+			if(detail){					
 				var users = await commanHelper.getUers();
 				var city = await commanHelper.getCity();
 				var job_type = await commanHelper.jobType();		

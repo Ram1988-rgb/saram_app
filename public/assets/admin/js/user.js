@@ -22,14 +22,14 @@ function getSkillsDesign(category){
         var sk = '';
         for(let i=0;i<skills.length;i++){
           sk = sk+ `<div class="col-md-3">
-          <input type="checkbox" name="skills" id="skills-${i}" value="${skills[i].id}" >  ${skills[i].name}
+          <input type="checkbox" name="skills" id="skills-${i}" value="${skills[i]._id}" >  ${skills[i].name}
           </div>`
         }
         $('.skills-data').html(sk);      
         var dg = '';
         for(let i=0;i<designaitor.length;i++){
           dg = dg+ `<div class="col-md-3">
-          <input type="checkbox" name="skills" id="designaitor-${i}" value="${designaitor[i].id}" >  ${designaitor[i].name}
+          <input type="checkbox" name="skills" id="designaitor-${i}" value="${designaitor[i]._id}" >  ${designaitor[i].name}
           </div>`
         }
         $('.designaitor-data').html(dg)

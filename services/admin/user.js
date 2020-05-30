@@ -4,6 +4,7 @@ const ObjectId = require('mongodb').ObjectId;
 const async = require("async");
 const bcrypt = require("bcrypt-nodejs");
 const userModel = require(`${appRoot}/models/user.model`);
+const profileModel = require(`${appRoot}/models/userProfile.model`);
 
 async function getProfile(id){
     return await userModel.findOne({_id:id});
@@ -48,8 +49,37 @@ async function edit(id, req){
 	return userModel.updateOne({ _id : id }, updateUser);
 }
 
+async function addUserProfile(req){
+	const data = req.body.data;
+	console.log(data);
+	const category_id = data.split(',');
+	var newUserProfile = new profileModel({
+		city_id 	: new ObjectId(req.body.city),
+		user_id 	: new ObjectId(req.body.id),
+		locality_id : req.body.locality,
+		category_id : category_id,
+		skill_id 	: req.body.skills,
+		designation_id : req.body.designation,
+		language_id : req.body.language,
+		address_id 	: req.body.adProof,
+		photoproof_id : req.body.pIdProof,
+		resume 		: req.body.resume_name,
+		current_salary : parseInt(req.body.salary),
+		company_name :req.body.company,
+		experience 	: parseInt(req.body.year_of_exp),
+		age 		: parseInt(req.body.age),
+		gender 		: req.body.gender,
+		passport 	: (req.body.passport && req.body.passport == 'yes') ? true : false,
+		diploma 	: (req.body.diploma && req.body.diploma == 'yes'),   
+		status 		: true,
+		deleted_at	: 0
+	});
+	return await newUserProfile.save(); 
+}
+
 module.exports = {
     getProfile,
     add,
-    edit
+	edit,
+	addUserProfile
 }

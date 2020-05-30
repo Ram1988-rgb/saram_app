@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let DesignaitorSchema = new Schema({
+let DesignationSchema = new Schema({
     name : { type : String},
     cat_id:{type:mongoose.Schema.Types.ObjectId,ref:'category'},
     status : { type : Boolean},
@@ -17,7 +17,7 @@ let DesignaitorSchema = new Schema({
 });
 
 // Export the model
-module.exports = mongoose.model('Designaitor', DesignaitorSchema);
+module.exports = mongoose.model('Designation', DesignationSchema);
 
 
 

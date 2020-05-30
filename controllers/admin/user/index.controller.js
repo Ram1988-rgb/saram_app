@@ -257,8 +257,16 @@ var self= module.exports  = {
 	},
 
 	updateProfile: async function(req,res){
-		const userId = req.param('id');
-		res.json(req.body);
+		const userId = req.body.id;
+		try{
+			const userProfile = await userService.addUserProfile(req);
+			if(userProfile){
+			  	res.redirect('/admin/user');
+			}
+		  }catch(err){
+				console.log(err)				
+				res.redirect('/admin/user/profile/'+userId);
+		 }  	
 	}
 
 }
