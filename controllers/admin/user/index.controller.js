@@ -90,9 +90,10 @@ var self= module.exports  = {
 					if(perdata.delete =='1'){
 						$but_delete = '<a href="javascript:void(0)" title="close" onclick="delete_data_all(this,\'user\',\'all\')" id="'+item._id+'">&nbsp;&nbsp;<button class="btn btn-circle text-danger" type="button"><i class="fa fa-close" ></i></button></a>';
 					}
-					arr1.push($but_edit+$but_delete);
-
-
+					arr1.push($but_edit + $but_delete);
+					var action = '<div class="btn-group"><a href="#" data-toggle="dropdown" class="btn dropdown-toggle btn--icon"></i>Action<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#">Action 1</a></li><li><a href="#">Action 2</a></li><li><a href="#">Action 3</a></li></ul></div>';
+					arr1.push(action);
+					
 					arr.push(arr1);
 					callback()
 				},(err)=>{
