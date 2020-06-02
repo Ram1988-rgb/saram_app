@@ -1,4 +1,5 @@
 const jobModel  = require(`${appRoot}/models/job.model`);
+const applyjobModel  = require(`${appRoot}/models/applyjob.model`);
 const jwt = require('jsonwebtoken');
 const HttpStatus = require('http-status');
 const ObjectId = require('mongodb').ObjectId;
@@ -28,7 +29,6 @@ async function list(req, res){
 }
 
 async function deatils(req, res){	
-	console.log("test")
 	jobModel.aggregate([
 		{
 			$match : 
@@ -46,13 +46,31 @@ async function deatils(req, res){
 			}
 		}
 	], function(error, record){
-		console.log(error);
 		return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record });
 	});	
+}
+
+async function applyjob(req, res){
+	console.log(req.query);
+	const job = await applyjobModel.findOne({ job_id : new ObjectId(req.query.job_id), user_id : new ObjectId(req.query.user_id), status : true, deleted_at : 0});
+	const create_job = {
+		user_id : new ObjectId(req.query.user_id),
+		job_id : new ObjectId(req.query.job_id),
+		status : true,
+		deleted_at : 0
+	}
+	console.log(create_job);
+	if(!job){
+		await applyjobModel.create(create_job);
+		return res.send({ status : HttpStatus.OK, code : 0, message : req.__('You have already apply for this job'), data : {} })
+	}else{
+		return res.send({ status : HttpStatus.OK, code : 0, message : req.__("Job has beeb apply successfully"), data : {} });
+	}
 }
 
 
 module.exports = {		
 	list,
-	deatils
+	deatils,
+	applyjob
 }

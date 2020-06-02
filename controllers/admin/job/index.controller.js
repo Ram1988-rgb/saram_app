@@ -4,7 +4,8 @@ var async = require("async");
 var bcrypt = require("bcrypt-nodejs");
 var mongoose = require('mongoose');
 const commanHelper = require(`${appRoot}/helpers/comman.helper`);
-const jobService = require(`${appRoot}/services/job.js`)
+const jobService = require(`${appRoot}/services/job.js`);
+const ObjectId = require('mongodb').ObjectId;
 var self= module.exports  = {
 	index: async (req,res)=>{
 		const data_search = await config.helpers.search_url.job_list(req);
@@ -29,7 +30,6 @@ var self= module.exports  = {
 		if(req.body.status){
 			search.status = parseInt(req.body.status)?true:false;
 		}
-		console.log(search)
 		var seq = req.input('order')?req.input('order'):[{}]
 		//sorting
 		var sort_json = {0:"createdAt",1:"name"};
@@ -58,7 +58,6 @@ var self= module.exports  = {
 				//data:await self.alldata(results)
 			};
 			config.helpers.permission('job', req, (err,perdata)=>{
-				console.log(results[1])
 				self.datatable(skip,perdata,results[1],(detail)=>{
 					obj.data = detail;
 					res.send(obj);
@@ -122,6 +121,7 @@ var self= module.exports  = {
 			req.body.user_id = req.session.ECOMEXPRESSADMINID;
 			try{
 			  const jobData = await jobService.addJob(req.body);
+			  
 			  if(jobData){
 				res.redirect('/admin/job');
 			  }
