@@ -5,16 +5,16 @@
 <div class="col-12">
 <div class="row">
 <div class="col-7">
-<h3 class="box-title"><%=__('Manage Jobs')%></h3>
+<h3 class="box-title"><%=__('Manage Static Pages')%></h3>
 <ol class="breadcrumb text-left">
 <li><a href="/admin/dashboard"><%=__('Dashboard')%></a></li>
-<li class="active"><%=__('Manage Jobs')%></li>
+<li class="active"><%=__('Manage Static Pages')%></li>
 </ol>
 </div>                
 
 <div class="col-5">
 <%if(permission.add){%>
-<a href="/admin/job/add" class="btn btn-danger pull-right btn-rounded  waves-effect waves-light">Add Job</a>
+<a href="/admin/staticpages/add" class="btn btn-danger pull-right btn-rounded  waves-effect waves-light">Add</a>
 <%}%>
 
 </div>
@@ -36,19 +36,11 @@
                       <form action="" method="post" class="has-validation-callback">
                         <div class="row" style="margin-bottom:20px;">
                           <div class="col-md-4 col-xs-12">
-                            <label> Job Name</label>
+                            <label> Title Name</label>
                           <input class="form-control form-control-solid" type="text" name="pname" id="name" value="<%=ADMININPUT.name%>">
                           
                           </div>
-                          <div class="col-md-4 col-xs-12">
-                            <label> User</label>
-                            <select name="user_id" id="user_id" class="form-control">
-                                <option value="">Select User</option>
-                                <%for(var key=0;key<users.length;key++){%>				
-                                <option value="<%=users[key]._id%>" <%if(users[key]._id ==ADMININPUT.userId ){%>selected="selected"<%}%>><%=users[key].name%>(<%=users[key].email%>)</option>
-                                <%}%>
-                            </select>
-                          </div>
+                          
                           <div class="col-md-4 col-xs-12">
                             <label>Status</label>
                             <select class="form-control form-control-solid" name="pstatus" id="status">
@@ -63,7 +55,7 @@
                           <div class="col-md-12">
                             <div class="field_cover">
                               <input class="btn-search srch-btn" name="btn_submit" value="Search" type="submit">
-                              <a href="/admin/job">
+                              <a href="/admin/staticpages">
                                 <input class="btn_clearsearch srch-btn" value="Clear Search" type="button">
                               </a>
                             </div>
@@ -82,9 +74,9 @@
 <div class="table-responsive">
 <%include ../message/message.ejs%>
 
-<input type="hidden" name="cont" id="cont" value="job">
+<input type="hidden" name="cont" id="cont" value="staticpages">
 <input type="hidden" name="fun" id="fun" value="all">
-<table id="job_tbl" class="table table-striped">
+<table id="staticpages_tbl" class="table table-striped">
 <thead>
 <tr style="background:#f9f9f9">
 <th class="no-sort GFVF"><input type="checkbox" name="allcheck" value="1" id="all_check"></th>
@@ -107,9 +99,7 @@
 </tr>
     <tr>
         <th class="no-sort row_check">#</th>
-        <th class="title"> <%=__('Job Name')%> </th>
-        <th class="title"> <%=__('User Name')%> </th>
-        <th class="title"> <%=__('Email')%> </th>
+        <th class="title"> <%=__('Title')%> </th>      
         <th class="no-sort status"> <%=__('Status')%> </th>                                  
         <th class="no-sort action"> Action </th>
     </tr>

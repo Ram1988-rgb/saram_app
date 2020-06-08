@@ -1,5 +1,6 @@
 const userService = require(`${appRoot}/services/admin/user`);
 const userModel  = require(`${appRoot}/models/user.model`);
+const applyjobModel  = require(`${appRoot}/models/applyjob.model`);
 const {constants} = require(`${appRoot}/config/string`);
 const utils = require(`${appRoot}/middleware/utils`)
 const bcrypt = require("bcrypt-nodejs");
@@ -66,8 +67,47 @@ async function updateprofile(req, res){
 	}				
 }
 
+async function applyjob(req, res){
+	applyjobModel.aggregate([
+		{
+			$match : 
+			{
+				user_id : new ObjectId(req.query.user_id), deleted_at : 0, status : true
+			}
+		},
+		{
+			$lookup :
+			{
+				from : "jobs",
+				localField : "job_id",
+				foreignField : '_id',
+				as : "job_data"
+			}
+		},
+		{
+			$unwind : "$job_data"
+		},
+		{
+			$project :
+			{
+				name : "$job_data.name",
+				salary_min : "$job_data.salary_min",
+				salary_max : "$job_data.salary_max",
+				exp_min : "$job_data.exp_min",
+				exp_max : "$job_data.exp_max",
+				jobtype : "$job_data.jobtype",
+				job_id : 1
+
+			}
+		}
+	], function(error, record){
+		return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record });
+	});	
+}
+
 module.exports = {
 	login,
 	registration,
-	updateprofile
+	updateprofile,
+	applyjob
 }

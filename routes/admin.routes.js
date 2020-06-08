@@ -9,6 +9,7 @@ module.exports = function(app) {
 	var dashboardRoutes = require('./admin/dashboard.routes');
 	var userRoutes = require('./admin/user.routes');
 	var jobRoutes = require('./admin/job.routes');
+	var staticpagesRoutes = require('./admin/staticpages.routes');
 	var managepageRoutes = require('./admin/managepage.routes');
 	var categoryRoutes = require('./admin/category.routes');
 	var settingRoutes = require('./admin/setting.routes');
@@ -26,4 +27,5 @@ module.exports = function(app) {
 	managepageRoutes(router);
 	categoryRoutes(router);
 	settingRoutes(router);
+	staticpagesRoutes(router);
 }

@@ -59,11 +59,10 @@ async function applyjob(req, res){
 		status : true,
 		deleted_at : 0
 	}
-	console.log(create_job);
-	if(!job){
-		await applyjobModel.create(create_job);
+	if(job){
 		return res.send({ status : HttpStatus.OK, code : 0, message : req.__('You have already apply for this job'), data : {} })
 	}else{
+		await applyjobModel.create(create_job);
 		return res.send({ status : HttpStatus.OK, code : 0, message : req.__("Job has beeb apply successfully"), data : {} });
 	}
 }

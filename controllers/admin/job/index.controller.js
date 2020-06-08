@@ -70,36 +70,36 @@ var self= module.exports  = {
         datatable:(skip,perdata,alldata,cb)=>{		
 			var arr =[];
 			var i = parseInt(skip)+1;
+			console.log(alldata.length);
 			if(alldata.length>0){
-				async.eachSeries(alldata,async (item,callback)=>{
-					const userDetail = await model.user.findOne({_id:(item.user_id.toString())});
-					
-					var arr1 = [];
-					arr1.push('<input type="checkbox" name="action_check[]" class="all_check" value="'+item._id+'">');				
-					arr1.push(item.name?item.name:'--');
-					arr1.push((userDetail && userDetail.name)?userDetail.name:'Admin');
-					arr1.push((userDetail && userDetail.email)?userDetail.email:'--');
-					if(!item.status){
-						change_status = "changeStatus(\'"+item._id+"\',1,\'job\');";						
-						var rid = item._id;
-						arr1.push('<p id="status_'+item._id+'"><span class="label label-info"><i title="Inactive" style="background-repeat:no-repeat; cursor:pointer;" class="color_active" onclick="'+change_status+'">Inactive</i></span></p>');
-					}else{
-						change_status = "changeStatus(\'"+item._id+"\',0,\'job\');";
-						arr1.push('<p id="status_'+item._id+'"><span class="label label-danger"><i title="Active" style="background-repeat:no-repeat; cursor:pointer;" class="color_active" onclick="'+change_status+'">Active</i></span></p>');
-					}
-					var $but_edit = '-';
-					if(perdata.edit=='1'){
-						$but_edit = '<a href="/admin/job/edit/'+item._id+'" title="edit"><button class="btn btn-circle text-inverse" type="button"><i class="fa fa-pencil"></i> </button></a>';
-					}
-					var $but_delete = ' - ';
-					if(perdata.delete =='1'){
-						$but_delete = '<a href="javascript:void(0)" title="close" onclick="delete_data_all(this,\'job\',\'all\')" id="'+item._id+'">&nbsp;&nbsp;<button class="btn btn-circle text-danger" type="button"><i class="fa fa-close" ></i></button></a>';
-					}
-					arr1.push($but_edit+$but_delete);
-								
-					
-					arr.push(arr1);
-					callback()
+				async.eachSeries(alldata, (item,callback)=>{
+					model.user.findOne({ _id :item.user_id }).exec(function(error, userDetail){
+						//const userDetail = await model.user.findOne({_id: new ObjectId(item.user_id) });
+						var arr1 = [];
+						arr1.push('<input type="checkbox" name="action_check[]" class="all_check" value="'+item._id+'">');				
+						arr1.push(item.name?item.name:'--');
+						arr1.push((userDetail && userDetail.name)?userDetail.name:'Admin');
+						arr1.push((userDetail && userDetail.email)?userDetail.email:'--');
+						if(!item.status){
+							change_status = "changeStatus(\'"+item._id+"\',1,\'job\');";						
+							var rid = item._id;
+							arr1.push('<p id="status_'+item._id+'"><span class="label label-info"><i title="Inactive" style="background-repeat:no-repeat; cursor:pointer;" class="color_active" onclick="'+change_status+'">Inactive</i></span></p>');
+						}else{
+							change_status = "changeStatus(\'"+item._id+"\',0,\'job\');";
+							arr1.push('<p id="status_'+item._id+'"><span class="label label-danger"><i title="Active" style="background-repeat:no-repeat; cursor:pointer;" class="color_active" onclick="'+change_status+'">Active</i></span></p>');
+						}
+						var $but_edit = '-';
+						if(perdata.edit=='1'){
+							$but_edit = '<a href="/admin/job/edit/'+item._id+'" title="edit"><button class="btn btn-circle text-inverse" type="button"><i class="fa fa-pencil"></i> </button></a>';
+						}
+						var $but_delete = ' - ';
+						if(perdata.delete =='1'){
+							$but_delete = '<a href="javascript:void(0)" title="close" onclick="delete_data_all(this,\'job\',\'all\')" id="'+item._id+'">&nbsp;&nbsp;<button class="btn btn-circle text-danger" type="button"><i class="fa fa-close" ></i></button></a>';
+						}
+						arr1.push($but_edit+$but_delete);					
+						arr.push(arr1);
+						callback()
+					});
 				},(err)=>{			
 					cb(arr);
 				})
@@ -117,11 +117,9 @@ var self= module.exports  = {
 			config.helpers.permission('job', req, async function(err,permission){
 				res.render('admin/job/add.ejs',{layout:'admin/layout/layout',permission : permission, city : city, job_type : job_type, users : users} );
 			})
-		}else{			
-			req.body.user_id = req.session.ECOMEXPRESSADMINID;
+		}else{
 			try{
-			  const jobData = await jobService.addJob(req.body);
-			  
+			  const jobData = await jobService.addJob(req.body);			  
 			  if(jobData){
 				res.redirect('/admin/job');
 			  }
@@ -187,6 +185,7 @@ var self= module.exports  = {
 		if(action_change == "1" || action_change == "0"){
 			var st = (action_change==1)?true:false;
 			model.job.updateMany({_id: {$in :action_check}}, {status: st},function(err,data){
+				console.log(err);
 				res.json({status:"ok"});
 	        });
 		}

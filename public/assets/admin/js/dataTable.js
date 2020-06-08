@@ -55,73 +55,7 @@
           type: "POST"
         }
     });
-   $('#business_tbl').DataTable({
-    //alert($("#last_id").val());
-      "processing": true,
-      "serverSide": true,
-      "ordering": true,
-      "searching": false,
-      "sDom": 'Rfrtlip',
-                  "columnDefs": [ {
-                      "targets": 'no-sort',
-                      "orderable": false,
-                } ],
-        "ajax": {
-          url: ADMINSITEURL+'business/all/',
-          type: "POST",
-          data:{
-                "last_id":$("#last_id").val()
-              },
-        }
-    });
-
-   $('#userplan_tbl').DataTable({
-    //alert($("#last_id").val());
-      "processing": true,
-      "serverSide": true,
-      "ordering": true,
-      "sDom": 'Rfrtlip',
-                  "columnDefs": [ {
-                      "targets": 'no-sort',
-                      "orderable": false,
-                } ],
-        "ajax": {
-          url: ADMINSITEURL+'userplan/all/',
-          type: "POST",          
-        }
-    });
-
-   $('#userplanTbl').DataTable({
-    //alert($("#last_id").val());
-      "processing": true,
-      "serverSide": true,
-      "ordering": true,
-      "sDom": 'Rfrtlip',
-                  "columnDefs": [ {
-                      "targets": 'no-sort',
-                      "orderable": false,
-                } ],
-        "ajax": {
-          url: 'http://10.0.4.26:2080/user/plan/allPlan',
-          type: "POST",          
-        }
-    });
-
-   $('#businessplan_tbl').DataTable({
-    //alert($("#last_id").val());
-      "processing": true,
-      "serverSide": true,
-      "ordering": true,
-      "sDom": 'Rfrtlip',
-                  "columnDefs": [ {
-                      "targets": 'no-sort',
-                      "orderable": false,
-                } ],
-        "ajax": {
-          url: ADMINSITEURL+'businessplan/all/',
-          type: "POST",          
-        }
-    });
+  
 
     $('#user_tbl').DataTable({
     //alert($("#last_id").val());
@@ -139,10 +73,11 @@
         }
     });
     
-     $('#jobs_tbl').DataTable({
+     $('#job_tbl').DataTable({
       "processing": true,
       "serverSide": true,
-      "ordering": true,
+      "searching": false,
+      "ordering": true,      
       "sDom": 'Rfrtlip',
                   "columnDefs": [ {
                       "targets": 'no-sort',
@@ -154,6 +89,47 @@
             "name":$("#name").val(),
             'user_id':$("#user_id").val(),
             "status":$("#status").val(),
+          },
+          type: "POST",          
+        }
+    });
+
+
+    $('#staticpages_tbl').DataTable({
+      "processing": true,
+      "serverSide": true,
+      "searching": false,
+      "ordering": true,      
+      "sDom": 'Rfrtlip',
+                  "columnDefs": [ {
+                      "targets": 'no-sort',
+                      "orderable": false,
+                } ],
+        "ajax": {
+          url: ADMINSITEURL+'staticpages/all/',
+          data:{
+            "name":$("#name").val(),
+            "status":$("#status").val(),
+          },
+          type: "POST",          
+        }
+    });
+
+    $('#userjobs_tbl').DataTable({
+      "processing": true,
+      "serverSide": true,
+      "searching": false,
+      "ordering": true,
+      "sDom": 'Rfrtlip',
+                  "columnDefs": [ {
+                      "targets": 'no-sort',
+                      "orderable": false,
+                } ],
+        "ajax": {
+          url: ADMINSITEURL+'userjobs/all/',
+          data:{
+            'user_id':$("#user_id").val(),
+            "status":$("#status").val()
           },
           type: "POST",          
         }

@@ -43,5 +43,37 @@ module.exports = {
 		}else{
 			return '';
 		}
+	},
+
+	apply_job : async function(req,cb){
+		var query = "?search=1";		
+		if(req.body.user_id){
+			query = query+"&userId="+req.body.user_id;
+		}
+		if(req.body.pstatus){
+			query = query+"&status="+req.body.pstatus;
+		}
+		
+		if(query!="?search=1"){
+			return query;
+		}else{
+			return '';
+		}
+	},
+
+	static_list : async function(req,cb){
+		var query = "?search=1";		
+		if(req.body.pname){
+			query = query+"&name="+req.body.pname;
+		}
+		if(req.body.pstatus){
+			query = query+"&status="+req.body.pstatus;
+		}
+		
+		if(query!="?search=1"){
+			return query;
+		}else{
+			return '';
+		}
 	}
 }
