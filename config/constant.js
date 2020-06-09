@@ -27,11 +27,15 @@ module.exports = {
 	FORMATETIME:'DD-MM-YYYY hh:mm A',
 	//new sram_app
 
-	UPLOAD_USER_PHOTOID:`${ABSOLUTEPATH}/public/file/photoid/`,
-	SHOW_USER_PHOTOID:`${SITEURL}file/photoid/`,
+	UPLOAD_USER_PHOTOID:`${ABSOLUTEPATH}/public/assets/files/photoid/`,
+	SHOW_USER_PHOTOID:`${SITEURL}assets/files/photoid/`,
 
-	UPLOAD_USER_PROFILE:`${ABSOLUTEPATH}/public/file/userimage/`,
-	SHOW_USER_PROFILE:`${SITEURL}file/userimage/`,
+	UPLOAD_USER_PROFILE:`${ABSOLUTEPATH}/public/assets/files/userimage/`,
+	SHOW_USER_PROFILE:`${SITEURL}assets/files/userimage/`,
+
+	//resume
+	UPLOAD_USER_RESUME:`${ABSOLUTEPATH}/public/assets/files/userresume/`,
+	SHOW_USER_RESUME:`${SITEURL}assets/files/userresume/`,
 
 	PAYPALAPI:{
     "host": "api.sandbox.paypal.com",

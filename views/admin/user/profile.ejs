@@ -20,7 +20,7 @@
         <div class="panel panel-info">
           <div class="panel-wrapper collapse in" aria-expanded="true">
             <div class="panel-body">
-              <form action="/admin/user/update-profile/<%=userData._id%>" method="post" id="registration-form">
+              <form action="/admin/user/update-profile/<%=userData._id%>" method="post" id="registration-form" onsubmit="return validate();" enctype="multipart/form-data">
                 <div class="form-body">
                 <%include ../message/message.ejs%>
                 <hr>
@@ -273,4 +273,15 @@
     </div>
     <script src="/assets/admin/js/user.js"></script>
     <script type="text/javascript" src="/assets/admin/js/category_dropdown.js"></script>
-    <link rel="stylesheet" type="text/css" href="/assets/admin/css/global.css" media="screen" /
+    <link rel="stylesheet" type="text/css" href="/assets/admin/css/global.css" media="screen" />
+    <script>
+      function validate(){
+          $(".cate-err").remove();
+        if($('#save_data').val()==''){
+          $("#save_data").after(`<span class="help-block form-error cate-err " style="color:#a94442">This is a required field</span>`)
+          
+          return false;
+        }
+        return true;
+      }
+    </script>

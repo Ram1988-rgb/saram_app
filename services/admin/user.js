@@ -55,7 +55,7 @@ async function addUserProfile(req){
 	const category_id = data.split(',');
 	var newUserProfile = new profileModel({
 		city_id 	: new ObjectId(req.body.city),
-		user_id 	: new ObjectId(req.body.id),
+		user_id 	: req.params.id,
 		locality_id : req.body.locality,
 		category_id : category_id,
 		skill_id 	: req.body.skills,
@@ -63,7 +63,7 @@ async function addUserProfile(req){
 		language_id : req.body.language,
 		address_id 	: req.body.adProof,
 		photoproof_id : req.body.pIdProof,
-		resume 		: req.body.resume_name,
+		resume 		: req.body.resume,
 		current_salary : parseInt(req.body.salary),
 		company_name :req.body.company,
 		experience 	: parseInt(req.body.year_of_exp),

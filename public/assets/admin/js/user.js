@@ -10,6 +10,9 @@ function getLocality(cityId){
 }
 
 function getSkillsDesign(category){
+  if(!validate()){
+    return false;
+  }
   $.ajax({
     type: 'POST',
     url: '/admin/category/get-skills-design',

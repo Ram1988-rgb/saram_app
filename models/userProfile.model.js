@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var UserProfileSchema = new Schema({
-    city_id : { type : { type : mongoose.Schema.Types.ObjectId, ref : "city"} },
-    user_id : { type : { type : mongoose.Schema.Types.ObjectId, ref : "user"} },
-    locality_id : { type : {type:mongoose.Schema.Types.ObjectId, ref : "locality"} },
+    city_id : { type : mongoose.Schema.Types.ObjectId, ref : "city"},
+    user_id :  { type : mongoose.Schema.Types.ObjectId, ref : "user"},
+    locality_id : {type:mongoose.Schema.Types.ObjectId, ref : "locality"},
     category_id : [{type:mongoose.Schema.Types.ObjectId, ref:"category"}],
     skill_id : [{type:mongoose.Schema.Types.ObjectId, ref:"skill"}],
     designation_id : [{type:mongoose.Schema.Types.ObjectId, ref:"designation"}],
