@@ -2,20 +2,20 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var UserProfileSchema = new Schema({
-    city_id : { type : mongoose.Schema.Types.ObjectId, ref : "city"},
-    user_id :  { type : mongoose.Schema.Types.ObjectId, ref : "user"},
-    locality_id : {type:mongoose.Schema.Types.ObjectId, ref : "locality"},
-    category_id : [{type:mongoose.Schema.Types.ObjectId, ref:"category"}],
-    skill_id : [{type:mongoose.Schema.Types.ObjectId, ref:"skill"}],
+    city_id : { type : mongoose.Schema.Types.ObjectId, ref : "City"},
+    user_id :  { type : mongoose.Schema.Types.ObjectId, ref : "User"},
+    locality_id : {type:mongoose.Schema.Types.ObjectId, ref : "Locality"},
+    category_id : [{type:mongoose.Schema.Types.ObjectId, ref:"Category"}],
+    skill_id : [{type:mongoose.Schema.Types.ObjectId, ref:"Skill_library"}],
     designation : { type : String},
     education : { type : String },
     year_of_passing : { type : Number },
     date_of_joining : { type : String },
     employment_status : { type : Array},
     
-    language_id : [{type:mongoose.Schema.Types.ObjectId, ref:"languageknow"}],
-    address_id : [{type:mongoose.Schema.Types.ObjectId, ref:"addressproof"}],
-    photoproof_id : [{type:mongoose.Schema.Types.ObjectId, ref:"photoidproofs"}],
+    language_id : [{type:mongoose.Schema.Types.ObjectId, ref:"Languageknow"}],
+    address_id : [{type:mongoose.Schema.Types.ObjectId, ref:"Addressproof"}],
+    photoproof_id : [{type:mongoose.Schema.Types.ObjectId, ref:"Photoidproof"}],
     resume_name : { type : String },
     resume_title : { type : String },
     notice_period : { type : Number },

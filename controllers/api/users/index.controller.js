@@ -153,7 +153,7 @@ async function candidateSearch(req, res){
 	let search = { deleted_at : 0, status : true }
 	
 	if(req.query.name){
-		//search.company_name = { '$regex' : req.query.name };
+		search.company_name = { '$regex' : req.query.name };
 	}
 	if(req.query.city_id){
 		search.city_id =  new ObjectId(req.query.city_id)
@@ -169,10 +169,12 @@ async function candidateSearch(req, res){
 	}
 	console.log(search)	
 	const total_record = await userProfileModel.find(search);
+	const detail = await userProfileModel.find(search).populate('city_id user_id locality_id category_id skill_id language_id address_id photoproof_id');
 	userProfileModel.aggregate([
 		{
 			$match : search
 		},
+		
 		{ 
 			$skip : skip 
 		},
@@ -181,7 +183,7 @@ async function candidateSearch(req, res){
 		}
 	], function(error, record){
 		console.log(error);
-		return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record, total_record : total_record.length });
+		return res.send({ status : HttpStatus.OK, code : 0, message : '', data : detail, total_record : total_record.length });
 	});	
 }
 
