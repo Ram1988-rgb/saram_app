@@ -10,7 +10,9 @@
     "address-proof": "node DBSEED/addressproof",
     "photoid-proof": "node DBSEED/photoidproof",
     "language-known": "node DBSEED/languageknown",
-    "db-seed": "npm run create-job-types && npm run address-proof && npm run photoid-proof && npm run language-known"
+    "skill-types": "node DBSEED/skilltypes",
+    "skill-library": "node DBSEED/skill_library",
+    "db-seed": "npm run create-job-types && npm run address-proof && npm run photoid-proof && npm run language-known && npm run skill-types && npm run skill-library"
   },
   "author": "Ram",
   "license": "ISC",

@@ -46,6 +46,29 @@
 </div>
 </div>
 <div class="row">
+	<div class="col-md-12">
+		<div class="form-group row">
+			<label class="control-label col-xs-12 col-md-3 "><%=__('Date of birth')%></label>
+			<div class="form-group col-xs-12 col-md-9">
+				<input type="text" id="datepicker" name="dob"  class="form-control" placeholder="<%=__('Date of birth')%>" >
+			</div>
+		</div>
+	</div>
+  </div>
+  <div class="row">
+	<div class="col-md-12">
+		<div class="form-group row">
+			<label class="control-label col-xs-12 col-md-3 "><%=__('Gender')%> *</label>
+			<div class="form-group col-xs-12 col-md-9">
+			  <select name="gender" id="gender" class="form-control">
+				<option value="M" selected="selected">Male</option>
+				<option value="F">Female</option>
+			  </select>
+			</div>
+		</div>
+	</div>
+  </div>
+<div class="row">
 <div class="col-md-12">
 <div class="form-group row">
 <label class="control-label col-xs-12 col-md-3 "><%=__('Mobile No')%> *</label>
@@ -140,3 +163,10 @@
 </div>
 <!-- /.container-fluid -->
 </div>
+
+
+<script>
+	$( function() {
+	  $( "#datepicker" ).datepicker();
+	} );
+	</script>

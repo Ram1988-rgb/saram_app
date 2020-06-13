@@ -8,6 +8,9 @@ var designaitorModel  = require('../models/designation.model');
 var skillsModel  = require('../models/skills.model');
 var usersModel  = require('../models/user.model');
 var jobtypesModel  = require('../models/jobtypes.model');
+var categoryModel  = require('../models/category.model');
+var skill_libraryModel  = require('../models/skill_library.model');
+var skilltypesModel  = require('../models/skilltypes.model');
 
 const mongoose = require('mongoose');
 
@@ -32,9 +35,13 @@ async function jobType(){
     return await jobtypesModel.find();
 }
 
+async function getlocalityList(){
+    //cityId = mongoose.Types.ObjectId(cityId);
+    return await localityModel.find({deleted_at:0});
+}
+
 async function getlocality(cityId){
     //cityId = mongoose.Types.ObjectId(cityId);
-    console.log({city_id:cityId});
     return await localityModel.find({deleted_at:0, city_id:cityId});
 }
 
@@ -62,7 +69,7 @@ async function allSkills(catId=null){
     const search = {deleted_at:0}
     if(catId){
         search.cat_id =mongoose.Types.ObjectId(catId)
-    }console.log(search)
+    }
     return await skillsModel.find(search);
 }
 
@@ -77,6 +84,15 @@ async function uploadFile(files,fieldName,imgpath){
     }   
 }
 
+async function skillTypes(){
+    return await skilltypesModel.find({deleted_at:0, status : true});
+}
+
+async function skillLibrary(){
+    return await skill_libraryModel.find({deleted_at:0, status : true});
+}
+
+
 module.exports = {
     getCountry,
     getCity,
@@ -88,5 +104,8 @@ module.exports = {
     allSkills,
     getUers,
     jobType,
-    uploadFile
+    uploadFile,
+    getlocalityList,
+    skillTypes,
+    skillLibrary
 }

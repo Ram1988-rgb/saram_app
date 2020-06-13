@@ -45,6 +45,31 @@
 </div>
 </div>
 </div>
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="form-group row">
+			<label class="control-label col-xs-12 col-md-3 "><%=__('Date of birth')%></label>
+			<div class="form-group col-xs-12 col-md-9">
+				<input type="text" id="datepicker" name="dob"  class="form-control" placeholder="<%=__('Date of birth')%>" value="<%=detail.dob?detail.dob:''%>">
+			</div>
+		</div>
+	</div>
+  </div>
+  <div class="row">
+	<div class="col-md-12">
+		<div class="form-group row">
+			<label class="control-label col-xs-12 col-md-3 "><%=__('Gender')%> *</label>
+			<div class="form-group col-xs-12 col-md-9">
+			  <select name="gender" id="gender" class="form-control">
+				<option value="M" <% if(detail.gender == 'M'){ %> selected="selected"<%}%>>Male</option>
+				<option value="F" <% if(detail.gender == 'F'){ %> selected="selected"<%}%>>Female</option>
+			  </select>
+			</div>
+		</div>
+	</div>
+  </div>
+
 <div class="row">
 <div class="col-md-12">
 <div class="form-group row">
@@ -85,7 +110,7 @@
  <div class="row">
 	<div class="col-md-12">
 	  <div class="form-group row">
-		  <label class="control-label col-xs-12 col-md-3 "><%=__('Photo id proof')%> *</label>
+		  <label class="control-label col-xs-12 col-md-3 "><%=__('Photo id proof')%> </label>
 		  <div class="form-group col-xs-12 col-md-9">
 			<input type="file" name="photo_proof" id="photo_proof" class="form-control">
 			<%if(detail.photo_proof){%>
@@ -99,7 +124,7 @@
 <div class="row">
 	<div class="col-md-12">
 	  <div class="form-group row">
-		  <label class="control-label col-xs-12 col-md-3 "><%=__('Photo id proof')%> *</label>
+		  <label class="control-label col-xs-12 col-md-3 "><%=__('Photo id proof')%> </label>
 		  <div class="form-group col-xs-12 col-md-9">
 			<input type="file" name="photo_profile" id="photo_profile" class="form-control">
 			<%if(detail.image){%>

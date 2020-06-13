@@ -70,7 +70,7 @@ var self= module.exports  = {
         datatable:(skip,perdata,alldata,cb)=>{		
 			var arr =[];
 			var i = parseInt(skip)+1;
-			console.log(alldata.length);
+			
 			if(alldata.length>0){
 				async.eachSeries(alldata, (item,callback)=>{
 					model.user.findOne({ _id :item.user_id }).exec(function(error, userDetail){
@@ -118,6 +118,8 @@ var self= module.exports  = {
 				res.render('admin/job/add.ejs',{layout:'admin/layout/layout',permission : permission, city : city, job_type : job_type, users : users} );
 			})
 		}else{
+			//res.send(req.body);
+			
 			try{
 			  const jobData = await jobService.addJob(req.body);			  
 			  if(jobData){
@@ -126,7 +128,7 @@ var self= module.exports  = {
 			}catch(err){
 			  console.log(err)
 			  res.json("somthing went wrong")
-			}				
+			}			
 		}
 	},
 
@@ -139,7 +141,7 @@ var self= module.exports  = {
 				var city = await commanHelper.getCity();
 				var job_type = await commanHelper.jobType();		
 				config.helpers.permission('job', req, async function(err,permission){
-					console.log(detail.city_id)
+					
 					const locality = await model.locality.find({ city_id : detail.city_id, status : true, deleted_at : 0});
 					res.render('admin/job/edit.ejs',{layout:'admin/layout/layout',permission:permission,detail:detail, city : city, job_type : job_type, locality : locality, users:users} );
 				})
@@ -192,9 +194,7 @@ var self= module.exports  = {
 	},
 	
 	get_locality : async (req, res) => {
-		console.log(req.body);
 		var data = await model.locality.find({ city_id : new ObjectId(req.body.city_id), deleted_at : 0, status : true });
-		console.log(data);
 		res.send(data);
 	},
 
@@ -243,7 +243,7 @@ var self= module.exports  = {
 				  jsonData = res_data;
 
 			   }
-			   console.log(jsonData);
+			  
 			   res.send(jsonData);
 			});
 	}

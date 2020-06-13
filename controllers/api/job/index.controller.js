@@ -1,17 +1,35 @@
 const jobModel  = require(`${appRoot}/models/job.model`);
 const applyjobModel  = require(`${appRoot}/models/applyjob.model`);
+const jobService = require(`${appRoot}/services/job.js`);
 const jwt = require('jsonwebtoken');
 const HttpStatus = require('http-status');
 const ObjectId = require('mongodb').ObjectId;
 
 async function list(req, res){	
-	const skip = parseInt(req.query.skip);
-	const limit = parseInt(req.query.limit);
+	console.log(req.query);
+	const skip = req.query.skip ? parseInt(req.query.skip) : 0 ;
+	const limit = req.query.limit ? parseInt(req.query.limit): 10;
 	let search = { deleted_at : 0, status : true }
 	if(req.query.user_id){
-		search.user_id = new ObjectId(req.query.user_id)
+		search.user_id = { $ne : new ObjectId(req.query.user_id) }
+	}
+	if(req.query.keyword){
+		search.name = { '$regex' : req.query.keyword };
+	}
+	if(req.query.city_id){
+		search.city_id =  new ObjectId(req.query.city_id)
+	}
+	if(req.query.locality){
+		search.locality_id = new ObjectId(req.query.locality)
+	}
+	if(req.query.jobtype){
+		const data = req.query.jobtype;
+		const job_id = data.split(',');
+		console.log(job_id);
+		search.jobtype = { $in : job_id }
 	}
 	console.log(search)	
+	const total_record = await jobModel.find(search);
 	jobModel.aggregate([
 		{
 			$match : search
@@ -24,7 +42,7 @@ async function list(req, res){
 		}
 	], function(error, record){
 		console.log(error);
-		return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record });
+		return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record, total_record : total_record.length });
 	});	
 }
 
@@ -67,9 +85,27 @@ async function applyjob(req, res){
 	}
 }
 
+async function createJob(req, res){
+	/*const data = req.body.jobtype;
+	const category_id = data.split(',');
+	req.body.jobtype = category_id;
+	console.log(req.body);*/
+	try{
+		const jobData = await jobService.addJob(req.body);			  
+		if(jobData){
+			return res.send({ status : HttpStatus.OK, code : 0, message : req.__('Job create successfully'), data : {} })
+		}
+	}catch(err){
+		console.log(err)
+		return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+	}	
+	
+}
+
 
 module.exports = {		
 	list,
 	deatils,
-	applyjob
+	applyjob,
+	createJob
 }

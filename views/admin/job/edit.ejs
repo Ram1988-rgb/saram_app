@@ -43,7 +43,7 @@
 
 
 <div class="form-group row clearfix" id="category_valid">
-	  <label class="col-xs-12 col-md-3  col-form-label" for="example-text-input">Category</label>
+	  <label class="col-xs-12 col-md-3  col-form-label" for="example-text-input">Category *</label>
 	  <div class="col-xs-12 col-md-9">
 
 		<div class="form">
@@ -78,6 +78,17 @@
 </div>
 </div>
 </div>
+
+<div class="row">
+	<div class="col-md-12">
+	<div class="form-group row">
+	<label class="control-label col-xs-12 col-md-3 "><%=__('Keyword')%> </label>
+	<div class="form-group col-xs-12 col-md-9">
+	<input type="text" id="keyword" name="keyword" class="form-control" placeholder="<%=__('Keyword')%>" value="<%=detail.keyword?detail.keyword:''%>">
+	</div>
+	</div>
+	</div>
+	</div>
 
 <div class="row">
 <div class="col-md-12">
@@ -152,7 +163,7 @@
 <div class="row">
 <div class="col-md-12">
 	<div class="form-group row">
-		<label class="control-label col-xs-12 col-md-3">Select City</label>
+		<label class="control-label col-xs-12 col-md-3">Select City *</label>
 		 <div class="form-group col-xs-12 col-md-9">
 		<select name="city_id" id="city_id" class="form-control" data-validation="required">
 			<option value="">Select City</option>
@@ -170,7 +181,7 @@
 	<div class="form-group row">
 		<label class="control-label col-xs-12 col-md-3">Select Locality</label>
 		 <div class="form-group col-xs-12 col-md-9">
-		<select name="locality_id" id="locality_id" class="form-control" data-validation="required">
+		<select name="locality_id" id="locality_id" class="form-control">
 			<option value="">Select Locality</option>
 			<%for(var key=0;key<locality.length;key++){%>
 			   <option <% if((locality[key].id).toString() == detail.locality_id){ %> selected="selected" <% } %> value="<%=locality[key].id%>"><%=locality[key].name%></option>
@@ -181,16 +192,74 @@
 </div>
 </div> 
 <div class="row">
-<div class="col-md-12">
-<div class="form-group row">
-<label class="control-label col-xs-12 col-md-3 "><%=__('Description')%> </label>
-<div class="form-group col-xs-12 col-md-9">
-<textarea class="form-control ckeditor" placeholder="Description" name="description" ><%= detail.description?detail.description:'' %></textarea>
+	<div class="col-md-12">
+	<div class="form-group row">
+	<label class="control-label col-xs-12 col-md-3 "><%=__('Description')%> </label>
+	<div class="form-group col-xs-12 col-md-9">
+	<textarea class="form-control ckeditor" placeholder="Description" name="description" ><%= detail.description?detail.description:'' %></textarea>
+	
+	</div>
+	</div>
+	</div>
+	</div>
+<div class="row" >
+	<div class="col-md-12">
+		<div class="form-group row">
+			<label class="control-label col-xs-3 col-md-3">Company</label>
+			<div class="col-md-9">
+				<div class="col-md-4 form-group">
+					<input id="company" name="company" onclick="Company()" <% if(detail.company == 'on'){ %> checked="checked" <% } %> type="checkbox" class="applicable-for">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>  
+<%	var com_data = "display:none"; 
+var company_name = '';
+var company_email = '';
+var company_phone = '';
+if(detail.company == 'on'){
+	com_data ="display:block"; 
+	if((detail.company_data).length > 0){
+		company_name = detail.company_data[0].name ? detail.company_data[0].name : '';
+		company_email = detail.company_data[0].email ? detail.company_data[0].email : '';
+		company_phone = detail.company_data[0].phone ? detail.company_data[0].phone : '';
+	}
+} %>
 
+<div class="row company" style=<%=com_data%>>
+	<div class="col-md-12">
+		<div class="form-group row">
+			<label class="control-label col-xs-12 col-md-3 "><%=__('Company Name')%></label>
+			<div class="form-group col-xs-12 col-md-9">
+				<input type="text" id="company_name" name="company_name"  class="form-control" placeholder="<%=__('Company Name')%>" value="<%= company_name %>">
+			</div>
+		</div>
+	</div>
 </div>
+
+<div class="row company" style=<%=com_data%>>
+	<div class="col-md-12">
+		<div class="form-group row">
+			<label class="control-label col-xs-12 col-md-3 "><%=__('Company Email')%></label>
+			<div class="form-group col-xs-12 col-md-9">
+				<input type="text" id="company_email" data-validation="email" name="company_email" class="form-control" placeholder="<%=__('Company Email')%>" value="<%= company_email %>" >
+			</div>
+		</div>
+	</div>
 </div>
+
+<div class="row company" style=<%=com_data%>> 
+	<div class="col-md-12">
+		<div class="form-group row">
+			<label class="control-label col-xs-12 col-md-3 "><%=__('Company Phone')%></label>
+			<div class="form-group col-xs-12 col-md-9">
+				<input type="text" id="company_phone" name="company_phone" class="form-control" placeholder="<%=__('Company Phone')%>" value="<%= company_phone %>">
+			</div>
+		</div>
+	</div>
 </div>
-</div>
+
 <hr>
 
 
@@ -209,6 +278,16 @@
 <!-- /.container-fluid -->
 </div>
 <script>
+
+function Company() {
+  var checkBox = document.getElementById("company");
+  if (checkBox.checked == true){
+	$(".company").show();
+  } else {
+	$(".company").hide();
+  }
+}
+
 $("#city_id").on("change", function(){
 	var city_id = $(this).val();
 	$.ajax({

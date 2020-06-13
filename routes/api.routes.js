@@ -4,7 +4,8 @@ module.exports = function(app) {
 
 	//routes defaile
 	var usersRoutes = require('./api/users.routes');	
-	var jobRoutes = require('./api/job.routes');	
+	var jobRoutes = require('./api/job.routes');
+	var commonRoutes = require('./api/common.routes');	
         //import express
 	var router = express.Router();
 	app.use('',router);
@@ -12,4 +13,5 @@ module.exports = function(app) {
 	//import api routes
 	usersRoutes(router);
 	jobRoutes(router);
+	commonRoutes(router);
 }
