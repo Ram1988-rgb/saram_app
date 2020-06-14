@@ -134,12 +134,12 @@ async function applyjob(req, res){
 }
 
 async function getProfile(req, res){
-	console.log(req.query);
 	try{
 		const userData = await userProfileModel.findOne({ user_id : new ObjectId(req.query.user_id), status: true, deleted_at : 0});
-		console.log(userData);
 		if(userData){
 			return res.send({ status : HttpStatus.OK, code : 0, data : userData, message : ""});
+		}else{
+			return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : ""});
 		}
 	}catch(err){
 		return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
@@ -165,9 +165,12 @@ async function candidateSearch(req, res){
 		const data = req.query.jobtype;
 		const job_id = data.split(',');
 		console.log(job_id);
-		search.employment_status = { $in : job_id }
+		var employment = []
+		for(let i=0;i<job_id.length;i++){
+			employment.push(new ObjectId(job_id[i]));
+		}
+		search.employment_status = { $in : employment }
 	}
-	console.log(search)	
 	const total_record = await userProfileModel.find(search);
 	//const detail = await userProfileModel.find(search).populate('city_id user_id locality_id category_id skill_id language_id address_id photoproof_id','city_id.name');
 	userProfileModel.aggregate([
