@@ -15,4 +15,5 @@ module.exports = function(router) {
  router.all('/admin/user/check_mobile_edit/:id', indexController.check_mobile_edit);
  router.get('/admin/user/profile/:id', indexController.userProfile);
  router.post('/admin/user/update-profile/:id', indexController.updateProfile);
+ router.post('/admin/user/skill-exp', indexController.skillExp);
 }

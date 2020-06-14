@@ -8,7 +8,8 @@ const {constants} = require(`${appRoot}/config/string`)
 class Category{
   async index(req,res){
     upDateCategoryChild();
-    res.render('admin/category/view.ejs',{layout:'admin/layout/layout', data:{}} );
+    const skType = await model.skilltypes.find({deleted_at:0});
+    res.render('admin/category/view.ejs',{layout:'admin/layout/layout', sktype:skType} );
   }
   async add(req,res){
     try{

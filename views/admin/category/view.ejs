@@ -46,9 +46,9 @@
                     <a href="/admin/category">
                       <button class="btn btn-success btn-rounded" type="button">Reset</button>
                     </a>
-                    <button type="button" class="btn btn-success btn-rounded" data-toggle="modal" data-target="#skillsModal" id="skill-button" style="display: none">Skills </button>
+                    <!-- <button type="button" class="btn btn-success btn-rounded" data-toggle="modal" data-target="#skillsModal" id="skill-button" style="display: none">Skills </button>
                     <button type="button" class="btn btn-success btn-rounded" data-toggle="modal" data-target="#designaitorModal" id="design-button"  style="display: none">Designaitor </button>
-                    
+                     -->
                   </div>
                   <div class="col-md-12">
                     <div class="form-group row">
@@ -73,6 +73,20 @@
                         <textarea name="description" id="description" rows="8" cols="80" class="form-control"></textarea>
                       </div>
                     </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group row">
+                    <label class="control-label col-xs-12 col-md-3 "><%=__('Select Skill Label')%> *</label>
+                    <div class="form-group col-xs-12 col-md-9">
+                      <select name="skillexp" id="skillexp" class="form-control" data-validation="required">
+                        <%
+                        for(let i=0;i<sktype.length;i++){
+                        %>
+                        <option value="<%=sktype[i].code%>"><%=sktype[i].name%></option>
+                        <%}%>
+                      </select>
+                     </div>
                   </div>
                 </div>
                 <!--/row-->

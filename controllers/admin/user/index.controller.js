@@ -264,6 +264,8 @@ var self= module.exports  = {
 	  const designaitor = await commanHelper.allDesignaitor();
 	  const skills = await commanHelper.allSkills();
 	  var job_type = await commanHelper.jobType();
+	  const category = await model.category.find({deleted_at:0});
+	  
 	  res.render('admin/user/profile.ejs',{
 		  layout:'admin/layout/layout',
 			userData:userData,
@@ -272,15 +274,18 @@ var self= module.exports  = {
 			pIdProof:pIdProof,
 			designaitor:designaitor,
 			skills:skills,
-			job_type : job_type
+			job_type : job_type,
+			category:category
 		});
 	},
 
 	updateProfile: async function(req,res){
 		const userId = req.params.id;
+		
 		try{
-			const resume = await commanHelper.uploadFile(req.files,'resume',constants.UPLOAD_USER_RESUME)
-			req.body.resume = resume?resume:'';
+			const resume = await commanHelper.uploadFile(req.files, 'resume', constants.UPLOAD_USER_RESUME)
+			req.body.resume_name = resume?resume:'';
+			req.body.user_id = req.params.id;
 			console.log(req.params.id)
 			const userProfile = await userService.addUserProfile(req);
 			if(userProfile){
@@ -290,6 +295,19 @@ var self= module.exports  = {
 				console.log(err)				
 				res.redirect('/admin/user/profile/'+userId);
 		 }  	
+	},
+
+	skillExp: async function(req,res){
+		try{
+			const catData = await model.category.findOne({_id:req.body.id});
+			const code = catData.skillexp?catData.skillexp:'SKILL';
+			const detail = await model.skill_library.find({deleted_at:0, code:code});
+			res.json({success:true, detail:detail, code:code})
+		 }catch(err){
+				console.log(err)				
+				res.json({success:false, message:err.message})
+		 }  
+
 	}
 
 }

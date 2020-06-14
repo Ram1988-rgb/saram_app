@@ -169,12 +169,101 @@ async function candidateSearch(req, res){
 	}
 	console.log(search)	
 	const total_record = await userProfileModel.find(search);
-	const detail = await userProfileModel.find(search).populate('city_id user_id locality_id category_id skill_id language_id address_id photoproof_id');
+	//const detail = await userProfileModel.find(search).populate('city_id user_id locality_id category_id skill_id language_id address_id photoproof_id','city_id.name');
 	userProfileModel.aggregate([
 		{
 			$match : search
 		},
-		
+		{
+			$lookup:{
+				from:"cities",
+				localField:"city_id",
+				foreignField:"_id",
+				as:"city"
+			}
+		},
+		{
+			$lookup:{
+				from:"users",
+				localField:"user_id",
+				foreignField:"_id",
+				as:"user"
+			}
+		},
+		{
+			$lookup:{
+				from:"categories",
+				localField:"category_id",
+				foreignField:"_id",
+				as:"category"
+			}
+		},
+		{
+			$lookup:{
+				from:"localities",
+				localField:"locality_id",
+				foreignField:"_id",
+				as:"locality"
+			}
+		},		
+		{
+			$lookup:{
+				from:"addressproofs",
+				localField:"address_id",
+				foreignField:"_id",
+				as:"addressproofs"
+			}
+		},
+		{
+			$lookup:{
+				from:"photoidproofs",
+				localField:"photoproof_id",
+				foreignField:"_id",
+				as:"photoidproofs"
+			
+			}
+		},
+		{
+			$lookup:{
+				from:"languageknows",
+				localField:"language_id",
+				foreignField:"_id",
+				as:"languages"
+			}
+		},
+		{
+			$project:{
+				address:1,
+				resume_title:1,
+				resume_name:1,
+				current_salary:1,
+				company_name:1,
+				experience:1,
+				notice_period:1,
+				designation:1,
+				education:1,
+				year_of_passing:1,
+				passport:1,
+				diploma: 1,
+				user:1,
+				"city._id":1,
+				"city.name":1,
+				"category._id":1,				
+				"category.name":1,
+				"category.description":1,
+				"locality._id":1,
+				"locality.name":1,
+				"addressproofs._id":1,
+				"addressproofs.name":1,
+				"photoidproofs._id":1,
+				"photoidproofs.name":1,
+				"languages._id":1,
+				"languages.name":1,
+				employment_status:1
+
+
+			}
+		},
 		{ 
 			$skip : skip 
 		},
@@ -183,7 +272,7 @@ async function candidateSearch(req, res){
 		}
 	], function(error, record){
 		console.log(error);
-		return res.send({ status : HttpStatus.OK, code : 0, message : '', data : detail, total_record : total_record.length });
+		return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record, total_record : total_record.length });
 	});	
 }
 

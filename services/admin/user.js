@@ -54,26 +54,33 @@ async function edit(id, req){
 }
 
 async function addUserProfile(req){
-	const data = req.body.data;
+	const data = req.body.category;
 	const category_id = data.split(',');
 	var newUserProfile = new profileModel({
 		city_id 	: new ObjectId(req.body.city),
-		user_id 	: req.params.id,
+		user_id 	: req.body.user_id,
 		locality_id : req.body.locality,
 		category_id : category_id,
-		skill_id 	: req.body.skills,
-		designation_id : req.body.designation,
+		employment_status : req.body.jobtype,
+		//skill_id 	: req.body.skills,
+		address	: req.body.address,
+		notice_period : req.body.notice_period,
+		//designation_id : req.body.designation,
+		designation : req.body.designation,
+		date_of_joining	: req.body.date_of_joining,
+		education : req.body.education,
+		year_of_passing : req.body.year_of_passing,
 		language_id : req.body.language,
 		address_id 	: req.body.adProof,
 		photoproof_id : req.body.pIdProof,
-		resume 		: req.body.resume,
+		resume_name 	: req.body.resume_name,
+		resume_title 	: req.body.resume_title,
 		current_salary : parseInt(req.body.salary),
 		company_name :req.body.company,
 		experience 	: parseInt(req.body.year_of_exp),
-		age 		: parseInt(req.body.age),
-		gender 		: req.body.gender,
 		passport 	: (req.body.passport && req.body.passport == 'yes') ? true : false,
 		diploma 	: (req.body.diploma && req.body.diploma == 'yes'),   
+		skill_name  : req.body.skills?req.body.skills:[],
 		status 		: true,
 		deleted_at	: 0
 	});

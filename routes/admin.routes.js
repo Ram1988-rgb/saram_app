@@ -13,6 +13,7 @@ module.exports = function(app) {
 	var managepageRoutes = require('./admin/managepage.routes');
 	var categoryRoutes = require('./admin/category.routes');
 	var settingRoutes = require('./admin/setting.routes');
+	var skillExpRoutes = require('./admin/slillexp.routes');
         //import express
 	var router = express.Router();
 	app.use('',router);
@@ -28,4 +29,5 @@ module.exports = function(app) {
 	categoryRoutes(router);
 	settingRoutes(router);
 	staticpagesRoutes(router);
+	skillExpRoutes(router);
 }

@@ -18,6 +18,7 @@ $(document).ready(function () {
         $("#name").val(detail.name);
         $("#code").val(detail.code);
         $("#description").val(detail.description);
+        $("#skillexp").val(detail.skillexp);
         $("#cat-title").html(detail.name);
         $("#skill-button").show();
         $("#design-button").show();

@@ -193,6 +193,8 @@
           type: "POST"
         }
     });
+    $('#skillexp_tbl').DataTable({
+    })
 
  });
 

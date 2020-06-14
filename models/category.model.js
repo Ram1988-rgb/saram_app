@@ -10,6 +10,7 @@ let CategorySchema = new Schema({
     cat_id:{type:mongoose.Schema.Types.ObjectId,ref:'category'},
     child:{type:Number, default:0},
     level:{type:Number},
+    skillexp:{type: String},
     deleted_at:{type: Number},
     createdAt: {
         type: Date,

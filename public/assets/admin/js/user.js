@@ -1,3 +1,5 @@
+
+
 function getLocality(cityId){
     $.ajax({
         type: 'post',
@@ -39,4 +41,30 @@ function getSkillsDesign(category){
       }
     }
   });
+}
+
+function getskillExp(catId){
+  $(".skillexp-select").html(`<select name="skills" id="skillexp" class="select2 form-control" multiple="multiple"">
+  <option value="">Select</option>
+</select>`)
+  $.ajax({
+    type: 'POST',
+    url: '/admin/user/skill-exp',
+    data: {id:catId},
+    success: function (response) {
+      if(response.success){
+        let code =  (response.code.toLowerCase());
+        response.code = code.charAt(0).toUpperCase() + code.slice(1)
+        const skillexp = response.detail?response.detail:[];
+        var dg = `<option value="">Select ${response.code}</option>`;
+        for(let i=0;i<skillexp.length;i++){
+          dg = dg+ `<option value="${skillexp[i].name}">${skillexp[i].name}</option>`
+        }
+        console.log(dg);
+        $('#skillexp').html(dg);
+        $('#skillexplabel').html(response.code);
+        $("#skillexp").select2()
+      }
+    }
+  })
 }

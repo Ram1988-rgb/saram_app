@@ -1,0 +1,90 @@
+<div id="page-wrapper">
+  <div class="container-fluid">
+    <div class="bg-title">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-7">
+            <h3 class="box-title">Manage Skill & Expertise</h3>
+            <ol class="breadcrumb text-left">
+              <li><a href="/admin/dashboard"><%=__('Dashboard')%></a></li>
+              <li class="active"><%=__('Manage Skill & Expertise')%></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+    <section class="searchfilter">
+      <div class="searchhead clearfix">
+        <h4> <%=__('Add Skill & Expertise')%>...</h4>       
+      </div>                            
+      <div class="searchbox">
+        <form action="" method="post" enctype="multipart/form-data">
+          
+          <div class="row">
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label class="control-label col-xs-12 col-md-3"><%=__('Csv')%>*</label>
+                   <div class="form-group col-xs-12 col-md-9">
+                    <input class="form-control form-control-solid" type="file" name="file" id="file"data-validation="required">
+                  </div>
+                </div>
+            </div>
+        </div>
+          
+          <div class="row srch-btn-wrp">
+            <div class="col-md-12">
+              <div class="field_cover">
+                <a href="/admin/skillexp">
+                  <input class="btn_clearsearch srch-btn" value="Cancel" type="button">
+                </a>
+                <input class="btn-search srch-btn"   name="btn_submit" value="Upload" type="submit">
+                
+              </div>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </section>    
+
+                
+    <form action="" method="post" id="tbl_form">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="white-box">
+                    <div class="table-responsive">
+                    <%include ../message/message.ejs%>
+                        <input type="hidden" name="cont" id="cont" value="administrator">
+                        <input type="hidden" name="fun" id="fun" value="all_administrator">
+                        <table id="skillexp_tbl" class="table table-striped ">
+                            <thead>
+                               
+                                <tr>
+                                    <th class="no-sort row_check">#</th>
+                                    <th class="name no-sort"> <%=__('Name')%> </th>
+                                    <th class="email no-sort"> <%=__('Type')%></th>                                           
+                                    
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                              <%for(let i=0;i<detail.length;i++){%>
+                                <tr>
+                                  <td><%=i+1%></td>
+                                  <td><%=detail[i].name%></td>
+                                  <td><%=detail[i].code%></td>
+                                </tr>
+                                <%}%>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+     </form>
+    </div>
+    </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>

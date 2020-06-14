@@ -37,6 +37,10 @@ module.exports = {
 	UPLOAD_USER_RESUME:`${ABSOLUTEPATH}/public/assets/files/userresume/`,
 	SHOW_USER_RESUME:`${SITEURL}assets/files/userresume/`,
 
+	//skill exp 
+	UPLOAD_SKILL_EXP:`${ABSOLUTEPATH}/public/assets/files/skillexp/`,
+	SHOW_SKILL_EXP:`${SITEURL}assets/files/skillexp/`,
+
 	PAYPALAPI:{
     "host": "api.sandbox.paypal.com",
     "port": "",
