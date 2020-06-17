@@ -4,8 +4,6 @@ const jobModel = require(`${appRoot}/models/job.model`);
 const ObjectId = require('mongodb').ObjectId;
 
 async function addJob(param){
-	console.log(param);
-
 	console.log(param.user_id);
 	var data = param.data;
 	const category_id = data.split(',');
@@ -37,9 +35,7 @@ async function addJob(param){
 		description : param.description,
 		start_time : new Date(),
 		end_time : new Date(),
-		createdby : param.user_id,
-		status:true,
-		deleted_at:0
+		createdby : param.user_id
 	})
 	return await newJob.save(); 
 }

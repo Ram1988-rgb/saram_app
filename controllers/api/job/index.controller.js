@@ -86,10 +86,6 @@ async function applyjob(req, res){
 }
 
 async function createJob(req, res){
-	/*const data = req.body.jobtype;
-	const category_id = data.split(',');
-	req.body.jobtype = category_id;
-	console.log(req.body);*/
 	try{
 		const jobData = await jobService.addJob(req.body);			  
 		if(jobData){
@@ -102,10 +98,49 @@ async function createJob(req, res){
 	
 }
 
+async function editJob(req, res){
+	try{
+		const jobData = await jobService.editJob(req.body.id, req.body);
+		if(jobData){
+			return res.send({ status : HttpStatus.OK, code : 0, message : req.__('Job update successfully'), data : {} })
+		}
+	  }catch(err){
+		console.log(err)
+		return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+	  }  	
+}
+
+async function delete_job(req, res){
+	try{
+		const jobData = await jobModel.updateOne({ _id: req.query.id }, { deleted_at: 1 });
+		if(jobData){
+			return res.send({ status : HttpStatus.OK, code : 0, message : req.__('Job delete successfully'), data : {} })
+		}
+	}catch(err){
+		console.log(err)
+		return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+	}  	
+}
+
+async function job_status(req, res){
+	try{
+		const jobData = await jobModel.updateOne({ _id: req.query.id }, { status : parseInt(req.query.status)});
+		if(jobData){
+			return res.send({ status : HttpStatus.OK, code : 0, message : req.__('Job status change successfully'), data : {} })
+		}
+	}catch(err){
+		console.log(err)
+		return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+	}  	
+}
+
 
 module.exports = {		
 	list,
 	deatils,
 	applyjob,
-	createJob
+	createJob,
+	editJob,
+	delete_job,
+	job_status
 }

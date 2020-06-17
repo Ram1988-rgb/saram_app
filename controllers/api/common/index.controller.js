@@ -48,26 +48,48 @@ async function category(req, res){
 }
 
 async function country_data(req, res){
-	let record = {};
-	record.country = await commanHelper.getCountry();
-	record.city = await commanHelper.getCity();	
-	record.locality = await commanHelper.getlocalityList();
-	return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record });
+	try{
+		let record = {};
+		record.country = await commanHelper.getCountry();
+		record.city = await commanHelper.getCity();	
+		record.locality = await commanHelper.getlocalityList();
+		return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record });
+	}catch(err){
+		console.log(err)
+		return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+	}  		
+	
 }
 
 async function miscellaneous(req, res){
-	let record = {};
-	record.language = await commanHelper.langKnown();
-	record.proof = await commanHelper.addressProof();
-	record.jobTypes = await commanHelper.jobType();
-	record.photIdProof = await commanHelper.photoIdProof();
-	record.skillTypes = await commanHelper.skillTypes();
-	record.skillLibrary = await commanHelper.skillLibrary();
-	return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record });
+	try{
+		let record = {};
+		record.language = await commanHelper.langKnown();
+		record.proof = await commanHelper.addressProof();
+		record.jobTypes = await commanHelper.jobType();
+		record.photIdProof = await commanHelper.photoIdProof();		
+		return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record });
+	}catch(err){
+		console.log(err)
+		return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+	}  		
+}
+
+async function skill_library(req, res){
+	try{
+		let record = {};
+		record.skillLibrary = await commanHelper.skillLibrary();
+		record.skillTypes = await commanHelper.skillTypes();
+		return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record });
+	}catch(err){
+		console.log(err)
+		return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+	}
 }
 
 module.exports = {		
 	category,
 	country_data,
-	miscellaneous
+	miscellaneous,
+	skill_library
 }

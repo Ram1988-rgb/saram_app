@@ -173,7 +173,7 @@ var self= module.exports  = {
 	change_status : (req, res) => {
 		var rid = req.input('id')?req.input('id'):'';
 		return model.user.updateOne({_id: rid}, {
-        	status: parseInt(req.body.st)?true:false
+        	status: parseInt(req.body.st)
 		},function(err,data){
 			if(err) console.error(err);
 			if(req.body.st=='1'){
@@ -194,7 +194,7 @@ var self= module.exports  = {
 	        });
 		}
 		if(action_change == "1" || action_change == "0"){
-			var st = (action_change==1)?true:false;
+			var st = parseInt(action_change)//(action_change==1)?true:false;
 			model.user.updateMany({_id: {$in :action_check}}, {status: st},function(err,data){
 				res.json({status:"ok"});
 	        });
@@ -264,7 +264,7 @@ var self= module.exports  = {
 	  const designaitor = await commanHelper.allDesignaitor();
 	  const skills = await commanHelper.allSkills();
 	  var job_type = await commanHelper.jobType();
-	  const category = await model.category.find({deleted_at:0});
+	  const category = await model.category.find({deleted_at:0, cat_id : null });
 	  
 	  res.render('admin/user/profile.ejs',{
 		  layout:'admin/layout/layout',
@@ -289,6 +289,7 @@ var self= module.exports  = {
 			console.log(req.params.id)
 			const userProfile = await userService.addUserProfile(req);
 			if(userProfile){
+				await model.user.updateOne({ _id : id }, { seeker : 1 });
 			  	res.redirect('/admin/user');
 			}
 		  }catch(err){

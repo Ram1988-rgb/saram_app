@@ -118,8 +118,6 @@ var self= module.exports  = {
 				res.render('admin/job/add.ejs',{layout:'admin/layout/layout',permission : permission, city : city, job_type : job_type, users : users} );
 			})
 		}else{
-			//res.send(req.body);
-			
 			try{
 			  const jobData = await jobService.addJob(req.body);			  
 			  if(jobData){
@@ -164,7 +162,7 @@ var self= module.exports  = {
 	change_status : (req, res) => {
 		var rid = req.input('id')?req.input('id'):'';	
 		return model.job.updateOne({_id: rid}, {
-        	status: parseInt(req.body.st)?true:false
+        	status: parseInt(req.body.st)
 		},function(err,data){
 			if(err) console.error(err);
 			if(req.body.st=='1'){
@@ -185,7 +183,7 @@ var self= module.exports  = {
 	        });
 		}
 		if(action_change == "1" || action_change == "0"){
-			var st = (action_change==1)?true:false;
+			var st = parseInt(action_change);//(action_change==1)?true:false;
 			model.job.updateMany({_id: {$in :action_check}}, {status: st},function(err,data){
 				console.log(err);
 				res.json({status:"ok"});

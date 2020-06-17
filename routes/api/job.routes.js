@@ -5,4 +5,8 @@ module.exports = function(router) {
 	router.get('/api/job/deatils', validateToken, indexController.deatils);
 	router.get('/api/job/applyjob', validateToken, indexController.applyjob);
 	router.post('/api/job/createJob', validateToken, indexController.createJob);
+	router.post('/api/job/editJob', validateToken, indexController.editJob);
+	router.get('/api/job/delete_job', validateToken, indexController.delete_job);
+	router.get('/api/job/job_status', validateToken, indexController.job_status);
+	
 }

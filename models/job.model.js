@@ -17,8 +17,11 @@ var JobSchema = new Schema({
     locality_id : { type : Object },
     company : { type : String },
     company_data : { type: Array },
-	status 	: { type : Boolean },
-    deleted_at	: { type : Number},  
+	status 	: { 
+        type : Number, 
+        default : 1
+    },
+    deleted_at	: { type : Number, default : 0 },  
     start_time	: { type : Date }, 
     end_time	: { type : Date }, 
     createdAt	: {

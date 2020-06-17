@@ -61,7 +61,7 @@ async function registration(req, res){
 	}		
 }
 	
-async function updateprofile(req, res){
+async function updateprofile_old(req, res){
 	var result = {};
 	const record = await userModel.findOne({ _id : { $ne : new ObjectId(req.body.id)}, mobile : parseInt(req.body.mobile), status : true, deleted_at :0});
 	if(record){
@@ -84,6 +84,186 @@ async function updateprofile(req, res){
 			return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
 		}	
 	}				
+}
+
+async function updateprofile(req, res){
+	console.log(req.body);
+	var update_data = {};	
+	try{
+		let profile_data = await userProfileModel.findOne({user_id : new ObjectId(req.body.user_id), parent_id : null});
+		if(req.body.type == 'resume'){
+		const resume = await commanHelper.uploadFile(req.files, 'resume', constants.UPLOAD_USER_RESUME)
+			update_data.resume_name = resume ? resume : '';
+			update_data.resume_title = req.body.resume_title ? req.body.resume_title : "";
+			if(profile_data){
+				const userData = await userService.updateProfile(profile_data._id, update_data);
+				console.log(userData);
+				if(userData){
+					return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : req.__("Profile has beeb updated successfully")});
+				}else{
+					return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+				}
+			}
+			else{
+				if(req.body.profile){
+					update_data.parent_id = req.body.user_id ? new ObjectId(req.body.user_id) : null;
+				}
+				update_data.user_id = req.body.user_id ? new ObjectId(req.body.user_id) : null;
+				const userData = await userService.createProfile(update_data);
+				if(userData){
+					await userModel.updateOne({ _id : req.body.user_id }, { seeker : 1 });
+					return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : req.__("Profile has beeb updated successfully")});
+				}else{
+					return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+				}
+			}			
+			
+		}else if(req.body.type == "education"){
+			console.log(profile_data);
+			update_data.education = req.body.education ? req.body.education : '';
+			update_data.year_of_passing = req.body.year_of_passing ? req.body.year_of_passing : "";
+			if(profile_data){
+				const userData = await userService.updateProfile(profile_data._id, update_data);
+				console.log(userData);
+				if(userData){
+					return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : req.__("Profile has beeb updated successfully")});
+				}else{
+					return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+				}
+			}
+			else{
+				if(req.body.profile){
+					update_data.parent_id = req.body.user_id ? new ObjectId(req.body.user_id) : null;
+				}
+				update_data.user_id = req.body.user_id ? new ObjectId(req.body.user_id) : null;
+				const userData = await userService.createProfile(update_data);
+				if(userData){
+					await userModel.updateOne({ _id : req.body.user_id }, { seeker : 1 });
+					return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : req.__("Profile has beeb updated successfully")});
+				}else{
+					return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+				}
+			}
+		}
+		else if(req.body.type == "current_employer"){
+			update_data.company_name = req.body.company_name ? req.body.company_name : '';
+			update_data.date_of_joining = req.body.date_of_joining ? req.body.date_of_joining : "";
+			update_data.designation = req.body.designation ? req.body.designation : "";
+			if(profile_data){
+				const userData = await userService.updateProfile(profile_data._id, update_data);
+				console.log(userData);
+				if(userData){
+					return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : req.__("Profile has beeb updated successfully")});
+				}else{
+					return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+				}
+			}
+			else{
+				if(req.body.profile){
+					update_data.parent_id = req.body.user_id ? new ObjectId(req.body.user_id) : null;
+				}
+				update_data.user_id = req.body.user_id ? new ObjectId(req.body.user_id) : null;
+				const userData = await userService.createProfile(update_data);
+				if(userData){
+					await userModel.updateOne({ _id : req.body.user_id }, { seeker : 1 });
+					return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : req.__("Profile has beeb updated successfully")});
+				}else{
+					return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+				}
+			}
+		}
+		else if(req.body.type == "skill"){
+			update_data.skill_name = req.body.skills ? req.body.skills : '';
+			if(profile_data){
+				const userData = await userService.updateProfile(profile_data._id, update_data);
+				console.log(userData);
+				if(userData){
+					return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : req.__("Profile has beeb updated successfully")});
+				}else{
+					return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+				}
+			}
+			else{
+				if(req.body.profile){
+					update_data.parent_id = req.body.user_id ? new ObjectId(req.body.user_id) : null;
+				}
+				update_data.user_id = req.body.user_id ? new ObjectId(req.body.user_id) : null;
+				const userData = await userService.createProfile(update_data);
+				if(userData){
+					await userModel.updateOne({ _id : req.body.user_id }, { seeker : 1 });
+					return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : req.__("Profile has beeb updated successfully")});
+				}else{
+					return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+				}
+			}
+		}
+		else if(req.body.type == "location"){
+			update_data.city_id = req.body.city_id;
+			update_data.locality_id = req.body.locality_id ? req.body.locality_id : null;
+			if(profile_data){
+				const userData = await userService.updateProfile(profile_data._id, update_data);
+				console.log(userData);
+				if(userData){
+					return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : req.__("Profile has beeb updated successfully")});
+				}else{
+					return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+				}
+			}
+			else{
+				if(req.body.profile){
+					update_data.parent_id = req.body.user_id ? new ObjectId(req.body.user_id) : null;
+				}
+				update_data.user_id = req.body.user_id ? new ObjectId(req.body.user_id) : null;
+				const userData = await userService.createProfile(update_data);
+				if(userData){
+					await userModel.updateOne({ _id : req.body.user_id }, { seeker : 1 });
+					return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : req.__("Profile has beeb updated successfully")});
+				}else{
+					return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+				}
+			}
+		}
+		else if(req.body.type == "other"){
+			update_data.passport = (req.body.passport && req.body.passport == 'yes') ? true : false,
+			update_data.diploma = (req.body.diploma && req.body.diploma == 'yes') ? true : false,
+			update_data.address_id = req.body.adProof;
+			update_data.photoproof_id = req.body.pIdProof;
+			update_data.language_id = req.body.language;
+			if(profile_data){
+				const userData = await userService.updateProfile(profile_data._id, update_data);
+				console.log(userData);
+				if(userData){
+					return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : req.__("Profile has beeb updated successfully")});
+				}else{
+					return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+				}
+			}
+			else{
+				if(req.body.profile){
+					update_data.parent_id = req.body.user_id ? new ObjectId(req.body.user_id) : null;
+				}
+				update_data.user_id = req.body.user_id ? new ObjectId(req.body.user_id) : null;
+				const userData = await userService.createProfile(update_data);
+				if(userData){
+					await userModel.updateOne({ _id : req.body.user_id }, { seeker : 1 });
+					return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : req.__("Profile has beeb updated successfully")});
+				}else{
+					return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+				}
+			}
+		}
+		else{
+			const userData = await userService.addUserProfile(req);
+			if(userData){
+				return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : req.__("Profile has beeb updated successfully")});
+			}else{
+				return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+			}
+		}
+		
+	}catch(err){
+		return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
+	}		
 }
 
 async function applyjob(req, res){
@@ -167,10 +347,11 @@ async function candidateSearch(req, res){
 		console.log(job_id);
 		var employment = []
 		for(let i=0;i<job_id.length;i++){
-			employment.push(new ObjectId(job_id[i]));
+			employment.push(job_id[i]);
 		}
 		search.employment_status = { $in : employment }
 	}
+	console.log(search);
 	const total_record = await userProfileModel.find(search);
 	//const detail = await userProfileModel.find(search).populate('city_id user_id locality_id category_id skill_id language_id address_id photoproof_id','city_id.name');
 	userProfileModel.aggregate([

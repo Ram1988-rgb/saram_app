@@ -27,8 +27,18 @@ var UserProfileSchema = new Schema({
     experience : { type : Number },
     passport 	: { type : Boolean },
     diploma 	: { type : Boolean },   
-	status 	: { type : Boolean },
-    deleted_at	: { type : Number},   
+	status 	: { 
+        type : Number,
+        default : 1 
+    },
+    deleted_at	: { 
+        type : Number,
+        default : 0
+    },  
+    parent_id	: {
+        type : Object,
+        default : null
+    }, 
     createdAt	: {
         type : Date,
         default : Date.now

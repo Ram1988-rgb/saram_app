@@ -13,8 +13,14 @@ var UserSchema = new Schema({
     photo_id_number : { type : String },
     photo_proof : { type : String },
     image : { type : String },
-	status 	: { type : Boolean },
-    deleted_at	: { type : Number},   
+	status 	: { 
+        type : Number,
+        default : 1 
+    },
+    deleted_at	: { 
+        type : Number,
+        default : 0
+    },   
      seeker: {
         type : Number,
         default : 0

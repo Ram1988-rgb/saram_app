@@ -13,20 +13,19 @@ async function getProfile(id){
 async function add(req){
 	var newUser = new userModel({
 		name	: req.body.name,
-		email	: req.body.email,
+		email	: req.body.email ? req.body.email : '',
 		mobile	: parseInt(req.body.mobile),
 		dob		: req.body.dob ? req.body.dob : '',
 		gender		: req.body.gender ? req.body.gender : '',
 		seeker	: 0,
 		provider	: 1,
 		password	: bcrypt.hashSync(req.body.pass),
+		parent_id : req.body.user_id ? new ObjectId(req.body.user_id) : null,
 		createdby	: req.body.createdby,
-		photo_type_id : new ObjectId(req.body.photo_id_type),
-		photo_id_number : req.body.photo_id_number,
-		photo_proof : req.body.photoId,
-		image : req.body.image,			
-		status	: true,
-		deleted_at	:  0
+		photo_type_id : req.body.photo_id_type ? new ObjectId(req.body.photo_id_type): null,
+		photo_id_number : req.body.photo_id_number ? req.body.photo_id_number : '',
+		photo_proof : req.body.photoId ? req.body.photoId : '',
+		image : req.body.image
 	});
 	return await newUser.save(); 
 }
@@ -79,17 +78,26 @@ async function addUserProfile(req){
 		company_name :req.body.company,
 		experience 	: parseInt(req.body.year_of_exp),
 		passport 	: (req.body.passport && req.body.passport == 'yes') ? true : false,
-		diploma 	: (req.body.diploma && req.body.diploma == 'yes'),   
-		skill_name  : req.body.skills?req.body.skills:[],
-		status 		: true,
-		deleted_at	: 0
+		diploma 	: (req.body.diploma && req.body.diploma == 'yes')? true : false,   
+		skill_name  : req.body.skills?req.body.skills:[]
 	});
 	return await newUserProfile.save(); 
+}
+
+async function updateProfile(id, update_data){	
+	return profileModel.updateOne({ _id : id }, update_data);
+}
+
+async function createProfile(update_data){
+	var newUserProfile = new profileModel(update_data);
+	return await newUserProfile.save();
 }
 
 module.exports = {
     getProfile,
     add,
 	edit,
-	addUserProfile
+	addUserProfile,
+	updateProfile,
+	createProfile
 }
