@@ -7,5 +7,6 @@ module.exports = function(router) {
 	router.post('/api/users/updateprofile', validateToken, indexController.updateprofile);
 	router.get('/api/users/getProfile', validateToken, indexController.getProfile);
 	router.get('/api/users/candidateSearch', validateToken, indexController.candidateSearch);
+	router.get('/api/users/candiatesortlisted', validateToken, indexController.candiatesortlisted);
 	
 }

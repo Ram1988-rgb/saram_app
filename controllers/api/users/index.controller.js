@@ -2,6 +2,7 @@ const userService = require(`${appRoot}/services/admin/user`);
 const userModel  = require(`${appRoot}/models/user.model`);
 const userProfileModel  = require(`${appRoot}/models/userProfile.model`);
 const applyjobModel  = require(`${appRoot}/models/applyjob.model`);
+const sortlisted_candidateModel  = require(`${appRoot}/models/sortlisted_candidate.model`);
 const commanHelper = require(`${appRoot}/helpers/comman.helper`);
 const constant = require(`${appRoot}/config/constant`);
 const {constants} = require(`${appRoot}/config/string`);
@@ -486,11 +487,29 @@ async function candidateSearch(req, res){
 	});	
 }
 
+async function candiatesortlisted(req, res){
+	console.log(req.query);
+	var job = '';
+	const job = await sortlisted_candidateModel.findOne({ profile_id : new ObjectId(req.query.profile_id), user_id : new ObjectId(req.query.user_id), status : true, deleted_at : 0});
+	console.log(job);
+	const sort_profile = {
+		user_id : req.query.user_id,
+		profile_id : req.query.profile_id
+	}
+	if(job){
+		return res.send({ status : HttpStatus.OK, code : 0, message : req.__('Candidate have been already sortlisted'), data : {} })
+	}else{
+		await sortlisted_candidateModel.create(sort_profile);
+		return res.send({ status : HttpStatus.OK, code : 0, message : req.__("Candidate has beeb sortlisted successfully"), data : {} });
+	}
+}
+
 module.exports = {
 	login,
 	registration,
 	updateprofile,
 	applyjob,
 	getProfile,
-	candidateSearch
+	candidateSearch,
+	candiatesortlisted
 }

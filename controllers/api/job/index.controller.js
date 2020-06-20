@@ -73,7 +73,7 @@ async function deatils(req, res){
 		{
 			$match : 
 			{
-				_id : new ObjectId(req.query.id), deleted_at : 0, status : true
+				_id : new ObjectId(req.query.id), deleted_at : 0, status : 1
 			}
 		},
 		{
@@ -84,6 +84,9 @@ async function deatils(req, res){
 				foreignField : '_id',
 				as : "user_data"
 			}
+		},
+		{
+			$unwind : "$user_data"
 		}
 	], function(error, record){
 		return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record });
@@ -117,7 +120,6 @@ async function createJob(req, res){
 		console.log(err)
 		return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
 	}	
-	
 }
 
 async function editJob(req, res){

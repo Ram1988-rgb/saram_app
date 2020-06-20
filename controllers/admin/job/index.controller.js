@@ -140,7 +140,10 @@ var self= module.exports  = {
 				var city = await commanHelper.getCity();
 				var job_type = await commanHelper.jobType();
 				const category = await model.category.find({deleted_at:0, status : true, cat_id : null });	
-				const subcategory = await model.category.find({deleted_at:0, status : true, cat_id : detail.cat_id });	
+				const subcategory = await model.category.find({deleted_at:0, status : true, cat_id : detail.category_id });	
+				console.log(detail.category_id);
+				console.log(subcategory);
+				console.log("==========test data-------==========");
 				config.helpers.permission('job', req, async function(err,permission){
 					
 					const locality = await model.locality.find({ city_id : detail.city_id, status : true, deleted_at : 0});

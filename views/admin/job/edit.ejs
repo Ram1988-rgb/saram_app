@@ -65,8 +65,9 @@
 			<div class="form-group col-xs-12 col-md-9 subcateogry-select">
 			  <select name="subcategory" id="subcategory" class="select2 form-control " multiple="multiple" >
 				<option value="">Select</option>
+				<% subcategory_id = detail.subcategory_id %>
 				<%for(let i=0;i<subcategory.length;i++){%>
-					<option value="<%=subcategory[i]._id%>"><%=subcategory[i].name%></option>
+					<option value="<%=subcategory[i]._id%>" <% if(subcategory_id.indexOf(subcategory[i]._id) !== -1){ %> selected="selected"<% }%>><%=subcategory[i].name%></option>
 					<%}%>
 			  </select>
 			</div>
