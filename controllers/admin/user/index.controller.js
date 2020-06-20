@@ -266,7 +266,7 @@ var self= module.exports  = {
 	  const skills = await commanHelper.allSkills();
 	  const job_type = await commanHelper.jobType();
 	  const category = await model.category.find({deleted_at:0, cat_id : null });
-	  
+	  console.log(profileData,">>>>>>>>>>>>>>>>>>>>>")
 	  res.render('admin/user/profile.ejs',{
 		  layout:'admin/layout/layout',
 			userData:userData,

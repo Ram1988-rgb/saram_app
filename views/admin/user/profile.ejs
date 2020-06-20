@@ -33,8 +33,9 @@
                               <option value="">Select City</option>
                               <%
                               for(var i=0; i<city.length; i++){
+                                profileData.city_id = profileData.city_id?profileData.city_id:'';
                               %>
-                                <option value="<%=city[i]._id%>" <%if((profileData.city_id).toString() == city[i]._id){%>selected="selected"<%}%>><%=city[i].name%></option>
+                                <option value="<%=city[i]._id%>" <%if(profileData.city_id.toString() == city[i]._id){%>selected="selected"<%}%>><%=city[i].name%></option>
                               <%}%>
                             </select>
                           </div>
@@ -277,7 +278,7 @@
                       <div class="col-md-9">		 
                         <%for(var key=0;key<job_type.length;key++){%>
                           <div class="col-md-4 form-group">
-                            <input id="jobtype" name="jobtype" value="<%=job_type[key].code %>" <%if(profileData.employment_status){%>checked="checked"<%}%>  type="checkbox" class="applicable-for"><label for="checkbox34"><%=job_type[key].name%></label>
+                            <input id="jobtype" name="jobtype" value="<%=job_type[key].code %>" <%if((profileData.employment_status).indexOf(job_type[key].code)>-1){%>checked="checked"<%}%>  type="checkbox" class="applicable-for"><label for="checkbox34"><%=job_type[key].name%></label>
                           </div>
                         <%}%>
                       </div>

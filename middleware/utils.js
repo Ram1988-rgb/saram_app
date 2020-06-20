@@ -3,12 +3,15 @@ const constant = require('../config/constant');
 
   async function validateToken(req, res, next){
     const authorizationHeaader = req.headers.authorization;
+    console.log(authorizationHeaader);
     let result;
     if (authorizationHeaader) {		
       const token = authorizationHeaader;
       try {
         result = jwt.verify(token, constant.JWT_SECRET);
+        console.log(result);
         if(result && result.data && result.data._id){
+          console.log("=======test==============");
           req.USERID =result.data._id;
           next();
         }else{
@@ -19,6 +22,8 @@ const constant = require('../config/constant');
           res.status(401).send(result);
         }
       } catch (err) {
+        console.log(err);
+        console.log("=============ram==============");
         //throw new Error(err);
         result = { 
           error: `Authentication error. Invalid token.`,

@@ -588,8 +588,7 @@ async function candidateSearch(req, res){
 }
 
 async function candiatesortlisted(req, res){
-	console.log(req.query);
-	var job = '';
+	
 	const job = await sortlisted_candidateModel.findOne({ profile_id : new ObjectId(req.query.profile_id), user_id : new ObjectId(req.query.user_id), status : true, deleted_at : 0});
 	console.log(job);
 	const sort_profile = {
