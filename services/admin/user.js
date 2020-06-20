@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt-nodejs");
 const userModel = require(`${appRoot}/models/user.model`);
 const profileModel = require(`${appRoot}/models/userProfile.model`);
 
+
 async function getProfile(id){
     return await userModel.findOne({_id:id});
 }
@@ -30,7 +31,20 @@ async function add(req){
 		photo_proof : req.body.photoId ? req.body.photoId : '',
 		image : req.body.image
 	});
-	return await newUser.save(); 
+	const userData = await newUser.save();
+	
+	const profile = await profileModel.findOne(userData._id);
+	
+	if(!profile){
+		const newProfile = new profileModel({
+			user_id :(userData._id)
+		});
+		
+		newProfile.save();
+	}
+
+	return userData;
+ 
 }
 
 async function edit(id, req){
@@ -103,6 +117,11 @@ async function updateProfile(id, update_data){
 async function createProfile(update_data){
 	var newUserProfile = new profileModel(update_data);
 	return await newUserProfile.save();
+}
+
+async function generateOtp(params){
+	
+
 }
 
 module.exports = {

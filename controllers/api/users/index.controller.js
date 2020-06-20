@@ -486,11 +486,29 @@ async function candidateSearch(req, res){
 	});	
 }
 
+async function generateOtp(req,res){
+	try{
+		const params = req.body;
+		const otp = Math.floor(1000 + Math.random() * 9000);
+		params.otp =otp;
+		params.purpose = "register";
+		const detail = await commanHelper.sendOtp(params);
+		if(detail){
+
+		}
+	}catch(err){
+		
+	}
+
+
+}
+
 module.exports = {
 	login,
 	registration,
 	updateprofile,
 	applyjob,
 	getProfile,
-	candidateSearch
+	candidateSearch,
+	generateOtp
 }
