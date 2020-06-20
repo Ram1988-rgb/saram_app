@@ -34,13 +34,14 @@
                               <%
                               for(var i=0; i<city.length; i++){
                               %>
-                                <option value="<%=city[i]._id%>"><%=city[i].name%></option>
+                                <option value="<%=city[i]._id%>" <%if((profileData.city_id).toString() == city[i]._id){%>selected="selected"<%}%>><%=city[i].name%></option>
                               <%}%>
                             </select>
                           </div>
                       </div>
                   </div>
                 </div>
+                
 
                 <div class="row">
                   <div class="col-md-12">
@@ -60,7 +61,7 @@
                       <div class="form-group row">
                           <label class="control-label col-xs-12 col-md-3 "><%=__('Address')%></label>
                           <div class="form-group col-xs-12 col-md-9">
-                          <input type="text" id="address" name="address"  class="form-control" placeholder="<%=__('Address')%>">
+                          <input type="text" id="address" name="address" value="<%=profileData.address?profileData.address:''%>"  class="form-control" placeholder="<%=__('Address')%>">
                           </div>
                       </div>
                   </div>
@@ -71,7 +72,7 @@
                       <div class="form-group row">
                           <label class="control-label col-xs-12 col-md-3 "><%=__('Resume Title')%></label>
                           <div class="form-group col-xs-12 col-md-9">
-                          <input type="text" id="resume_title" name="resume_title"  class="form-control" placeholder="<%=__('Resume Title')%>">
+                          <input type="text" id="resume_title" name="resume_title" value="<%=profileData.resume_title?profileData.resume_title:''%>"  class="form-control" placeholder="<%=__('Resume Title')%>">
                           </div>
                       </div>
                   </div>
@@ -83,6 +84,9 @@
                           <label class="control-label col-xs-12 col-md-3 "><%=__('Resume')%> </label>
                           <div class="form-group col-xs-12 col-md-9">
                             <input type="file" name="resume" id="resume" class="form-control">
+                            <%if(profileData.resume_name){%>
+                              <a href="/assets/files/userresume/<%=profileData.resume_name%>" target="_blank">View Resume</a>
+                            <%}%>
                           </div>
                       </div>
                   </div>
@@ -95,7 +99,7 @@
                             <select name="category" id="category" data-validation="required" class="select2 form-control" onchange="getskillExp(this.value)">
                               <option value="">Select Category</option>
                               <%for(let i=0;i<category.length;i++){%>
-                                <option value="<%=category[i].id%>"><%=category[i].name%></option>
+                                <option value="<%=category[i].id%>" <%if(profileData.category_id == category[i].id){%>selected="selected"<%}%>><%=category[i].name%></option>
                                 <%}%>
                             </select>
                           </div>
@@ -161,7 +165,7 @@
                           <label class="control-label col-xs-12 col-md-3 "><%=__('Current Designation')%></label>
                           <div class="form-group col-xs-12 col-md-9">
                             <div class="row designaitor-data">
-                              <input type="text" id="designation" name="designation" class="form-control" placeholder="<%=__('Designation')%>">
+                              <input type="text" id="designation" name="designation" value="<%=profileData.designation?profileData.designation:''%>" class="form-control" placeholder="<%=__('Designation')%>">
                             </div>
                           </div>
                       </div>
@@ -173,7 +177,7 @@
                           <label class="control-label col-xs-12 col-md-3 "><%=__('Highest Education')%></label>
                           <div class="form-group col-xs-12 col-md-9">
                             <div class="row designaitor-data">
-                              <input type="text" id="education" name="education" class="form-control" placeholder="<%=__('Education')%>">
+                              <input type="text" id="education" name="education" value="<%=profileData.education?profileData.education:''%>" class="form-control" placeholder="<%=__('Education')%>">
                             </div>
                           </div>
                       </div>
@@ -186,7 +190,7 @@
                           <label class="control-label col-xs-12 col-md-3 "><%=__('Name of Course')%></label>
                           <div class="form-group col-xs-12 col-md-9">
                             <div class="row designaitor-data">
-                              <input type="text" id="name_of_course" name="name_of_course" class="form-control" placeholder="<%=__('Name of course')%>">
+                              <input type="text" id="name_of_course" name="name_of_course" value="<%=profileData.name_of_course?profileData.name_of_course:''%>" class="form-control" placeholder="<%=__('Name of course')%>">
                             </div>
                           </div>
                       </div>
@@ -201,7 +205,7 @@
                             <select name="year_of_passing" id="year_of_passing" class="form-control" >
                               <option value="">Select Year</option>
                               <%for(var i =1990;i<2020;i++){%>
-                                <option value="<%=i%>"><%=i%></option>
+                                <option value="<%=i%>" <%if(profileData.year_of_passing ==i){%>selected<%}%>><%=i%></option>
                                 <%}%>
                             </select>
                           </div>
@@ -213,7 +217,7 @@
                       <div class="form-group row">
                           <label class="control-label col-xs-12 col-md-3 "><%=__('Current Salary')%>(Lakh) </label>
                           <div class="form-group col-xs-12 col-md-9">
-                          <input type="text" id="salary" name="salary" class="form-control" placeholder="<%=__('Salary')%>">
+                          <input type="text" id="salary" name="salary" value="<%=profileData.current_salary?profileData.current_salary:''%>" class="form-control" placeholder="<%=__('Salary')%>">
                           </div>
                       </div>
                   </div>
@@ -224,7 +228,7 @@
                       <div class="form-group row">
                           <label class="control-label col-xs-12 col-md-3 "><%=__('Current/Previous Company')%></label>
                           <div class="form-group col-xs-12 col-md-9">
-                          <input type="text" id="company" name="company" class="form-control" placeholder="<%=__('Company')%>">
+                          <input type="text" id="company" name="company" value="<%=profileData.company_name?profileData.company_name:''%>" class="form-control" placeholder="<%=__('Company')%>">
                           </div>
                       </div>
                   </div>
@@ -234,7 +238,7 @@
                     <div class="form-group row">
                       <label class="control-label col-xs-12 col-md-3 "><%=__('Date of Joing')%></label>
                       <div class="form-group col-xs-12 col-md-9">
-                        <input type="text" id="datepicker" name="date_of_joining"  class="form-control" placeholder="<%=__('Date of Joining')%>" >
+                        <input type="text" id="datepicker" name="date_of_joining" value="<%=profileData.date_of_joining?profileData.date_of_joining:''%>"  class="form-control" placeholder="<%=__('Date of Joining')%>" >
                       </div>
                     </div>
                   </div>
@@ -247,7 +251,7 @@
                             <select name="year_of_exp" id="year_of_exp" class="form-control" >
                               <option value="">Select Year</option>
                               <%for(var i =0;i<30;i++){%>
-                                <option value="<%=i%>"><%=i%></option>
+                                <option value="<%=i%>" <%if(profileData.date_of_joining){%>selected="selected<%}%>><%=i%></option>
                                 <%}%>
                             </select>
                           </div>
@@ -260,7 +264,7 @@
                           <label class="control-label col-xs-12 col-md-3 "><%=__('Notice Period')%></label>
                           <div class="form-group col-xs-12 col-md-9">
                             <div class="row designaitor-data">
-                              <input type="text" id="notice_period" name="notice_period" class="form-control" placeholder="<%=__('Notice Period')%>">
+                              <input type="text" id="notice_period" name="notice_period" value="<%=profileData.notice_period?profileData.notice_period:''%>" class="form-control" placeholder="<%=__('Notice Period')%>">
                             </div>
                           </div>
                       </div>
@@ -273,7 +277,7 @@
                       <div class="col-md-9">		 
                         <%for(var key=0;key<job_type.length;key++){%>
                           <div class="col-md-4 form-group">
-                            <input id="jobtype" name="jobtype" value="<%=job_type[key].code %>" type="checkbox" class="applicable-for"><label for="checkbox34"><%=job_type[key].name%></label>
+                            <input id="jobtype" name="jobtype" value="<%=job_type[key].code %>" <%if(profileData.employment_status){%>checked="checked"<%}%>  type="checkbox" class="applicable-for"><label for="checkbox34"><%=job_type[key].name%></label>
                           </div>
                         <%}%>
                       </div>
@@ -285,7 +289,7 @@
                       <div class="form-group row">
                           <label class="control-label col-xs-12 col-md-3 "><%=__('Do you have passport')%></label>
                           <div class="form-group col-xs-12 col-md-9">
-                            <input type="checkbox" name="passport" id="passport" value="Yes">
+                            <input type="checkbox" name="passport" id="passport" value="Yes" <%if(profileData.passport){%>checked="checked"<%}%>>
                           </div>
                       </div>
                   </div>
@@ -298,7 +302,7 @@
                             <div class="row">
                                 <%for(var i=0;i<lKnow.length;i++){%>
                                   <div class="col-md-3">
-                                  <input type="checkbox" name="language" id="language-<%=i%>" value="<%=lKnow[i].id%>">  <%=lKnow[i].name%>
+                                  <input type="checkbox" name="language" id="language-<%=i%>" value="<%=lKnow[i].id%>" <%if((profileData.language_id).indexOf(lKnow[i].id)>-1){%>checked="checked"<%}%>>  <%=lKnow[i].name%>
                                   </div>
                                 <%}%>
                               </div>
@@ -316,7 +320,7 @@
                             <div class="row">
                               <%for(var i=0;i<adProof.length;i++){%>
                                 <div class="col-md-3">
-                                <input type="checkbox" name="adProof" id="adProof-<%=i%>" value="<%=adProof[i].id%>" >  <%=adProof[i].name%>
+                                <input type="checkbox" name="adProof" id="adProof-<%=i%>" value="<%=adProof[i].id%>" <%if((profileData.address_id).indexOf(adProof[i].id)>-1){%>checked="checked"<%}%>>  <%=adProof[i].name%>
                                 </div>
                               <%}%>
                             </div>
@@ -333,7 +337,7 @@
                             <div class="row">
                               <%for(var i=0;i<pIdProof.length;i++){%>
                                 <div class="col-md-3">
-                                <input type="checkbox" name="pIdProof" id="pIdProof-<%=i%>" value="<%=pIdProof[i].id%>" >  <%=pIdProof[i].name%>
+                                <input type="checkbox" name="pIdProof" id="pIdProof-<%=i%>" value="<%=pIdProof[i].id%>" <%if((profileData.photoproof_id).indexOf(pIdProof[i].id)>-1){%>checked="checked"<%}%>>  <%=pIdProof[i].name%>
                                 </div>
                               <%}%>
                             </div>
@@ -346,7 +350,7 @@
                       <div class="form-group row">
                           <label class="control-label col-xs-12 col-md-3 "><%=__('ITI Deploma')%></label>
                           <div class="form-group col-xs-12 col-md-9">
-                            <input type="checkbox" name="diploma" id="diploma" value="yes">
+                            <input type="checkbox" name="diploma" id="diploma" value="yes" <%if(profileData.diploma){%>checked="checked"<%}%>>
                           </div>
                       </div>
                   </div>
@@ -382,6 +386,11 @@
           getSubcategory(this.value);
         });
     });
+    
+    getLocality('<%=profileData.city_id%>','<%=profileData.locality_id%>');
+    getskillExp('<%=profileData.category_id%>','<%=profileData.skill_name%>') ;             
+    getSubcategory('<%=profileData.category_id%>','<%=profileData.subcategory_id%>'); 
+              
 
 
       // function validate(){

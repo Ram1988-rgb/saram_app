@@ -257,6 +257,7 @@ var self= module.exports  = {
 
 	userProfile:async function (req,res){
 	  const userData = await userService.getProfile(req.params.id);
+	  const profileData = await userService.getProfileData(req.params.id);
 	  const city = await commanHelper.getCity();
 	  const lKnow = await commanHelper.langKnown();
 	  const adProof = await commanHelper.addressProof();
@@ -269,24 +270,25 @@ var self= module.exports  = {
 	  res.render('admin/user/profile.ejs',{
 		  layout:'admin/layout/layout',
 			userData:userData,
-			city:city, lKnow:lKnow,
+			city:city, 
+			lKnow:lKnow,
 			adProof:adProof,
 			pIdProof:pIdProof,
 			designaitor:designaitor,
 			skills:skills,
 			job_type : job_type,
-			category:category
+			category:category,
+			profileData:profileData
 		});
 	},
 
 	updateProfile: async function(req,res){
-		const userId = req.body.id;
-		
+		const userId = req.body.id;		
 		try{
 			const resume = await commanHelper.uploadFile(req.files, 'resume', constants.UPLOAD_USER_RESUME)
 			req.body.resume_name = resume?resume:'';
-			req.body.user_id = req.body.id;
-			console.log(req.body.id)
+			req.body.user_id = req.params.id;
+			
 			const userProfile = await userService.addUserProfile(req);
 			if(userProfile){
 				await model.user.updateOne({ _id : req.body.id }, { seeker : 1 });
