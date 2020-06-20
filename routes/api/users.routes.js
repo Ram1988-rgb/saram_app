@@ -8,5 +8,7 @@ module.exports = function(router) {
 	router.get('/api/users/getProfile', validateToken, indexController.getProfile);
 	router.get('/api/users/candidateSearch', validateToken, indexController.candidateSearch);
 	router.get('/api/users/candiatesortlisted', validateToken, indexController.candiatesortlisted);
+	router.post('/api/users/generateotp', indexController.generateOtp);
+	router.post('/api/users/verifyotp', indexController.verifyOtp);
 	
 }
