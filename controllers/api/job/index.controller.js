@@ -86,6 +86,15 @@ async function deatils(req, res){
 			}
 		},
 		{
+			$lookup :
+			{
+				from : "userprofiles",
+				localField : "user_id",
+				foreignField : 'user_id',
+				as : "profile"
+			}
+		},
+		{
 			$unwind : "$user_data"
 		}
 	], function(error, record){

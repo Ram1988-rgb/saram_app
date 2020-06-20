@@ -316,12 +316,113 @@ async function applyjob(req, res){
 
 async function getProfile(req, res){
 	try{
-		const userData = await userProfileModel.findOne({ user_id : new ObjectId(req.query.user_id), status: true, deleted_at : 0});
-		if(userData){
-			return res.send({ status : HttpStatus.OK, code : 0, data : userData, message : ""});
-		}else{
-			return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : ""});
-		}
+		//const userData = await userProfileModel.findOne({ user_id : new ObjectId(req.query.user_id), status: true, deleted_at : 0});
+		let search = { user_id : new ObjectId(req.query.user_id), status: 1, deleted_at : 0 }
+		console.log(search);
+		userProfileModel.aggregate([
+			{
+				$match : search
+			},
+			{
+				$lookup:{
+					from:"cities",
+					localField:"city_id",
+					foreignField:"_id",
+					as:"city"
+				}
+			},
+			{
+				$lookup:{
+					from:"users",
+					localField:"user_id",
+					foreignField:"_id",
+					as:"user"
+				}
+			},
+			{
+				$lookup:{
+					from:"categories",
+					localField:"category_id",
+					foreignField:"_id",
+					as:"category"
+				}
+			},
+			{
+				$lookup:{
+					from:"localities",
+					localField:"locality_id",
+					foreignField:"_id",
+					as:"locality"
+				}
+			},		
+			{
+				$lookup:{
+					from:"addressproofs",
+					localField:"address_id",
+					foreignField:"_id",
+					as:"addressproofs"
+				}
+			},
+			{
+				$lookup:{
+					from:"photoidproofs",
+					localField:"photoproof_id",
+					foreignField:"_id",
+					as:"photoidproofs"
+				
+				}
+			},
+			{
+				$lookup:{
+					from:"languageknows",
+					localField:"language_id",
+					foreignField:"_id",
+					as:"languages"
+				}
+			},
+			{
+				$project:{
+					address:1,
+					resume_title:1,
+					resume_name:1,
+					current_salary:1,
+					company_name:1,
+					experience:1,
+					notice_period:1,
+					designation:1,
+					education:1,
+					year_of_passing:1,
+					passport:1,
+					diploma: 1,
+					name_of_course : 1,
+					user:1,
+					"city._id":1,
+					"city.name":1,
+					"category._id":1,				
+					"category.name":1,
+					"category.description":1,
+					"locality._id":1,
+					"locality.name":1,
+					"addressproofs._id":1,
+					"addressproofs.name":1,
+					"photoidproofs._id":1,
+					"photoidproofs.name":1,
+					"languages._id":1,
+					"languages.name":1,
+					employment_status:1
+	
+	
+				}
+			}
+		], function(error, record){
+			console.log(record);
+			console.log(error);
+			if(record){
+				return res.send({ status : HttpStatus.OK, code : 0, data : record, message : ""});
+			}else{
+				return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : ""});
+			}
+		});
 	}catch(err){
 		return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
 	}	
@@ -375,7 +476,6 @@ async function candidateSearch(req, res){
 	}
 	console.log(search);
 	const total_record = await userProfileModel.find(search);
-	console.log(total_record.length);
 	//const detail = await userProfileModel.find(search).populate('city_id user_id locality_id category_id skill_id language_id address_id photoproof_id','city_id.name');
 	userProfileModel.aggregate([
 		{
