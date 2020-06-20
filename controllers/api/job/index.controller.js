@@ -9,9 +9,15 @@ async function list(req, res){
 	console.log(req.query);
 	const skip = req.query.skip ? parseInt(req.query.skip) : 0 ;
 	const limit = req.query.limit ? parseInt(req.query.limit): 10;
-	let search = { deleted_at : 0, status : true }
+	let search = { deleted_at : 0, status : 1 }
 	if(req.query.user_id){
 		search.user_id = { $ne : new ObjectId(req.query.user_id) }
+	}
+	if(req.query.category_id){
+		search.category_id =  new ObjectId(req.query.category_id)
+	}
+	if(req.query.subcategory_id){
+		search.subcategory_id = { $in : req.query.subcategory_id }
 	}
 	if(req.query.keyword){
 		search.name = { '$regex' : req.query.keyword };
@@ -22,17 +28,33 @@ async function list(req, res){
 	if(req.query.locality){
 		search.locality_id = new ObjectId(req.query.locality)
 	}
+
+	if(req.query.exp_min && req.query.exp_max){
+		search.exp_min = { $gte : parseInt(req.query.exp_min)}
+		search.exp_max = { $lte : parseInt(req.query.exp_max)}		
+	}
+	if(req.query.salary_min && req.query.salary_max){
+		search.salary_min = { $gte : parseInt(req.query.salary_min)}
+		search.salary_max = { $lte : parseInt(req.query.salary_max)}
+	}
 	if(req.query.jobtype){
 		const data = req.query.jobtype;
 		const job_id = data.split(',');
 		console.log(job_id);
 		search.jobtype = { $in : job_id }
 	}
+	let sort_by = -1;
+	if(req.query.sort == 'oldest'){
+		sort_by = 1;
+	}
 	console.log(search)	
 	const total_record = await jobModel.find(search);
 	jobModel.aggregate([
 		{
 			$match : search
+		},
+		{
+			$sort : sort_by
 		},
 		{ 
 			$skip : skip 

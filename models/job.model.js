@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var JobSchema = new Schema({
-	category_id : [{type:mongoose.Schema.Types.ObjectId, ref:"category"}],
+    subcategory_id : [{type:mongoose.Schema.Types.ObjectId, ref:"category"}],
+    category_id : {type:mongoose.Schema.Types.ObjectId, ref:"category"},
     name : { type: String },
     keyword : { type: String },
 	jobtype : { type: Array },

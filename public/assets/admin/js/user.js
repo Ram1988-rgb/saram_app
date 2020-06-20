@@ -68,3 +68,25 @@ function getskillExp(catId){
     }
   })
 }
+
+function getSubcategory(catId){
+  $(".subcateogry-select").html(`<select name="subcategory" id="subcategory" class="select2 form-control" multiple="multiple"">
+  <option value="">Select</option>
+</select>`)
+  $.ajax({
+    type: 'POST',
+    url: '/admin/user/subcategory',
+    data: {id:catId},
+    success: function (response) {
+      if(response.success){   
+        const subcategory = response.detail?response.detail:[];
+        var dg = `<option value="">Select </option>`;
+        for(let i=0;i<subcategory.length;i++){
+          dg = dg+ `<option value="${subcategory[i]._id}">${subcategory[i].name}</option>`
+        }
+        $('#subcategory').html(dg);
+        $("#subcategory").select2()
+      }
+    }
+  })
+}

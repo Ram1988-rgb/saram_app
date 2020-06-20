@@ -263,7 +263,7 @@ var self= module.exports  = {
 	  const pIdProof = await commanHelper.photoIdProof();
 	  const designaitor = await commanHelper.allDesignaitor();
 	  const skills = await commanHelper.allSkills();
-	  var job_type = await commanHelper.jobType();
+	  const job_type = await commanHelper.jobType();
 	  const category = await model.category.find({deleted_at:0, cat_id : null });
 	  
 	  res.render('admin/user/profile.ejs',{
@@ -280,16 +280,16 @@ var self= module.exports  = {
 	},
 
 	updateProfile: async function(req,res){
-		const userId = req.params.id;
+		const userId = req.body.id;
 		
 		try{
 			const resume = await commanHelper.uploadFile(req.files, 'resume', constants.UPLOAD_USER_RESUME)
 			req.body.resume_name = resume?resume:'';
-			req.body.user_id = req.params.id;
-			console.log(req.params.id)
+			req.body.user_id = req.body.id;
+			console.log(req.body.id)
 			const userProfile = await userService.addUserProfile(req);
 			if(userProfile){
-				await model.user.updateOne({ _id : id }, { seeker : 1 });
+				await model.user.updateOne({ _id : req.body.id }, { seeker : 1 });
 			  	res.redirect('/admin/user');
 			}
 		  }catch(err){
@@ -304,6 +304,18 @@ var self= module.exports  = {
 			const code = catData.skillexp?catData.skillexp:'SKILL';
 			const detail = await model.skill_library.find({deleted_at:0, code:code});
 			res.json({success:true, detail:detail, code:code})
+		 }catch(err){
+				console.log(err)				
+				res.json({success:false, message:err.message})
+		 }  
+
+	},
+
+	subcategory: async function(req,res){
+		try{
+			let cat_id = req.body.id ?  new ObjectId(req.body.id) : null;
+			const catData = await model.category.find({ cat_id : cat_id, deleted_at : 0, status : true});
+			res.json({ success : true, detail:catData })
 		 }catch(err){
 				console.log(err)				
 				res.json({success:false, message:err.message})

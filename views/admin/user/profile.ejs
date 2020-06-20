@@ -27,7 +27,7 @@
                 <div class="row">
                   <div class="col-md-12">
                       <div class="form-group row">
-                          <label class="control-label col-xs-12 col-md-3 "><%=__('City')%></label>
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('City')%> *</label>
                           <div class="form-group col-xs-12 col-md-9">
                             <select id="city" name="city" data-validation="required" class="form-control" onchange="getLocality(this.value)">
                               <option value="">Select City</option>
@@ -45,7 +45,7 @@
                 <div class="row">
                   <div class="col-md-12">
                       <div class="form-group row">
-                          <label class="control-label col-xs-12 col-md-3 "><%=__('Locality')%> *</label>
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('Locality')%> </label>
                           <div class="form-group col-xs-12 col-md-9">
                             <select id="locality" name="locality"  class="form-control" >
                               <option value="">Select Locality</option>
@@ -90,7 +90,7 @@
                 <div class="row">
                   <div class="col-md-12">
                       <div class="form-group row">
-                          <label class="control-label col-xs-12 col-md-3 "><%=__('Category')%> </label>
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('Category')%> * </label>
                           <div class="form-group col-xs-12 col-md-9">
                             <select name="category" id="category" data-validation="required" class="select2 form-control" onchange="getskillExp(this.value)">
                               <option value="">Select Category</option>
@@ -102,19 +102,7 @@
                       </div>
                   </div>
                 </div>
-
-                 <div class="row">
-                  <div class="col-md-12">
-                      <div class="form-group row">
-                          <label class="control-label col-xs-12 col-md-3 "><%=__('Sub Category')%> </label>
-                          <div class="form-group col-xs-12 col-md-9 ">
-                            <select name="subcategory" id="subcategory" class="select2 form-control " multiple="multiple" >
-                              <option value="">Select</option>
-                            </select>
-                          </div>
-                      </div>
-                  </div>
-                </div>
+               
 
                
                 <div class="form-group row clearfix" id="category_valid" style="display: none;">
@@ -141,6 +129,19 @@
                   </div>
                 </div>
                 
+
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group row">
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('Sub Category')%> </label>
+                          <div class="form-group col-xs-12 col-md-9 subcateogry-select">
+                            <select name="subcategory" id="subcategory" class="select2 form-control " multiple="multiple" >
+                              <option value="">Select</option>
+                            </select>
+                          </div>
+                      </div>
+                  </div>
+                </div>
 
                 <div class="row">
                   <div class="col-md-12">
@@ -173,6 +174,19 @@
                           <div class="form-group col-xs-12 col-md-9">
                             <div class="row designaitor-data">
                               <input type="text" id="education" name="education" class="form-control" placeholder="<%=__('Education')%>">
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-group row">
+                          <label class="control-label col-xs-12 col-md-3 "><%=__('Name of Course')%></label>
+                          <div class="form-group col-xs-12 col-md-9">
+                            <div class="row designaitor-data">
+                              <input type="text" id="name_of_course" name="name_of_course" class="form-control" placeholder="<%=__('Name of course')%>">
                             </div>
                           </div>
                       </div>
@@ -358,10 +372,18 @@
     <link rel="stylesheet" type="text/css" href="/assets/admin/css/global.css" media="screen" />
     
     <script>
-      $(document).ready(function() {
-    $('#category').select2();
-    $('#skillexp').select2();
-});
+    $(document).ready(function() {
+        $('#category').select2();
+        $('#subcategory').select2();
+        $('#skillexp').select2();
+
+        $("#category").on("change", function(){
+         // alert(this.value);
+          getSubcategory(this.value);
+        });
+    });
+
+
       // function validate(){
       //     $(".cate-err").remove();
       //   if($('#save_data').val()==''){

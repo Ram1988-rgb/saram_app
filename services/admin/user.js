@@ -53,30 +53,36 @@ async function edit(id, req){
 }
 
 async function addUserProfile(req){
-	const data = req.body.category;
-	const category_id = data.split(',');
+	console.log(req.body);
+	var data = req.body.subcategory;
+	let subcategory_id = data;
+	if(typeof data == "string"){
+		 subcategory_id = data.split(',');
+	}
 	var newUserProfile = new profileModel({
 		city_id 	: new ObjectId(req.body.city),
 		user_id 	: req.body.user_id,
-		locality_id : req.body.locality,
-		category_id : category_id,
-		employment_status : req.body.jobtype,
+		locality_id : req.body.locality ? req.body.locality : null,
+		category_id : new ObjectId(req.body.category),
+		subcategory_id : subcategory_id,
+		employment_status : req.body.jobtype ? req.body.jobtype: [],
 		//skill_id 	: req.body.skills,
-		address	: req.body.address,
-		notice_period : req.body.notice_period,
+		address	: req.body.address ? req.body.address : '',
+		notice_period : req.body.notice_period ? req.body.notice_period : '',
 		//designation_id : req.body.designation,
-		designation : req.body.designation,
-		date_of_joining	: req.body.date_of_joining,
-		education : req.body.education,
-		year_of_passing : req.body.year_of_passing,
-		language_id : req.body.language,
-		address_id 	: req.body.adProof,
-		photoproof_id : req.body.pIdProof,
+		designation : req.body.designation ? req.body.designation : '',
+		date_of_joining	: req.body.date_of_joining ? req.body.date_of_joining : '',
+		education : req.body.education ? req.body.education : '',
+		name_of_course : req.body.name_of_course ? req.body.name_of_course : '',
+		year_of_passing : req.body.year_of_passing ? req.body.year_of_passing : '',
+		language_id : req.body.language ? req.body.language : [],
+		address_id 	: req.body.adProof ? req.body.adProof : [],
+		photoproof_id : req.body.pIdProof ? req.body.pIdProof : [],
 		resume_name 	: req.body.resume_name,
 		resume_title 	: req.body.resume_title,
-		current_salary : parseInt(req.body.salary),
+		current_salary : req.body.salary ? parseInt(req.body.salary) : 0,
 		company_name :req.body.company,
-		experience 	: parseInt(req.body.year_of_exp),
+		experience 	: req.body.year_of_exp ? parseInt(req.body.year_of_exp): 0,
 		passport 	: (req.body.passport && req.body.passport == 'yes') ? true : false,
 		diploma 	: (req.body.diploma && req.body.diploma == 'yes')? true : false,   
 		skill_name  : req.body.skills?req.body.skills:[]

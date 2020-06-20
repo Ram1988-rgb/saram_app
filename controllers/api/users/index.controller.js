@@ -330,33 +330,58 @@ async function candidateSearch(req, res){
 	console.log(req.query);
 	const skip = req.query.skip ? parseInt(req.query.skip) : 0 ;
 	const limit = req.query.limit ? parseInt(req.query.limit): 10;
-	let search = { deleted_at : 0, status : true }
+	let search = { deleted_at : 0, status : 1 }
 	
-	if(req.query.name){
+/*	if(req.query.name){
 		search.company_name = { '$regex' : req.query.name };
+	}*/
+
+	if(req.query.skill_name){
+		search.skill_name = { $in : req.query.skill_name }
 	}
+
 	if(req.query.city_id){
 		search.city_id =  new ObjectId(req.query.city_id)
+	}
+	if(req.query.category_id){
+		search.category_id =  new ObjectId(req.query.category_id)
+	}
+	if(req.query.subcategory_id){
+		search.subcategory_id = { $in : req.query.subcategory_id }
 	}
 	if(req.query.locality){
 		search.locality_id = new ObjectId(req.query.locality)
 	}
+
+	if(req.query.exp_min && req.query.exp_max){
+		search.experience = { $gte : parseInt(req.query.exp_min), $lte : parseInt(req.query.exp_max)}
+	}
+/*	if(req.query.salary_min && req.query.salary_max){
+		search.current_salary = { $gte : parseInt(req.query.salary_min), $lte : parseInt(req.query.salary_max)}
+	}*/
 	if(req.query.jobtype){
 		const data = req.query.jobtype;
 		const job_id = data.split(',');
-		console.log(job_id);
 		var employment = []
 		for(let i=0;i<job_id.length;i++){
 			employment.push(job_id[i]);
 		}
 		search.employment_status = { $in : employment }
 	}
+	let sort_by = { 'created_at' : -1 };
+	if(req.query.sort == 'oldest'){
+		sort_by = { 'created_at' : 1 };
+	}
 	console.log(search);
 	const total_record = await userProfileModel.find(search);
+	console.log(total_record.length);
 	//const detail = await userProfileModel.find(search).populate('city_id user_id locality_id category_id skill_id language_id address_id photoproof_id','city_id.name');
 	userProfileModel.aggregate([
 		{
 			$match : search
+		},
+		{
+			$sort : sort_by
 		},
 		{
 			$lookup:{
@@ -429,6 +454,7 @@ async function candidateSearch(req, res){
 				year_of_passing:1,
 				passport:1,
 				diploma: 1,
+				name_of_course : 1,
 				user:1,
 				"city._id":1,
 				"city.name":1,

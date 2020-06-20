@@ -10,6 +10,7 @@ module.exports = function(app) {
 	var userRoutes = require('./admin/user.routes');
 	var jobRoutes = require('./admin/job.routes');
 	var staticpagesRoutes = require('./admin/staticpages.routes');
+	var system_configRoutes = require('./admin/system_config.routes');
 	var managepageRoutes = require('./admin/managepage.routes');
 	var categoryRoutes = require('./admin/category.routes');
 	var settingRoutes = require('./admin/setting.routes');
@@ -30,4 +31,5 @@ module.exports = function(app) {
 	settingRoutes(router);
 	staticpagesRoutes(router);
 	skillExpRoutes(router);
+	system_configRoutes(router);
 }

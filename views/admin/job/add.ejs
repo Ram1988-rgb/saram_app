@@ -42,8 +42,36 @@
 </div>
 </div>  
 
+<div class="row">
+	<div class="col-md-12">
+		<div class="form-group row">
+			<label class="control-label col-xs-12 col-md-3 "><%=__('Category')%> *</label>
+			<div class="form-group col-xs-12 col-md-9">
+			  <select name="category" id="category" data-validation="required" class="select2 form-control" onchange="getSubcategory(this.value)">
+				<option value="">Select Category</option>
+				<%for(let i=0;i<category.length;i++){%>
+				  <option value="<%=category[i].id%>"><%=category[i].name%></option>
+				  <%}%>
+			  </select>
+			</div>
+		</div>
+	</div>
+  </div>
 
-<div class="form-group row clearfix" id="category_valid">
+  <div class="row">
+	<div class="col-md-12">
+		<div class="form-group row">
+			<label class="control-label col-xs-12 col-md-3 "><%=__('Sub Category')%> </label>
+			<div class="form-group col-xs-12 col-md-9 subcateogry-select">
+			  <select name="subcategory" id="subcategory" class="select2 form-control " multiple="multiple" >
+				<option value="">Select</option>
+			  </select>
+			</div>
+		</div>
+	</div>
+  </div>
+
+<div class="form-group row clearfix" id="category_valid" style="display: none;">
 	  <label class="col-xs-12 col-md-3  col-form-label" for="example-text-input"><%=__('Category')%> *</label>
 	  <div class="col-xs-12 col-md-9">
 
@@ -111,9 +139,9 @@
 <div class="row">
 <div class="col-md-12">
 <div class="form-group row">
-<label class="control-label col-xs-12 col-md-3 "><%=__('Monthly Salary')%> <%=__('Min')%> *</label>
+<label class="control-label col-xs-12 col-md-3 "><%=__('Monthly Salary')%> <%=__('Min')%></label>
 <div class="form-group col-xs-12 col-md-9">
-<input type="text" id="salary_min" name="salary_min" data-validation="required, number" class="form-control" placeholder="<%=__('Min')%>">
+<input type="text" id="salary_min" name="salary_min" data-validation="number" class="form-control" placeholder="<%=__('Min')%>">
 </div>
 </div>
 </div>
@@ -122,9 +150,9 @@
 <div class="row">
 <div class="col-md-12">
 <div class="form-group row">
-<label class="control-label col-xs-12 col-md-3 "><%=__('Monthly Salary')%> <%=__('Max')%> *</label>
+<label class="control-label col-xs-12 col-md-3 "><%=__('Monthly Salary')%> <%=__('Max')%> </label>
 <div class="form-group col-xs-12 col-md-9">
-<input type="text" id="salary_max" name="salary_max" data-validation="required, number" class="form-control" placeholder="<%=__('Max')%>">
+<input type="text" id="salary_max" name="salary_max"  data-validation="number" class="form-control" placeholder="<%=__('Max')%>">
 </div>
 </div>
 </div>
@@ -133,9 +161,9 @@
 <div class="row">
 <div class="col-md-12">
 <div class="form-group row">
-<label class="control-label col-xs-12 col-md-3 "><%=__('Experience')%> <%=__('Min')%> *</label>
+<label class="control-label col-xs-12 col-md-3 "><%=__('Experience')%> <%=__('Min')%> </label>
 <div class="form-group col-xs-12 col-md-9">
-<select name="exp_min" id="exp_min" class="form-control" data-validation="required">
+<select name="exp_min" id="exp_min" class="form-control" >
 	<option value="">Select Exp</option>
 	<%for(var key=1;key<20;key++){%>
 	   <option value="<%=key%>"><%=key%></option>
@@ -149,9 +177,9 @@
 <div class="row">
 <div class="col-md-12">
 <div class="form-group row">
-<label class="control-label col-xs-12 col-md-3 "><%=__('Experience')%> <%=__('Max')%> *</label>
+<label class="control-label col-xs-12 col-md-3 "><%=__('Experience')%> <%=__('Max')%> </label>
 <div class="form-group col-xs-12 col-md-9">
-<select name="exp_max" id="exp_max" class="form-control" data-validation="required">
+<select name="exp_max" id="exp_max" class="form-control" >
 	<option value="">Select Exp</option>
 	<%for(var key=1;key<21;key++){%>
 	   <option value="<%=key%>"><%=key%></option>
@@ -267,6 +295,12 @@
 </div>
 
 <script>
+    $(document).ready(function() {
+        $('#subcategory').select2();
+	});
+</script>
+
+<script>
 
 function Company() {
   var checkBox = document.getElementById("company");
@@ -300,6 +334,6 @@ $("#city_id").on("change", function(){
     });
 });
 </script>
-
+<script src="/assets/admin/js/user.js"></script>
 <script type="text/javascript" src="/assets/admin/js/category_dropdown.js"></script>
 <link rel="stylesheet" type="text/css" href="/assets/admin/css/global.css" media="screen" />

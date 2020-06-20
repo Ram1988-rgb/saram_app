@@ -111,11 +111,12 @@ var self= module.exports  = {
 
 	add : async (req,res) => {
 		if(req.method == "GET"){
-			var users = await commanHelper.getUers();
-			var city = await commanHelper.getCity();
-			var job_type = await commanHelper.jobType();
+			const users = await commanHelper.getUers();
+			const city = await commanHelper.getCity();
+			const job_type = await commanHelper.jobType();
+			const category = await model.category.find({deleted_at:0, cat_id : null });
 			config.helpers.permission('job', req, async function(err,permission){
-				res.render('admin/job/add.ejs',{layout:'admin/layout/layout',permission : permission, city : city, job_type : job_type, users : users} );
+				res.render('admin/job/add.ejs',{layout:'admin/layout/layout',permission : permission, city : city, job_type : job_type, users : users, category : category} );
 			})
 		}else{
 			try{
@@ -137,11 +138,13 @@ var self= module.exports  = {
 			if(detail){					
 				var users = await commanHelper.getUers();
 				var city = await commanHelper.getCity();
-				var job_type = await commanHelper.jobType();		
+				var job_type = await commanHelper.jobType();
+				const category = await model.category.find({deleted_at:0, status : true, cat_id : null });	
+				const subcategory = await model.category.find({deleted_at:0, status : true, cat_id : detail.cat_id });	
 				config.helpers.permission('job', req, async function(err,permission){
 					
 					const locality = await model.locality.find({ city_id : detail.city_id, status : true, deleted_at : 0});
-					res.render('admin/job/edit.ejs',{layout:'admin/layout/layout',permission:permission,detail:detail, city : city, job_type : job_type, locality : locality, users:users} );
+					res.render('admin/job/edit.ejs',{layout:'admin/layout/layout',permission:permission,detail:detail, city : city, job_type : job_type, locality : locality, users:users, category : category, subcategory : subcategory} );
 				})
 			}else{
 				res.redirect('/admin/job')
