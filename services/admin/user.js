@@ -9,6 +9,9 @@ const profileModel = require(`${appRoot}/models/userProfile.model`);
 async function getProfile(id){
     return await userModel.findOne({_id:id});
 }
+async function getProfileData(id){	
+	return await profileModel.findOne({user_id:ObjectId(id)});
+}
 
 async function add(req){
 	var newUser = new userModel({
@@ -59,11 +62,11 @@ async function addUserProfile(req){
 	if(typeof data == "string"){
 		 subcategory_id = data.split(',');
 	}
-	var newUserProfile = new profileModel({
+	const detail = {
 		city_id 	: new ObjectId(req.body.city),
-		user_id 	: req.body.user_id,
+		user_id 	: req.params.id,
 		locality_id : req.body.locality ? req.body.locality : null,
-		category_id : new ObjectId(req.body.category),
+		category_id : req.body.category,
 		subcategory_id : subcategory_id,
 		employment_status : req.body.jobtype ? req.body.jobtype: [],
 		//skill_id 	: req.body.skills,
@@ -77,17 +80,20 @@ async function addUserProfile(req){
 		year_of_passing : req.body.year_of_passing ? req.body.year_of_passing : '',
 		language_id : req.body.language ? req.body.language : [],
 		address_id 	: req.body.adProof ? req.body.adProof : [],
-		photoproof_id : req.body.pIdProof ? req.body.pIdProof : [],
-		resume_name 	: req.body.resume_name,
+		photoproof_id : req.body.pIdProof ? req.body.pIdProof : [],		
 		resume_title 	: req.body.resume_title,
 		current_salary : req.body.salary ? parseInt(req.body.salary) : 0,
 		company_name :req.body.company,
 		experience 	: req.body.year_of_exp ? parseInt(req.body.year_of_exp): 0,
-		passport 	: (req.body.passport && req.body.passport == 'yes') ? true : false,
+		passport 	: (req.body.passport && req.body.passport == 'Yes') ? true : false,
 		diploma 	: (req.body.diploma && req.body.diploma == 'yes')? true : false,   
 		skill_name  : req.body.skills?req.body.skills:[]
-	});
-	return await newUserProfile.save(); 
+	}
+	if(req.body.resume_name){
+		detail.resume_name 	= req.body.resume_name
+	}
+	
+	return await profileModel.updateOne({user_id:req.params.id},detail); 
 }
 
 async function updateProfile(id, update_data){	
@@ -105,5 +111,6 @@ module.exports = {
 	edit,
 	addUserProfile,
 	updateProfile,
-	createProfile
+	createProfile,
+	getProfileData
 }
