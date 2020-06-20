@@ -6,6 +6,7 @@ var OtpSchema = new Schema({
     otp:{type:Number},
     code:{type:String,default:"+91"},
     purpose:{type:String},
+    used	: { type : Number, default : 0 },
     deleted_at	: { type : Number, default : 0 },
     createdAt	: {
         type : Date,

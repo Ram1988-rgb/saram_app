@@ -601,19 +601,22 @@ async function candiatesortlisted(req, res){
 		await sortlisted_candidateModel.create(sort_profile);
 		return res.send({ status : HttpStatus.OK, code : 0, message : req.__("Candidate has beeb sortlisted successfully"), data : {} });
 	}
+}
 async function generateOtp(req,res){
 	try{
 		const params = req.body;
 		const otp = Math.floor(1000 + Math.random() * 9000);
 		params.otp =otp;		
 		params.message = "Your Otp: "+otp;
-		const detail = await commanHelper.sendOtp(params);
-		if(detail){
-			return res.send({ status : HttpStatus.OK, code : 0, data : userData, message : "Otp has been sent successfully"});
+		const detail = await commanHelper.generateOtp(params);
+		
+		if(!detail){
+			return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : "Otp has been sent successfully"});
 		}else{
 			return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : ""});
 		}
 	}catch(err){
+		console.log(err)
 		return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
 	}
 }
@@ -622,7 +625,7 @@ async function verifyOtp(req,res){
 	try{
 		const params = req.body;
 		const detail = await commanHelper.verifyOtp(params);
-		if(detail.success){
+		if(detail){
 			return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : detail.message});
 
 		}else{
@@ -630,6 +633,7 @@ async function verifyOtp(req,res){
 
 		}
 	}catch(err){
+		console.log(err)
 		return res.send({ status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("Something went wrong")});
 	}
 }

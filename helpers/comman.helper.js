@@ -95,10 +95,11 @@ async function skillLibrary(){
     return await skill_libraryModel.find({deleted_at:0, status : true});
 }
 
-async function generateCoupon(params){
+async function generateOtp(params){
     const url = `${constant.SMS_URL}?workingkey=${constant.SMSWORKING_KEY}&sender=${constant.SENDER_CODE}&to=${params.phone}&message=${params.message}`;
     
     request(url, async function (error, response, body) {
+        
         if(body){
             var detail = {
                 mobile:params.phone,
@@ -108,8 +109,8 @@ async function generateCoupon(params){
                 deleted_at	: 0
             }
             const newOtp = new otpModel(detail);
-             await newOtp.save();
-             return true;
+             return await newOtp.save();
+             
         }else{
             return false;
         }
@@ -117,14 +118,18 @@ async function generateCoupon(params){
 }
 
 async function verifyOtp(params){
-    const data = await otpModel.find({mobile:params.phone,purpose:params.purpose,otp:params.otp}).sort({_id:-1});
+    var moment = require('moment');
+    const data = await otpModel.find({used:0,mobile:params.phone,purpose:params.purpose,otp:params.otp}).sort({_id:-1});
     if(data && data.length){
         const detail = data[0];
-        var createdAt = (detail.createdAt).valuOf();
-        var currentDate = new Date().valueOf();
-        const difftime = parseInt(currentDate)-parseInt(currentDate);
-        otpTime = constant.OTPVALIDITY *1000;
+        console.log(detail.createdAt)
+        var createdAt =  moment(detail.createdAt).valueOf();
+        var currentDate = new Date().getTime();
+        const difftime = parseInt(currentDate)-parseInt(createdAt);
+        console.log(difftime)
+        otpTime = constant.OTPVALIDITY *100000;
         if(difftime<=otpTime){
+            await otpModel.updateOne({_id:detail._id},{used:1});
             return {success:true, message:"Otp has been verified successfully"}
         }
         return {success:true, message:"Otp has been expired"}
@@ -148,5 +153,6 @@ module.exports = {
     getlocalityList,
     skillTypes,
     skillLibrary,
-    verifyOtp
+    verifyOtp,
+    generateOtp
 }
