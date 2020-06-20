@@ -1,12 +1,11 @@
 var SITEURL = process.env.SITEURL;
 var ABSOLUTEPATH = process.env.ABSOLUTEPATH;
 module.exports = {
-	hello:'how are you',
-	twitterauth:{
-	  consumer_key: '2nC4MzCrBh3zTu9a3Df84OKPU',
-	  consumer_secret: 'FlDDlBi3Xf3KI6lCQlGlvriiyhG5wcusGKmqcqsTZdc7QPLfQY',
-	  bearer_token: 'AAAAAAAAAAAAAAAAAAAAAEJA9gAAAAAAfwbPX5%2Fxs88mINzWNvH%2BfRnIVow%3DJrfS6m8f6lEd3KhwwyPv1tbShA6AbU5SgDaOBRuzviRwPbam05'
-	},
+	SMSWORKING_KEY:"A3e2121b3b63fca4a65717031db6cdf67",
+	SENDER_CODE:"CICDMO",
+	SMS_URL :"http://alerts.prioritysms.com/api/web2sms.php",
+	OTPVALIDITY:5,
+	
 	SITEURL : process.env.SITEURL+":"+process.env.PORT,
 	ADMINSITEURL:SITEURL+'admin/',
 	USERSITEURL:SITEURL+'user/',
@@ -41,16 +40,7 @@ module.exports = {
 	UPLOAD_SKILL_EXP:`${ABSOLUTEPATH}/public/assets/files/skillexp/`,
 	SHOW_SKILL_EXP:`${SITEURL}assets/files/skillexp/`,
 
-	PAYPALAPI:{
-    "host": "api.sandbox.paypal.com",
-    "port": "",
-    "client_id": "AdN7vRe_VY5qpb9_mtv1qECHjnNuwBOaEK4RX5JS2yKPwXWKDraebmjLIQc0qJ_jICT3utJN-HU5RFjD",
-    "client_secret": "EG8FP4e8PPW_A-l08SbCdasnHTTq68KClfYXhoH31YdIL-w1tWbmd7O5dQr4oFguJOcX6cQ5ylKFYNgj",
-  
-
-
-
-}
+	
 
 
 
