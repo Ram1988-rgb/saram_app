@@ -43,10 +43,40 @@ async function list(req, res){
 		console.log(job_id);
 		search.jobtype = { $in : job_id }
 	}
-	let sort_by = -1;
+	let sort_by = { 'createdAt' : -1};
 	if(req.query.sort == 'oldest'){
-		sort_by = 1;
+		sort_by = { 'createdAt' : 1};
 	}
+	console.log(search)	
+	const total_record = await jobModel.find(search);
+	jobModel.aggregate([
+		{
+			$match : search
+		},
+		{
+			$sort : sort_by
+		},
+		{ 
+			$skip : skip 
+		},
+		{ 
+			$limit : limit 
+		}
+	], function(error, record){
+		console.log(error);
+		return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record, total_record : total_record.length });
+	});	
+}
+
+async function myjobs(req, res){	
+	console.log(req.query);
+	const skip = req.query.skip ? parseInt(req.query.skip) : 0 ;
+	const limit = req.query.limit ? parseInt(req.query.limit): 10;
+	let search = { deleted_at : 0, status : 1 }
+	if(req.query.user_id){
+		search.user_id = new ObjectId(req.query.user_id)
+	}	
+	let sort_by = { 'createdAt' : -1};
 	console.log(search)	
 	const total_record = await jobModel.find(search);
 	jobModel.aggregate([
@@ -103,19 +133,20 @@ async function deatils(req, res){
 }
 
 async function applyjob(req, res){
-	console.log(req.query);
 	const job = await applyjobModel.findOne({ job_id : new ObjectId(req.query.job_id), user_id : new ObjectId(req.query.user_id), status : true, deleted_at : 0});
-	const create_job = {
+	let create_job = {
 		user_id : new ObjectId(req.query.user_id),
-		job_id : new ObjectId(req.query.job_id),
-		status : true,
-		deleted_at : 0
+		job_id : new ObjectId(req.query.job_id)
 	}
-	if(job){
-		return res.send({ status : HttpStatus.OK, code : 0, message : req.__('You have already apply for this job'), data : {} })
-	}else{
-		await applyjobModel.create(create_job);
-		return res.send({ status : HttpStatus.OK, code : 0, message : req.__("Job has beeb apply successfully"), data : {} });
+	if(!job){
+		const jobData = await jobService.applyjob(req, create_job)
+		if(jobData){
+			return res.send({ status : HttpStatus.OK, code : 0, message : req.__('Job has beeb apply successfully'), data : {} })
+		}else{		
+			return res.send({ status : HttpStatus.OK, code : 0, message : req.__("Something went wrong"), data : {} });
+		}
+	}else{		
+		return res.send({ status : HttpStatus.OK, code : 0, message : req.__("You have already apply for this job"), data : {} });
 	}
 }
 
@@ -170,6 +201,7 @@ async function job_status(req, res){
 
 module.exports = {		
 	list,
+	myjobs,
 	deatils,
 	applyjob,
 	createJob,

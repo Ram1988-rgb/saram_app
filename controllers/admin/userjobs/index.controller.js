@@ -73,7 +73,7 @@ var self= module.exports  = {
 							//const userDetail = await model.user.findOne({_id: new ObjectId(item.user_id) });
 							var arr1 = [];
 							arr1.push('<input type="checkbox" name="action_check[]" class="all_check" value="'+item._id+'">');				
-							arr1.push(jobDetail.name?jobDetail.name:'--');
+							arr1.push(jobDetail?jobDetail.name:'--');
 							arr1.push((userDetail && userDetail.name)?userDetail.name:'Admin');
 							arr1.push((userDetail && userDetail.email)?userDetail.email:'--');
 							if(!item.status){

@@ -33,9 +33,9 @@
                               <option value="">Select City</option>
                               <%
                               for(var i=0; i<city.length; i++){
-                                profileData.city_id = profileData.city_id?profileData.city_id:'';
+                                profileData.city_id = profileData?profileData.city_id:'';
                               %>
-                                <option value="<%=city[i]._id%>" <%if(profileData.city_id.toString() == city[i]._id){%>selected="selected"<%}%>><%=city[i].name%></option>
+                                <option value="<%=city[i]._id%>" <%if(city[i]._id.toString() ==profileData.city_id){%>selected="selected"<%}%>><%=city[i].name%></option>
                               <%}%>
                             </select>
                           </div>

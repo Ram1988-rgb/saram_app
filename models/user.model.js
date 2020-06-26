@@ -13,6 +13,14 @@ var UserSchema = new Schema({
     photo_id_number : { type : String },
     photo_proof : { type : String },
     image : { type : String },
+    address : {
+        type : String,
+        default : ''
+    },
+    parent_id : {
+        type : Object,
+        default : null
+    },
 	status 	: { 
         type : Number,
         default : 1 

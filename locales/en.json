@@ -124,5 +124,8 @@
 	"Name of Course": "Name of Course",
 	"Name of course": "Name of course",
 	"Candidate has beeb sortlisted successfully": "Candidate has beeb sortlisted successfully",
-	"Candidate have been already sortlisted": "Candidate have been already sortlisted"
+	"Candidate have been already sortlisted": "Candidate have been already sortlisted",
+	"Your password change successfully": "Your password change successfully",
+	"This number is already in used, please use another number": "This number is already in used, please use another number",
+	"This number is not register, please enter register number": "This number is not register, please enter register number"
 }

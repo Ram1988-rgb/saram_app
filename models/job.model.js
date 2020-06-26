@@ -18,6 +18,10 @@ var JobSchema = new Schema({
     locality_id : { type : Object },
     company : { type : String },
     company_data : { type: Array },
+    apply_users : { 
+        type: Array ,
+        default : []
+    },
 	status 	: { 
         type : Number, 
         default : 1

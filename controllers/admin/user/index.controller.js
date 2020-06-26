@@ -266,7 +266,6 @@ var self= module.exports  = {
 	  const skills = await commanHelper.allSkills();
 	  const job_type = await commanHelper.jobType();
 	  const category = await model.category.find({deleted_at:0, cat_id : null });
-	  console.log(profileData,">>>>>>>>>>>>>>>>>>>>>")
 	  res.render('admin/user/profile.ejs',{
 		  layout:'admin/layout/layout',
 			userData:userData,
@@ -291,7 +290,11 @@ var self= module.exports  = {
 			
 			const userProfile = await userService.addUserProfile(req);
 			if(userProfile){
-				await model.user.updateOne({ _id : req.body.id }, { seeker : 1 });
+				const update_data = {
+					seeker : 1,
+					address : req.body.address ? req.body.address : ''
+				}
+				await model.user.updateOne({ _id : req.body.id }, update_data);
 			  	res.redirect('/admin/user');
 			}
 		  }catch(err){

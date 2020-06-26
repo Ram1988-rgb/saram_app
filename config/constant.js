@@ -1,23 +1,21 @@
 var SITEURL = process.env.SITEURL;
 var ABSOLUTEPATH = process.env.ABSOLUTEPATH;
 module.exports = {
-	SMSWORKING_KEY:"A3e2121b3b63fca4a65717031db6cdf67",
-	SENDER_CODE:"CICDMO",
+	//SMSWORKING_KEY:"A3e2121b3b63fca4a65717031db6cdf67",
+	SMSWORKING_KEY:"Aaf4fde399017f09f7d454240ac76c466",
+	//SENDER_CODE:"CICDMO",
+	SENDER_CODE:"PRIRTY",
 	SMS_URL :"http://alerts.prioritysms.com/api/web2sms.php",
-	OTPVALIDITY:5,
+	OTPVALIDITY:10,
 	
 	SITEURL : process.env.SITEURL+":"+process.env.PORT,
 	ADMINSITEURL:SITEURL+'admin/',
 	USERSITEURL:SITEURL+'user/',
 	SHOWLANGUAGEPATH:SITEURL+'assets/files/languages/',	
-	
 
 	UPLOADPAGEIMAGE:ABSOLUTEPATH+'public/assets/files/pageimages/',
-	UPLOADPAGEIMAGEURL:SITEURL+'assets/files/pageimages/',
-	
+	UPLOADPAGEIMAGEURL:SITEURL+'assets/files/pageimages/',	
 
-
-	SAMPLEEXPORTBUSINESSCSVURL:SITEURL+'assets/files/sample/bussiness/',
 
 	SAMPLEEXPORTUSERCSVURL:SITEURL+'assets/files/sample/user/',
 	//BUSINESS_FIELD:[]

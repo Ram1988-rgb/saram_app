@@ -8,5 +8,6 @@ module.exports = function(router) {
 	router.post('/api/job/editJob', validateToken, indexController.editJob);
 	router.get('/api/job/delete_job', validateToken, indexController.delete_job);
 	router.get('/api/job/job_status', validateToken, indexController.job_status);
+	router.get('/api/job/myjobs', validateToken, indexController.myjobs);
 	
 }

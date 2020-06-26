@@ -96,13 +96,15 @@ async function skillLibrary(){
 }
 
 async function generateOtp(params){
-    const url = `${constant.SMS_URL}?workingkey=${constant.SMSWORKING_KEY}&sender=${constant.SENDER_CODE}&to=${params.phone}&message=${params.message}`;
+    const url = `${constant.SMS_URL}?workingkey=${constant.SMSWORKING_KEY}&sender=${constant.SENDER_CODE}&to=${params.mobile}&message=${params.message}`;
     
     request(url, async function (error, response, body) {
-        
+        console.log(body);
+        console.log('========response========');
+        console.log(error);
         if(body){
             var detail = {
-                mobile:params.phone,
+                mobile:params.mobile,
                 otp:params.otp,
                 purpose:params.purpose,
                 message:params.message,
@@ -110,7 +112,6 @@ async function generateOtp(params){
             }
             const newOtp = new otpModel(detail);
              return await newOtp.save();
-             
         }else{
             return false;
         }
@@ -119,7 +120,7 @@ async function generateOtp(params){
 
 async function verifyOtp(params){
     var moment = require('moment');
-    const data = await otpModel.find({used:0,mobile:params.phone,purpose:params.purpose,otp:params.otp}).sort({_id:-1});
+    const data = await otpModel.find({used:0,mobile:params.mobile,purpose:params.purpose,otp:params.otp}).sort({_id:-1});
     if(data && data.length){
         const detail = data[0];
         console.log(detail.createdAt)
@@ -132,7 +133,7 @@ async function verifyOtp(params){
             await otpModel.updateOne({_id:detail._id},{used:1});
             return {success:true, message:"Otp has been verified successfully"}
         }
-        return {success:true, message:"Otp has been expired"}
+        return {success:false, message:"Otp has been expired"}
     }
     return {success:false, message:"Please enter valid otp"}
 }

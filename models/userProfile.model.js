@@ -28,7 +28,11 @@ var UserProfileSchema = new Schema({
     company_name : { type : String },
     experience : { type : Number },
     passport 	: { type : Boolean },
-    diploma 	: { type : Boolean },   
+    diploma 	: { type : Boolean },
+    selected_by_users : { 
+        type: Array ,
+        default : []
+    },   
 	status 	: { 
         type : Number,
         default : 1 

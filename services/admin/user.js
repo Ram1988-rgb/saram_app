@@ -5,6 +5,8 @@ const async = require("async");
 const bcrypt = require("bcrypt-nodejs");
 const userModel = require(`${appRoot}/models/user.model`);
 const profileModel = require(`${appRoot}/models/userProfile.model`);
+const deviceModel = require(`${appRoot}/models/device.model`);
+const sortlisted_candidateModel  = require(`${appRoot}/models/sortlisted_candidate.model`);
 
 
 async function getProfile(id){
@@ -31,10 +33,8 @@ async function add(req){
 		photo_proof : req.body.photoId ? req.body.photoId : '',
 		image : req.body.image
 	});
-	const userData = await newUser.save();
-	
-	const profile = await profileModel.findOne(userData._id);
-	
+	const userData = await newUser.save();	
+	const profile = await profileModel.findOne(userData._id);	
 	if(!profile){
 		const newProfile = new profileModel({
 			user_id :(userData._id)
@@ -50,12 +50,12 @@ async function add(req){
 async function edit(id, req){
 	var updateUser = {
 		name	: req.body.name,
-		email	: req.body.email,
+		email	: req.body.email ? req.body.email : '',
 		dob		: req.body.dob ? req.body.dob : '',
 		gender		: req.body.gender ? req.body.gender : '',
 		mobile	: parseInt(req.body.mobile),
 		photo_type_id : new ObjectId(req.body.photo_id_type),
-		photo_id_number : req.body.photo_id_number
+		photo_id_number : req.body.photo_id_number ? req.body.photo_id_number : ''
 	}
 	if(req.body.pass){
 	  updateUser.password=bcrypt.hashSync(req.body.pass)  
@@ -66,6 +66,9 @@ async function edit(id, req){
 	if(req.body.image){
 	  updateUser.image = req.body.image 
 	}
+	if(req.body.address){
+		updateUser.address = req.body.address 
+	  }
 	return userModel.updateOne({ _id : id }, updateUser);
 }
 
@@ -111,6 +114,7 @@ async function addUserProfile(req){
 }
 
 async function updateProfile(id, update_data){	
+	console.log(update_data);
 	return profileModel.updateOne({ _id : id }, update_data);
 }
 
@@ -119,9 +123,32 @@ async function createProfile(update_data){
 	return await newUserProfile.save();
 }
 
-async function generateOtp(params){
-	
+async function changePassword(params){	
+	return userModel.updateOne({ mobile : parseInt(params.mobile) }, { password : bcrypt.hashSync(params.password)});
+}
 
+async function selectcandidate(req, data){
+	let candidate_data = await profileModel.findOne({ _id : req.query.job_id });
+	if(candidate_data){
+		const user_data = candidate_data.selected_by_users;
+		user_data.push(req.query.user_id);
+		await profileModel.updateOne({_id : candidate_data._id }, { selected_by_users : user_data });
+	}
+	return await sortlisted_candidateModel.create(data);
+}
+
+async function save_device(req,){
+	let device_data = await deviceModel.findOne({ device_id : req.body.device_id });
+	if(device_data){
+		return await profileModel.updateOne({_id : device_data._id }, { device_token : req.body.device_token, type : req.body.type });
+	}else{
+		const data = {
+			device_id : req.body.device_id,
+			device_type : req.body.device_token,
+			type : req.body.type
+		}
+		return await deviceModel.create(data);
+	}
 }
 
 module.exports = {
@@ -131,5 +158,8 @@ module.exports = {
 	addUserProfile,
 	updateProfile,
 	createProfile,
-	getProfileData
+	getProfileData,
+	changePassword,
+	selectcandidate,
+	save_device
 }

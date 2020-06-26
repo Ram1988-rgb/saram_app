@@ -1,6 +1,7 @@
 'use strict';
 
 const jobModel = require(`${appRoot}/models/job.model`);
+const applyjobModel  = require(`${appRoot}/models/applyjob.model`);
 const ObjectId = require('mongodb').ObjectId;
 
 async function addJob(param){
@@ -36,7 +37,7 @@ async function addJob(param){
 		city_id : new ObjectId(param.city_id),
 		user_id : new ObjectId(param.user_id),
 		locality_id : param.locality_id ? new ObjectId(param.locality_id) : null,
-		description : param.description ? param.description : '',
+		description : param.description ? param.description.trim() : '',
 		start_time : new Date(),
 		end_time : new Date(),
 		createdby : param.user_id
@@ -46,7 +47,7 @@ async function addJob(param){
 
 async function editJob(id, param){
 	var data = param.subcategory;
-	let subcategory_id = [];
+	let subcategory_id = data;
 	if(typeof data == 'string'){
 		 subcategory_id = data.split(',');
 	}
@@ -76,12 +77,23 @@ async function editJob(id, param){
 		city_id : new ObjectId(param.city_id),
 		user_id : new ObjectId(param.user_id),
 		locality_id : param.locality_id ? new ObjectId(param.locality_id) : null,
-		description : param.description ?  param.description : ''
+		description : param.description ?  param.description.trim() : ''
 	};
 	return jobModel.updateOne({ _id : id }, updateJob);
 }
 
+async function applyjob(req, data){
+	let job_data = await jobModel.findOne({ _id : req.query.job_id });
+	if(job_data){
+		const user_data = job_data.apply_users;
+		user_data.push(req.query.user_id);
+		await jobModel.updateOne({_id : job_data._id }, { apply_users : user_data });
+	}
+	return await applyjobModel.create(data);
+}
+
 module.exports ={
   addJob,
-  editJob
+  editJob,
+  applyjob
 }
