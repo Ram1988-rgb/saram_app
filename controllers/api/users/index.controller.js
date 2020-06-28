@@ -257,11 +257,7 @@ async function updateprofile(req, res){
 		}
 		else if(req.body.type=='user_profile'){
 			try{
-				const imageProof = await commanHelper.uploadFile(req.files,'photo_proof',constants.UPLOAD_USER_PHOTOID)
 				const imageProfile = await commanHelper.uploadFile(req.files,'photo_profile',constants.UPLOAD_USER_PROFILE)
-				if(imageProof){
-					req.body.photoId = imageProof;
-				}
 				if(imageProfile){
 					req.body.image = imageProfile;
 				}
@@ -279,6 +275,14 @@ async function updateprofile(req, res){
 			update_data.address_id = req.body.adProof;
 			update_data.photoproof_id = req.body.pIdProof;
 			update_data.language_id = req.body.language;
+			let user_update_data = {};			
+			const imageProof = await commanHelper.uploadFile(req.files,'photo_proof',constants.UPLOAD_USER_PHOTOID)
+			if(req.body.photo_id_type){
+				user_update_data.photo_type_id = new ObjectId(req.body.photo_id_type);
+				user_update_data.photo_id_number = req.body.photo_id_number ? req.body.photo_id_number : '';
+				user_update_data.photo_proof = imageProof ? imageProof : '';
+				await userModel.updateOne({ _id : req.body.user_id }, user_update_data);
+			}
 			if(profile_data){
 				const userData = await userService.updateProfile(profile_data._id, update_data);
 				console.log(userData);
@@ -488,7 +492,13 @@ async function candidateSearch(req, res){
 	}*/
 
 	if(req.query.skill_name){
-		search.skill_name = { $in : req.query.skill_name }
+		const data = req.query.skill_name;
+		const job_id = data.split(',');
+		var skillname = []
+		for(let i=0;i<job_id.length;i++){
+			skillname.push(job_id[i]);
+		}
+		search.skill_name = { $in : skillname }
 	}
 
 	if(req.query.city_id){
@@ -619,7 +629,8 @@ async function candidateSearch(req, res){
 				"photoidproofs.name":1,
 				"languages._id":1,
 				"languages.name":1,
-				employment_status:1
+				employment_status:1,
+				skill_name : 1
 
 
 			}

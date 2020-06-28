@@ -282,7 +282,8 @@ var self= module.exports  = {
 	},
 
 	updateProfile: async function(req,res){
-		const userId = req.body.id;		
+		console.log(req.body);
+		const userId = req.body.user_id;		
 		try{
 			const resume = await commanHelper.uploadFile(req.files, 'resume', constants.UPLOAD_USER_RESUME)
 			req.body.resume_name = resume?resume:'';
@@ -294,8 +295,9 @@ var self= module.exports  = {
 					seeker : 1,
 					address : req.body.address ? req.body.address : ''
 				}
-				await model.user.updateOne({ _id : req.body.id }, update_data);
-			  	res.redirect('/admin/user');
+				const updateuser= await model.user.updateOne({ _id : new ObjectId(req.body.user_id) }, update_data);
+				console.log(updateuser);  
+				res.redirect('/admin/user');
 			}
 		  }catch(err){
 				console.log(err)				

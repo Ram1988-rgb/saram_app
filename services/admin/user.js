@@ -53,9 +53,11 @@ async function edit(id, req){
 		email	: req.body.email ? req.body.email : '',
 		dob		: req.body.dob ? req.body.dob : '',
 		gender		: req.body.gender ? req.body.gender : '',
-		mobile	: parseInt(req.body.mobile),
-		photo_type_id : new ObjectId(req.body.photo_id_type),
-		photo_id_number : req.body.photo_id_number ? req.body.photo_id_number : ''
+		mobile	: parseInt(req.body.mobile)
+	}
+	if(req.body.photo_id_type){
+		updateUser.photo_type_id = new ObjectId(req.body.photo_id_type);
+		updateUser.photo_id_number = req.body.photo_id_number ? req.body.photo_id_number : '';
 	}
 	if(req.body.pass){
 	  updateUser.password=bcrypt.hashSync(req.body.pass)  
@@ -128,9 +130,9 @@ async function changePassword(params){
 }
 
 async function selectcandidate(req, data){
-	let candidate_data = await profileModel.findOne({ _id : req.query.job_id });
+	let candidate_data = await profileModel.findOne({ _id : req.query.profile_id });
 	if(candidate_data){
-		const user_data = candidate_data.selected_by_users;
+		const user_data = candidate_data.selected_by_users ? candidate_data.selected_by_users: [];
 		user_data.push(req.query.user_id);
 		await profileModel.updateOne({_id : candidate_data._id }, { selected_by_users : user_data });
 	}
