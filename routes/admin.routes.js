@@ -13,6 +13,7 @@ module.exports = function(app) {
 	var system_configRoutes = require('./admin/system_config.routes');
 	var managepageRoutes = require('./admin/managepage.routes');
 	var categoryRoutes = require('./admin/category.routes');
+	var candidateRoutes = require('./admin/candidate.routes');
 	var settingRoutes = require('./admin/setting.routes');
 	var skillExpRoutes = require('./admin/slillexp.routes');
         //import express
@@ -32,4 +33,5 @@ module.exports = function(app) {
 	staticpagesRoutes(router);
 	skillExpRoutes(router);
 	system_configRoutes(router);
+	candidateRoutes(router);
 }

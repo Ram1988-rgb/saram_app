@@ -3,6 +3,7 @@ const applyjobModel  = require(`${appRoot}/models/applyjob.model`);
 const jobService = require(`${appRoot}/services/job.js`);
 const jwt = require('jsonwebtoken');
 const HttpStatus = require('http-status');
+const async = require("async");
 const ObjectId = require('mongodb').ObjectId;
 
 async function list(req, res){	
@@ -63,8 +64,23 @@ async function list(req, res){
 			$limit : limit 
 		}
 	], function(error, record){
-		console.log(error);
-		return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record, total_record : total_record.length });
+		if(record && record.length >0){
+			async.eachSeries(record, (item,callback)=>{
+				const apply_data = applyjobModel.findOne({user_id : new ObjectId(req.query.user_id), job_id : item._id, status : true, deleted_at : 0})
+				if(apply_data){
+					item.apply = 1;
+					callback();	
+				}else{
+					item.apply = 0;
+					callback();	
+				}
+						
+			},(err)=>{			
+				return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record, total_record : total_record.length });
+			})			
+		}else{
+			return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record, total_record : total_record.length });
+		}		
 	});	
 }
 

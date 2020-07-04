@@ -11,7 +11,7 @@ async function addCategory(param){
     cat_id:param.cat_id?param.cat_id:null,
     status:true,
     deleted_at:0,
-    skillexp:param.skillexp?param.skillexp:'',
+    skillexp:param.skillexp?param.skillexp:'SKILL',
     image:'',
     level:param.level
   })
@@ -39,7 +39,7 @@ async function editCategory(id, param) {
     name:param.name,
     code:param.code,
     description:param.description,
-    skillexp:param.skillexp?param.skillexp:'',
+    skillexp:param.skillexp?param.skillexp:'SKILL',
   }
   return await categoryModel.updateOne({_id:id},detail);
 }

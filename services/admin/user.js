@@ -52,8 +52,10 @@ async function edit(id, req){
 		name	: req.body.name,
 		email	: req.body.email ? req.body.email : '',
 		dob		: req.body.dob ? req.body.dob : '',
-		gender		: req.body.gender ? req.body.gender : '',
-		mobile	: parseInt(req.body.mobile)
+		gender		: req.body.gender ? req.body.gender : ''		
+	}
+	if(req.body.mobile){
+		updateUser.mobile = parseInt(req.body.mobile)
 	}
 	if(req.body.photo_id_type){
 		updateUser.photo_type_id = new ObjectId(req.body.photo_id_type);
@@ -86,7 +88,7 @@ async function addUserProfile(req){
 		user_id 	: req.params.id,
 		locality_id : req.body.locality ? req.body.locality : null,
 		category_id : req.body.category,
-		subcategory_id : subcategory_id,
+		subcategory_id : subcategory_id ? subcategory_id : [],
 		employment_status : req.body.jobtype ? req.body.jobtype: [],
 		//skill_id 	: req.body.skills,
 		address	: req.body.address ? req.body.address : '',
@@ -116,6 +118,7 @@ async function addUserProfile(req){
 }
 
 async function updateProfile(id, update_data){	
+	console.log(id);
 	console.log(update_data);
 	return profileModel.updateOne({ _id : id }, update_data);
 }

@@ -93,9 +93,9 @@ async function updateprofile(req, res){
 	var update_data = {};	
 	try{
 		let profile_data = await userProfileModel.findOne({user_id : new ObjectId(req.body.user_id), parent_id : null});
-		console.log(profile_data);
+		//console.log(profile_data);
 		if(req.body.type == 'resume'){
-		const resume = await commanHelper.uploadFile(req.files, 'resume', constants.UPLOAD_USER_RESUME)
+			const resume = await commanHelper.uploadFile(req.files, 'resume', constant.UPLOAD_USER_RESUME)
 			update_data.resume_name = resume ? resume : '';
 			update_data.resume_title = req.body.resume_title ? req.body.resume_title : "";
 			if(profile_data){
@@ -121,12 +121,12 @@ async function updateprofile(req, res){
 			}			
 			
 		}else if(req.body.type == "education"){
-			console.log(profile_data);
+			//console.log(profile_data);
 			update_data.education = req.body.education ? req.body.education : '';
+			update_data.name_of_course = req.body.name_of_course ? req.body.name_of_course : '';
 			update_data.year_of_passing = req.body.year_of_passing ? req.body.year_of_passing : "";
 			if(profile_data){
 				const userData = await userService.updateProfile(profile_data._id, update_data);
-				console.log(userData);
 				if(userData){
 					return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : req.__("Profile has beeb updated successfully")});
 				}else{
@@ -151,9 +151,13 @@ async function updateprofile(req, res){
 			update_data.company_name = req.body.company_name ? req.body.company_name : '';
 			update_data.date_of_joining = req.body.date_of_joining ? req.body.date_of_joining : "";
 			update_data.designation = req.body.designation ? req.body.designation : "";
+			update_data.experience = req.body.experience ? parseInt(req.body.experience):0;
+			update_data.current_salary = req.body.current_salary ? parseInt(req.body.current_salary):0;
+			update_data.notice_period = req.body.notice_period ? parseInt(req.body.notice_period):0;
+			update_data.employment_status = req.body.employment_status ? req.body.employment_status : [];
 			if(profile_data){
 				const userData = await userService.updateProfile(profile_data._id, update_data);
-				console.log(userData);
+				
 				if(userData){
 					return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : req.__("Profile has beeb updated successfully")});
 				}else{
@@ -178,7 +182,7 @@ async function updateprofile(req, res){
 			update_data.skill_name = req.body.skills ? req.body.skills : '';
 			if(profile_data){
 				const userData = await userService.updateProfile(profile_data._id, update_data);
-				console.log(userData);
+				
 				if(userData){
 					return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : req.__("Profile has beeb updated successfully")});
 				}else{
@@ -204,7 +208,7 @@ async function updateprofile(req, res){
 			update_data.locality_id = req.body.locality_id ? req.body.locality_id : null;
 			if(profile_data){
 				const userData = await userService.updateProfile(profile_data._id, update_data);
-				console.log(userData);
+				
 				if(userData){
 					return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : req.__("Profile has beeb updated successfully")});
 				}else{
@@ -229,12 +233,13 @@ async function updateprofile(req, res){
 			update_data.category_id = req.body.category_id;
 			let data = req.body.subcategory_id;
 			let subcategory_id = data;
-			if(typeof data == "string"){
+			if(typeof data == "string" && data){
 				subcategory_id = data.split(',');
 			}
 			update_data.subcategory_id = subcategory_id ? subcategory_id : [];
 			if(profile_data){
 				const userData = await userService.updateProfile(profile_data._id, update_data);
+				
 				if(userData){
 					return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : req.__("Profile has beeb updated successfully")});
 				}else{
@@ -257,10 +262,11 @@ async function updateprofile(req, res){
 		}
 		else if(req.body.type=='user_profile'){
 			try{
-				const imageProfile = await commanHelper.uploadFile(req.files,'photo_profile',constants.UPLOAD_USER_PROFILE)
+				const imageProfile = await commanHelper.uploadFile(req.files,'photo_profile',constant.UPLOAD_USER_PROFILE)
 				if(imageProfile){
 					req.body.image = imageProfile;
 				}
+				console.log(req.body);
 				const userData = await userService.edit(req.body.user_id, req);
 				if(userData){
 					return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : req.__("Profile has beeb updated successfully")});
@@ -270,13 +276,19 @@ async function updateprofile(req, res){
 			}		
 		}
 		else if(req.body.type == "other"){
-			update_data.passport = (req.body.passport && req.body.passport == 'yes') ? true : false,
-			update_data.diploma = (req.body.diploma && req.body.diploma == 'yes') ? true : false,
-			update_data.address_id = req.body.adProof;
-			update_data.photoproof_id = req.body.pIdProof;
-			update_data.language_id = req.body.language;
+			console.log(req.body);
+			update_data.passport = (req.body.passport && req.body.passport == 'yes') ? true : false;
+			update_data.diploma = (req.body.diploma && req.body.diploma == 'yes') ? true : false;
+			//update_data.address_id = req.body.adProof;
+			//update_data.photoproof_id = req.body.pIdProof;
+			let language = req.body.language;
+			let language_id = language;
+			if(typeof language == "string"){
+				language_id = language.split(',');
+			}
+			update_data.language_id = language_id;
 			let user_update_data = {};			
-			const imageProof = await commanHelper.uploadFile(req.files,'photo_proof',constants.UPLOAD_USER_PHOTOID)
+			const imageProof = await commanHelper.uploadFile(req.files,'photo_proof',constant.UPLOAD_USER_PHOTOID)
 			if(req.body.photo_id_type){
 				user_update_data.photo_type_id = new ObjectId(req.body.photo_id_type);
 				user_update_data.photo_id_number = req.body.photo_id_number ? req.body.photo_id_number : '';
@@ -402,6 +414,14 @@ async function getProfile(req, res){
 			},
 			{
 				$lookup:{
+					from:"categories",
+					localField:"subcategory_id",
+					foreignField:"_id",
+					as:"subcategory"
+				}
+			},
+			{
+				$lookup:{
 					from:"localities",
 					localField:"locality_id",
 					foreignField:"_id",
@@ -451,6 +471,7 @@ async function getProfile(req, res){
 					diploma: 1,
 					name_of_course : 1,
 					user:1,
+					subcategory:1,
 					"city._id":1,
 					"city.name":1,
 					"category._id":1,				
@@ -499,6 +520,10 @@ async function candidateSearch(req, res){
 			skillname.push(job_id[i]);
 		}
 		search.skill_name = { $in : skillname }
+	}
+
+	if(req.query.user_id){
+		search.user_id = { $ne : new ObjectId(req.query.user_id) }
 	}
 
 	if(req.query.city_id){
@@ -642,8 +667,23 @@ async function candidateSearch(req, res){
 			$limit : limit 
 		}
 	], function(error, record){
-		console.log(error);
-		return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record, total_record : total_record.length });
+		if(record && record.length >0){
+			async.eachSeries(record, (item,callback)=>{
+				const sort_data = sortlisted_candidateModel.findOne({user_id : new ObjectId(req.query.user_id), profile_id : item._id, status : true, deleted_at : 0})
+				if(sort_data){
+					item.selected = 1;
+					callback();	
+				}else{
+					item.selected = 0;
+					callback();	
+				}
+						
+			},(err)=>{			
+				return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record, total_record : total_record.length });
+			})			
+		}else{
+			return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record, total_record : total_record.length });
+		}
 	});	
 }
 
@@ -763,7 +803,8 @@ async function candiatesortlisted(req, res){
 	const job = await sortlisted_candidateModel.findOne({ profile_id : new ObjectId(req.query.profile_id), user_id : new ObjectId(req.query.user_id), status : true, deleted_at : 0});
 	const sort_profile = {
 		user_id : req.query.user_id,
-		profile_id : req.query.profile_id
+		profile_id : req.query.profile_id,
+		profile_user_id : req.query.profile_user_id
 	}
 	if(!job){
 		const jobData = await userService.selectcandidate(req, sort_profile)

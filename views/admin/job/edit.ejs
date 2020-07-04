@@ -67,7 +67,7 @@
 				<option value="">Select</option>
 				<% subcategory_id = detail.subcategory_id %>
 				<%for(let i=0;i<subcategory.length;i++){%>
-					<option value="<%=subcategory[i]._id%>" <% if(subcategory_id.indexOf(subcategory[i]._id) !== -1){ %> selected="selected"<% }%>><%=subcategory[i].name%></option>
+					<option value="<%=subcategory[i]._id%>" <% if(subcategory_id && subcategory_id.indexOf(subcategory[i]._id) !== -1){ %> selected="selected"<% }%>><%=subcategory[i].name%></option>
 					<%}%>
 			  </select>
 			</div>

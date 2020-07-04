@@ -135,6 +135,26 @@
         }
     });
 
+    $('#candidate_tbl').DataTable({
+      "processing": true,
+      "serverSide": true,
+      "searching": false,
+      "ordering": true,
+      "sDom": 'Rfrtlip',
+                  "columnDefs": [ {
+                      "targets": 'no-sort',
+                      "orderable": false,
+                } ],
+        "ajax": {
+          url: ADMINSITEURL+'candidate/all/',
+          data:{
+            'user_id':$("#user_id").val(),
+            "status":$("#status").val()
+          },
+          type: "POST",          
+        }
+    });
+
     $('#vendorRequestTable').DataTable({
         "processing": true,
           "serverSide": true,

@@ -25,6 +25,10 @@ var UserSchema = new Schema({
         type : Number,
         default : 1 
     },
+    rating 	: { 
+        type : Number,
+        default : 0 
+    },
     deleted_at	: { 
         type : Number,
         default : 0

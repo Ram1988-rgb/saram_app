@@ -8,6 +8,7 @@ let sortlisted_candidateSchema = new Schema({
 	},
     profile_id 	: {type:mongoose.Schema.Types.ObjectId, ref:"UserProfile"},
     user_id 	: {type:mongoose.Schema.Types.ObjectId, ref:"User"},
+    profile_user_id 	: {type:mongoose.Schema.Types.ObjectId, ref:"User"},
     deleted_at	:{
 		type : Number,
 		default : 0

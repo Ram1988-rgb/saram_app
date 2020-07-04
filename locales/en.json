@@ -128,5 +128,10 @@
 	"Your password change successfully": "Your password change successfully",
 	"This number is already in used, please use another number": "This number is already in used, please use another number",
 	"This number is not register, please enter register number": "This number is not register, please enter register number",
-	"Candidate already sortlisted": "Candidate already sortlisted"
+	"Candidate already sortlisted": "Candidate already sortlisted",
+	"Job rating successfully": "Job rating successfully",
+	"Profile rating successfully": "Profile rating successfully",
+	"Manage Selected Candidate": "Manage Selected Candidate",
+	"Selected by Name": "Selected by Name",
+	"Selected candidate Name": "Selected candidate Name"
 }
