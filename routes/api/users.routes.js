@@ -8,7 +8,7 @@ module.exports = function(router) {
 	router.get('/api/users/getProfile', validateToken, indexController.getProfile);
 	router.get('/api/users/candidateSearch', validateToken, indexController.candidateSearch);
 	router.get('/api/users/candiatesortlisted', validateToken, indexController.candiatesortlisted);
-	router.get('/api/users/sortlisted_candidate_list', validateToken, indexController.sortlisted_candidate_list);
+	router.get('/api/users/sortlisted_candidate_list', indexController.sortlisted_candidate_list);
 	router.post('/api/users/generateotp', indexController.generateOtp);
 	router.post('/api/users/verifyotp', indexController.verifyOtp);
 	router.post('/api/users/changepassword', indexController.changepassword);

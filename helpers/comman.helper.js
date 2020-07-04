@@ -8,12 +8,16 @@ var designaitorModel  = require('../models/designation.model');
 var skillsModel  = require('../models/skills.model');
 var usersModel  = require('../models/user.model');
 var jobtypesModel  = require('../models/jobtypes.model');
+var jobModel  = require('../models/job.model');
+var sysConfigModel  = require('../models/system_config.model');
 var categoryModel  = require('../models/category.model');
 var skill_libraryModel  = require('../models/skill_library.model');
 var skilltypesModel  = require('../models/skilltypes.model');
 var otpModel  = require('../models/otp.model');
 var constant = require('../config/constant');
 const request = require('request');
+const nodemailer = require('nodemailer');
+
 
 const mongoose = require('mongoose');
 
@@ -139,6 +143,54 @@ async function verifyOtp(params){
     return {success:false, message:"Please enter valid otp"}
 }
 
+async function abusiveJobSearch(jobId){
+    const sysConfig =  await sysConfigModel.findOne({_id:"5eeae66b73b7ee1be4f88a54"});
+    const abuseWord = (sysConfig.abuse_key).split(',');
+    const ab = abuseWord.join(' ');
+    const jobData= await jobModel.find({_id:jobId,$text: { $search: ab }});
+    
+    if(jobData && jobData.length>0){
+        await createEmailData(jobData[0])
+        await jobModel.updateOne({_id:jobId},{status:2});
+    }else{
+        await jobModel.updateOne({_id:jobId},{status:1});
+    }
+    return true;
+}
+
+async function createEmailData(jobData){
+    const message = `<h3>${jobData.name} has some abbusive words. Please check </h3>`;
+    sendEmail({
+        message:message,
+        subject:"Abusive Words",
+        toemail:process.env.gmail
+    })
+}
+
+async function sendEmail(data){
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+               user: process.env.gmail,
+               pass: process.env.password
+           }
+       })
+       const mailOptions = {
+        from: process.env.fromemail, // sender address
+        to: data.toemail, // list of receivers
+        subject: data.subject, // Subject line
+        html: data.message// plain text body
+      };
+
+      transporter.sendMail(mailOptions, function (err, info) {
+        if(err){
+            console.log(err);
+        }else{
+         return info;
+        }
+     });
+}
+
 
 module.exports = {
     getCountry,
@@ -156,5 +208,7 @@ module.exports = {
     skillTypes,
     skillLibrary,
     verifyOtp,
-    generateOtp
+    generateOtp,
+    abusiveJobSearch,
+    sendEmail
 }

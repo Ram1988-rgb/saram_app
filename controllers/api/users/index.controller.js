@@ -856,7 +856,26 @@ async function sortlisted_candidate_list(req, res){
 		
 		{
 			$unwind : "$profile_data"
-		}/*,
+		},
+		{
+			$lookup :
+			{
+				from : "cities",
+				localField : "profile_data.city_id",
+				foreignField : '_id',
+				as : "profile_data.city_detail"
+			}
+		},
+		{
+			$lookup :
+			{
+				from : "localities",
+				localField : "profile_data.locality_id",
+				foreignField : '_id',
+				as : "profile_data.locality_detail"
+			}
+		}
+		/*,
 		{
 			$project :
 			{

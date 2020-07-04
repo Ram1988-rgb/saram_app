@@ -5,7 +5,9 @@ var bcrypt = require("bcrypt-nodejs");
 var mongoose = require('mongoose');
 const commanHelper = require(`${appRoot}/helpers/comman.helper`);
 const jobService = require(`${appRoot}/services/job.js`);
+const constants = require(`${appRoot}/config/constant`);
 const ObjectId = require('mongodb').ObjectId;
+
 var self= module.exports  = {
 	index: async (req,res)=>{
 		const data_search = await config.helpers.search_url.job_list(req);

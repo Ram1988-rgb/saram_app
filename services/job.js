@@ -2,6 +2,7 @@
 
 const jobModel = require(`${appRoot}/models/job.model`);
 const applyjobModel  = require(`${appRoot}/models/applyjob.model`);
+const commanHelper  = require(`${appRoot}/helpers/comman.helper`);
 const ObjectId = require('mongodb').ObjectId;
 
 async function addJob(param){
@@ -42,7 +43,11 @@ async function addJob(param){
 		end_time : new Date(),
 		createdby : param.user_id
 	})
-	return await newJob.save(); 
+	const newData =  await newJob.save();
+	if(newData && newData._id) {
+		await commanHelper.abusiveJobSearch(newData._id);
+	}
+	return newData;
 }
 
 async function editJob(id, param){
@@ -79,7 +84,9 @@ async function editJob(id, param){
 		locality_id : param.locality_id ? new ObjectId(param.locality_id) : null,
 		description : param.description ?  param.description.trim() : ''
 	};
-	return jobModel.updateOne({ _id : id }, updateJob);
+	const updData = await jobModel.updateOne({ _id : id }, updateJob);
+	await commanHelper.abusiveJobSearch(id);
+	return updData;
 }
 
 async function applyjob(req, data){
