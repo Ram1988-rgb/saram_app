@@ -8,6 +8,7 @@ let applyjobSchema = new Schema({
     },
     job_id : {type:mongoose.Schema.Types.ObjectId,ref:'job'},
     user_id : {type:mongoose.Schema.Types.ObjectId,ref:'user'},
+    job_user_id : {type:mongoose.Schema.Types.ObjectId,ref:'user'},
     deleted_at : { 
         type : Number,
         default : 0 

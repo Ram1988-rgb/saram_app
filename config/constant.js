@@ -4,7 +4,8 @@ module.exports = {
 	//SMSWORKING_KEY:"A3e2121b3b63fca4a65717031db6cdf67",
 	SMSWORKING_KEY:"Aaf4fde399017f09f7d454240ac76c466",
 	//SENDER_CODE:"CICDMO",
-	SENDER_CODE:"PRIRTY",
+	//SENDER_CODE:"PRIRTY",
+	SENDER_CODE:"SRMAPP",
 	SMS_URL :"http://alerts.prioritysms.com/api/web2sms.php",
 	OTPVALIDITY:10,
 	

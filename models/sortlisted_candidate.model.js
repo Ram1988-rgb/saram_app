@@ -6,9 +6,9 @@ let sortlisted_candidateSchema = new Schema({
 		type: Boolean,
 		default : true
 	},
-    profile_id 	: {type:mongoose.Schema.Types.ObjectId, ref:"UserProfile"},
-    user_id 	: {type:mongoose.Schema.Types.ObjectId, ref:"User"},
-    profile_user_id 	: {type:mongoose.Schema.Types.ObjectId, ref:"User"},
+    profile_id 	: {type:mongoose.Schema.Types.ObjectId, ref:"userprofiles"},
+    user_id 	: {type:mongoose.Schema.Types.ObjectId, ref:"user"},
+    profile_user_id 	: {type:mongoose.Schema.Types.ObjectId, ref:"user"},
     deleted_at	:{
 		type : Number,
 		default : 0

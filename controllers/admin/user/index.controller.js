@@ -201,10 +201,12 @@ var self= module.exports  = {
 		}
 	},
 
-	delete : (req, res) => {
+	delete : async (req, res) => {
+			await model.userProfile.updateOne({ user_id : new ObjectId(req.input('id'))}, { deleted_at : 1 });
+
 		 return model.user.updateOne({_id: req.input("id")}, {
             deleted_at: 1
-        },function(err,data){
+        },function(err,data){			
         	if(err) console.error(err);
         	res.send('done')
         })
@@ -222,7 +224,7 @@ var self= module.exports  = {
 	},
 
 	check_mobile : function(req, res) {
-		model.user.findOne({mobile: parseInt(req.input('mobile'))}).exec(function(err,user){
+		model.user.findOne({mobile: parseInt(req.input('mobile')), deleted_at : 0}).exec(function(err,user){
 		if(err){console.log(err)}
 			if(user){
 				res.json({"valid": false,"message":req.__("This mobile is already register, please choose another")})
@@ -233,7 +235,7 @@ var self= module.exports  = {
 	},
 
 	check_email_edit : function(req, res) {
-		model.user.findOne({ _id :{ $ne: new ObjectId(req.input('id'))}, email : req.input('email')}).exec(function(err,user){
+		model.user.findOne({ _id :{ $ne: new ObjectId(req.input('id'))}, email : req.input('email'), deleted_at : 0}).exec(function(err,user){
 		console.log(user);
 		if(err){console.log(err)}
 			if(user){
@@ -245,8 +247,11 @@ var self= module.exports  = {
 	},
 
 	check_mobile_edit : function(req, res) {
-		model.user.findOne({ _id :{ $ne: new ObjectId(req.input('id'))}, mobile: parseInt(req.input('mobile'))}).exec(function(err,user){
-		if(err){console.log(err)}
+		console.log(req.query);
+		console.log(req.input);
+		model.user.findOne({ _id :{ $ne: new ObjectId(req.input('id'))}, mobile: parseInt(req.input('mobile')), deleted_at : 0}).exec(function(err,user){
+			console.log(user);
+			if(err){console.log(err)}
 			if(user){
 				res.json({"valid": false,"message":req.__("This mobile is already register, please choose another")})
 			}else{

@@ -80,13 +80,13 @@ async function rating_list(req, res){
 	console.log(req.query);
 	const skip = req.query.skip ? parseInt(req.query.skip) : 0 ;
 	const limit = req.query.limit ? parseInt(req.query.limit): 10;
-	const total_record = await profileratingModel.count({ profile_id : new ObjectId(req.query.profile_id), deleted_at : 0, status : 1 });
+	const total_record = await profileratingModel.count({ profile_user_id : new ObjectId(req.query.user_id), deleted_at : 0, status : 1 });
 	let sort_by = { 'createdAt' : -1};
 	profileratingModel.aggregate([
 		{
 			$match : 
 			{
-				profile_id : new ObjectId(req.query.profile_id), deleted_at : 0, status : 1
+				profile_user_id : new ObjectId(req.query.user_id), deleted_at : 0, status : 1
 			}
 		},
 		{
@@ -104,16 +104,25 @@ async function rating_list(req, res){
 				from : "users",
 				localField : "profile_user_id",
 				foreignField : '_id',
+				as : "profile_user_data"
+			}
+		},
+		{
+			$unwind : "$profile_user_data" 
+		},
+		{
+			$lookup :
+			{
+				from : "users",
+				localField : "user_id",
+				foreignField : '_id',
 				as : "user_data"
 			}
 		},
 		{
 			$unwind : "$user_data" 
 		}
-	], function(error, record){
-		console.log(total_record.lenght);
-		console.log(record);
-		console.log(error);
+	], function(error, record){		
 		return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record, total_record : total_record});
 	});	
 }

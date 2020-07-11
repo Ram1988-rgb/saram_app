@@ -8,7 +8,7 @@ const ObjectId = require('mongodb').ObjectId;
 async function addJob(param){
 	console.log(param);
 	var data = param.subcategory;
-	let subcategory_id = [];
+	let subcategory_id = data;
 	if(typeof data == 'string'){
 		 subcategory_id = data.split(',');
 	}

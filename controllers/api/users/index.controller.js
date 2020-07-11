@@ -18,11 +18,15 @@ async function login (req, res){
 		var result = {};
 		const record = await userModel.findOne({ mobile : parseInt(req.body.mobile), deleted_at : 0});
 		if(record){
-			if(record.status == false){
+			if(record.status == 0){
 				return res.send({status : HttpStatus.FORBIDDEN, code : 1, data : {}, message : req.__("User Inactive please contact to admin")});
 			}
 			else if(bcrypt.compareSync(req.body.password, record.password)){
 				const token = await utils.generate_token(record);
+				if(req.body.device_id != record.device_id){
+					record.parent_id = 0;
+					await userModel.updateOne({ _id : record._id }, { parent_id : 0 });
+				}
 				const save_device = await userService.save_device(req);
 				return res.send({status:HttpStatus.OK, code : 0, data:record, message:"", token:token, profile : constant.SHOW_USER_PROFILE, id_proof : constant.SHOW_USER_PHOTOID});
 			}			
@@ -39,7 +43,7 @@ async function login (req, res){
 	
 async function registration(req, res){
 	var result = {};
-	const record = await userModel.findOne({ mobile : parseInt(req.body.mobile), status : true, deleted_at : 0});
+	const record = await userModel.findOne({ mobile : parseInt(req.body.mobile),  deleted_at : 0});
 	if(record){
 		return res.send({ status : HttpStatus.FORBIDDEN, code : 1, message : req.__("Mobile number already in used, please choose another number"), data : {}});
 	}else{
@@ -55,7 +59,8 @@ async function registration(req, res){
 			}
 			const userData = await userService.add(req);
 			if(userData){
-				return res.send({ status : HttpStatus.OK, code : 0, message : req.__("Profile has beeb created successfully"), data : userData, profile : constant.SHOW_USER_PROFILE, id_proof : constant.SHOW_USER_PHOTOID});
+				const token = await utils.generate_token(userData);
+				return res.send({ status : HttpStatus.OK, code : 0, message : req.__("Profile has beeb created successfully"), data : userData, token:token, profile : constant.SHOW_USER_PROFILE, id_proof : constant.SHOW_USER_PHOTOID});
 			}
 		}catch(err){
 			return res.send({ status : HttpStatus.FORBIDDEN, code : 1, message : req.__("Something went wrong"), data : {}});
@@ -180,6 +185,7 @@ async function updateprofile(req, res){
 		}
 		else if(req.body.type == "skill"){
 			update_data.skill_name = req.body.skills ? req.body.skills : '';
+			update_data.skill_name_search = req.body.skills ? (req.body.skills).toString():'';
 			if(profile_data){
 				const userData = await userService.updateProfile(profile_data._id, update_data);
 				
@@ -492,7 +498,14 @@ async function getProfile(req, res){
 			}
 		], function(error, record){
 			if(record){
-				return res.send({ status : HttpStatus.OK, code : 0, data : record, message : "", resume_path : constant.SHOW_USER_RESUME});
+				applyjobModel.findOne({ user_id : new ObjectId(req.query.login_user_id), job_user_id : new ObjectId(req.query.user_id)}).exec(function(error, applyjob){
+					console.log(applyjob)
+					record[0].rating_review = false;
+					if(applyjob){
+						record[0].rating_review = true;
+					}
+					return res.send({ status : HttpStatus.OK, code : 0, data : record, message : "", resume_path : constant.SHOW_USER_RESUME});
+				});
 			}else{
 				return res.send({ status : HttpStatus.OK, code : 0, data : {}, message : ""});
 			}
@@ -511,6 +524,13 @@ async function candidateSearch(req, res){
 /*	if(req.query.name){
 		search.company_name = { '$regex' : req.query.name };
 	}*/
+
+	if(req.query.name){
+		//search.name = { '$regex' : req.query.keyword };
+			search['$or'] = [
+				{ '$text': {'$search' : req.query.name}}
+			];
+	}
 
 	if(req.query.skill_name){
 		const data = req.query.skill_name;
@@ -533,7 +553,7 @@ async function candidateSearch(req, res){
 		search.category_id =  new ObjectId(req.query.category_id)
 	}
 	if(req.query.subcategory_id){
-		search.subcategory_id = { $in : req.query.subcategory_id }
+		search.subcategory_id = { $in : [new ObjectId(req.query.subcategory_id)] }
 	}
 	if(req.query.locality){
 		search.locality_id = new ObjectId(req.query.locality)
@@ -638,6 +658,7 @@ async function candidateSearch(req, res){
 				education:1,
 				year_of_passing:1,
 				passport:1,
+				date_of_joining : 1,
 				diploma: 1,
 				name_of_course : 1,
 				user:1,
@@ -655,7 +676,8 @@ async function candidateSearch(req, res){
 				"languages._id":1,
 				"languages.name":1,
 				employment_status:1,
-				skill_name : 1
+				skill_name : 1,
+				skill_name_search:1
 
 
 			}
@@ -667,17 +689,20 @@ async function candidateSearch(req, res){
 			$limit : limit 
 		}
 	], function(error, record){
+	
 		if(record && record.length >0){
 			async.eachSeries(record, (item,callback)=>{
-				const sort_data = sortlisted_candidateModel.findOne({user_id : new ObjectId(req.query.user_id), profile_id : item._id, status : true, deleted_at : 0})
-				if(sort_data){
-					item.selected = 1;
-					callback();	
-				}else{
-					item.selected = 0;
-					callback();	
-				}
-						
+				console.log(item._id);
+				sortlisted_candidateModel.findOne({user_id : new ObjectId(req.query.user_id), profile_id : item._id, status : true, deleted_at : 0}).exec(function(error, sort_data){
+					console.log(sort_data)
+					if(sort_data){
+						item.selected = 1;
+						callback();	
+					}else{
+						item.selected = 0;
+						callback();	
+					}
+				})						
 			},(err)=>{			
 				return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record, total_record : total_record.length });
 			})			
@@ -863,7 +888,16 @@ async function sortlisted_candidate_list(req, res){
 				from : "cities",
 				localField : "profile_data.city_id",
 				foreignField : '_id',
-				as : "profile_data.city_detail"
+				as : "profile_data.city"
+			}
+		},
+		{
+			$lookup :
+			{
+				from : "languageknows",
+				localField : "profile_data.language_id",
+				foreignField : '_id',
+				as : "profile_data.languages"
 			}
 		},
 		{
@@ -872,7 +906,16 @@ async function sortlisted_candidate_list(req, res){
 				from : "localities",
 				localField : "profile_data.locality_id",
 				foreignField : '_id',
-				as : "profile_data.locality_detail"
+				as : "profile_data.locality"
+			}
+		},
+		{
+			$lookup :
+			{
+				from : "users",
+				localField : "profile_data.user_id",
+				foreignField : '_id',
+				as : "profile_data.user"
 			}
 		}
 		/*,

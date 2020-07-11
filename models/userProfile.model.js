@@ -9,6 +9,7 @@ var UserProfileSchema = new Schema({
     subcategory_id : [{type:mongoose.Schema.Types.ObjectId, ref:"Category"}],
     //skill_id : [{type:mongoose.Schema.Types.ObjectId, ref:"Skill_library"}],
     skill_name:{ type : Array},
+    skill_name_search:{ type : String},
     designation : { type : String},
     address : { type : String},
     education : { type : String },

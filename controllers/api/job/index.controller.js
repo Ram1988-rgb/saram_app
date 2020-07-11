@@ -21,7 +21,10 @@ async function list(req, res){
 		search.subcategory_id = { $in : req.query.subcategory_id }
 	}
 	if(req.query.keyword){
-		search.name = { '$regex' : req.query.keyword };
+	//search.name = { '$regex' : req.query.keyword };
+		search['$or'] = [
+			{ '$text': {'$search' : req.query.keyword}}
+		];
 	}
 	if(req.query.city_id){
 		search.city_id =  new ObjectId(req.query.city_id)
@@ -62,11 +65,27 @@ async function list(req, res){
 		},
 		{ 
 			$limit : limit 
-		}
+		},
+		{
+			$lookup:{
+				from:"cities",
+				localField:"city_id",
+				foreignField:"_id",
+				as:"city"
+			}
+		},
+		{
+			$lookup:{
+				from:"localities",
+				localField:"locality_id",
+				foreignField:"_id",
+				as:"locality"
+			}
+		}		
 	], function(error, record){
 		if(record && record.length >0){
 			async.eachSeries(record, (item,callback)=>{
-				const apply_data = applyjobModel.findOne({user_id : new ObjectId(req.query.user_id), job_id : item._id, status : true, deleted_at : 0})
+			applyjobModel.findOne({user_id : new ObjectId(req.query.user_id), job_id : item._id, status : true, deleted_at : 0}).exec(function(error,apply_data){
 				if(apply_data){
 					item.apply = 1;
 					callback();	
@@ -74,6 +93,7 @@ async function list(req, res){
 					item.apply = 0;
 					callback();	
 				}
+			});
 						
 			},(err)=>{			
 				return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record, total_record : total_record.length });
@@ -107,14 +127,31 @@ async function myjobs(req, res){
 		},
 		{ 
 			$limit : limit 
-		}
+		},
+		{
+			$lookup:{
+				from:"cities",
+				localField:"city_id",
+				foreignField:"_id",
+				as:"city"
+			}
+		},
+		{
+			$lookup:{
+				from:"localities",
+				localField:"locality_id",
+				foreignField:"_id",
+				as:"locality"
+			}
+		}		
 	], function(error, record){
 		console.log(error);
 		return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record, total_record : total_record.length });
 	});	
 }
 
-async function deatils(req, res){	
+async function deatils(req, res){
+	console.log(req.query);	
 	jobModel.aggregate([
 		{
 			$match : 
@@ -122,6 +159,22 @@ async function deatils(req, res){
 				_id : new ObjectId(req.query.id), deleted_at : 0, status : 1
 			}
 		},
+		{
+			$lookup:{
+				from:"cities",
+				localField:"city_id",
+				foreignField:"_id",
+				as:"city"
+			}
+		},
+		{
+			$lookup:{
+				from:"localities",
+				localField:"locality_id",
+				foreignField:"_id",
+				as:"locality"
+			}
+		},		
 		{
 			$lookup :
 			{
@@ -143,8 +196,20 @@ async function deatils(req, res){
 		{
 			$unwind : "$user_data"
 		}
-	], function(error, record){
-		return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record });
+	], function(error, record){	
+		console.log(record);			
+		if(record && record.length > 0){
+			applyjobModel.findOne({user_id : new ObjectId(req.query.user_id), job_id : new ObjectId(req.query.id), status : true, deleted_at : 0}).exec(function(error,apply_data){
+				
+				record[0].apply = 0;
+				if(apply_data){
+					record[0].apply = 1;
+				}
+				return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record });
+			});
+		}else{
+			return res.send({ status : HttpStatus.OK, code : 0, message : '', data : record });
+		}
 	});	
 }
 
@@ -155,9 +220,13 @@ async function applyjob(req, res){
 		job_id : new ObjectId(req.query.job_id)
 	}
 	if(!job){
+		const job_data = await jobModel.findOne({ _id : new ObjectId(req.query.job_id)});
+		if(job_data){
+			create_job.job_user_id = job_data.user_id;
+		}
 		const jobData = await jobService.applyjob(req, create_job)
 		if(jobData){
-			return res.send({ status : HttpStatus.OK, code : 0, message : req.__('Job has beeb apply successfully'), data : {} })
+			return res.send({ status : HttpStatus.OK, code : 0, message : req.__('Job has beeb apply successfully'), data : jobData })
 		}else{		
 			return res.send({ status : HttpStatus.OK, code : 0, message : req.__("Something went wrong"), data : {} });
 		}

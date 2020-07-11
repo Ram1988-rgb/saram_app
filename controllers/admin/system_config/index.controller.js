@@ -3,7 +3,6 @@ var config = require('../../../config/index');
 var async = require("async");
 var self= module.exports  = {
 	index: async (req,res)=>{
-		console.log(system_configModel);
 		var detail = await system_configModel.findOne({deleted_at : 0});
 		if(req.method == "GET"){	
 			config.helpers.permission('system_config', req, async function(err,permission){

@@ -108,7 +108,8 @@ async function addUserProfile(req){
 		experience 	: req.body.year_of_exp ? parseInt(req.body.year_of_exp): 0,
 		passport 	: (req.body.passport && req.body.passport == 'Yes') ? true : false,
 		diploma 	: (req.body.diploma && req.body.diploma == 'yes')? true : false,   
-		skill_name  : req.body.skills?req.body.skills:[]
+		skill_name  : req.body.skills?req.body.skills:[],
+		skill_name_search : req.body.skills?(req.body.skills).toString():""
 	}
 	if(req.body.resume_name){
 		detail.resume_name 	= req.body.resume_name

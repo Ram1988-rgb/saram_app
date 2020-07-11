@@ -37,7 +37,8 @@ const constant = require('../config/constant');
   }
 
   async function generate_token(data){
-    const payload = { data : data, exp : Math.floor(Date.now() / 1000) + (60 * 60 * 24)};
+    //const payload = { data : data, exp : Math.floor(Date.now() / 1000) + (60 * 60 * 24)}; for one day
+    const payload = { data : data, expiresIn: '365d' };
     const secret = constant.JWT_SECRET;
     const token = jwt.sign(payload, secret);
     return token;
