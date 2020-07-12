@@ -13,5 +13,6 @@ module.exports = function(router) {
 	router.post('/api/users/verifyotp', indexController.verifyOtp);
 	router.post('/api/users/changepassword', indexController.changepassword);
 	router.get('/api/users/childUsers', validateToken, indexController.childUsers);
+	router.get('/api/users/setting', validateToken, indexController.setting);
 	
 }

@@ -937,6 +937,18 @@ async function sortlisted_candidate_list(req, res){
 	});	
 }
 
+async function setting(req, res){
+	console.log(req.query);
+	const user_update = await userModel.updateOne({ _id : new ObjectId(req.query.user_id)}, { language : req.query.language });
+	if(user_update){
+		return res.send({ status : HttpStatus.OK, code : 0, message : req.__('User setting save successfully'), data : {} })
+	}else{		
+		return res.send({ status : HttpStatus.FORBIDDEN, code : 0, message : req.__("Something went wrong"), data : {} });
+	}
+}
+
+
+
 module.exports = {
 	login,
 	registration,
@@ -949,5 +961,6 @@ module.exports = {
 	verifyOtp,
 	changepassword,
 	childUsers,
-	sortlisted_candidate_list
+	sortlisted_candidate_list,
+	setting
 }

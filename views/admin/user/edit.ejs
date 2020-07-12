@@ -89,7 +89,7 @@
 		<select name="photo_id_type" id="photo_id_type" class="form-control" data-validation="required">
 			<option value="">Select photo proof type</option>
 			<%for(var key=0;key<proof_type.length;key++){%>
-			   <option value="<%=proof_type[key].id%>" <% if(detail.photo_type_id == proof_type[key].id){ %> selected="selected" <% } %>><%=proof_type[key].name%></option>
+			   <option value="<%=proof_type[key]._id%>" <% if(detail.photo_type_id == (proof_type[key]._id).toString()){ %> selected="selected" <% } %>><%=proof_type[key].name%></option>
 			<%}%>
 		</select>
 		  </div>
